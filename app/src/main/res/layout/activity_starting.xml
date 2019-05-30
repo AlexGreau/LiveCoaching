@@ -25,8 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/StartText"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginLeft="150dp"
             android:text="Start Trainning"
             android:textSize="50sp" />
     </RelativeLayout>
