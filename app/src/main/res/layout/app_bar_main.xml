@@ -22,13 +22,30 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                >
+
+                <Spinner
+                    android:id="@+id/spinner_sports"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    />
 
                 <Spinner
                     android:id="@+id/spinner_types"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                />
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/spinner_sports"
+                    />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/connectDevicesButton"
+                    android:drawableLeft="@drawable/ic_bluetooth_searching_signal_indicator"
+                    android:text="Connect"
+                    android:layout_toRightOf="@id/spinner_types"
+
+                    />
 
             </RelativeLayout>
 

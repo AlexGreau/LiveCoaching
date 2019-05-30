@@ -25,14 +25,22 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // types spinner
         Spinner tacticFilter = findViewById(R.id.spinner_types);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> adapterTypes = ArrayAdapter.createFromResource(this,
                 R.array.tacticTypes, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        tacticFilter.setAdapter(adapter);
+        adapterTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tacticFilter.setAdapter(adapterTypes);
+
+        //sports spinner
+        Spinner sportsSpinner = findViewById(R.id.spinner_sports);
+        ArrayAdapter<CharSequence> adapterSports = ArrayAdapter.createFromResource(this,
+                R.array.sports, android.R.layout.simple_spinner_item);
+        adapterSports.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sportsSpinner.setAdapter(adapterSports);
+
+        // Connect button
+
 
 
         // inflatable menu lines
