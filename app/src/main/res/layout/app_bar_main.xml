@@ -28,6 +28,7 @@
                     android:id="@+id/spinner_sports"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:overlapAnchor="false"
                     />
 
                 <Spinner
@@ -35,6 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@id/spinner_sports"
+                    android:overlapAnchor="false"
                     />
 
                 <Button
