@@ -19,8 +19,17 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
             >
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/profile"
+                android:drawableLeft="@drawable/ic_user"
+                android:text="Profile"
+                android:drawablePadding="10dip"
+                />
+
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 >
@@ -39,18 +48,17 @@
                     android:layout_toRightOf="@id/spinner_sports"
                     android:overlapAnchor="false"
                     />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/connectDevicesButton"
-                    android:drawableLeft="@drawable/ic_bluetooth_searching_signal_indicator"
-                    android:text="Connect"
-                    android:layout_toRightOf="@id/spinner_types"
-
-                    />
-
             </RelativeLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/connectDevicesButton"
+                android:drawableLeft="@drawable/ic_bluetooth_searching_signal_indicator"
+                android:text="Connect"
+                android:layout_toRightOf="@id/spinner_types"
+                android:drawablePadding="10dip"
+                />
 
         </android.support.v7.widget.Toolbar>
 

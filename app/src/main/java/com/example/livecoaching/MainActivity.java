@@ -40,17 +40,24 @@ public class MainActivity extends AppCompatActivity
         sportsSpinner.setAdapter(adapterSports);
 
         // Connect button
+            // add a listenner reffering to another function later
+
+
+        // Profile
 
 
 
         // inflatable menu lines
+        /*
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        */
     }
 
     @Override
@@ -66,7 +73,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        /*
+        getSupportMenuInflater().inflate(R.menu.main, menu);
+        */
         return true;
     }
 
