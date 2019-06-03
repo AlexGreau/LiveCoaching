@@ -13,6 +13,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,21 +25,39 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        // types spinner
+        Spinner tacticFilter = findViewById(R.id.spinner_types);
+        ArrayAdapter<CharSequence> adapterTypes = ArrayAdapter.createFromResource(this,
+                R.array.tacticTypes, android.R.layout.simple_spinner_item);
+        adapterTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tacticFilter.setAdapter(adapterTypes);
+
+        //sports spinner
+        Spinner sportsSpinner = findViewById(R.id.spinner_sports);
+        ArrayAdapter<CharSequence> adapterSports = ArrayAdapter.createFromResource(this,
+                R.array.sports, android.R.layout.simple_spinner_item);
+        adapterSports.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sportsSpinner.setAdapter(adapterSports);
+
+        // Connect button
+            // add a listenner reffering to another function later
+
+
+        // Profile
+
+
+
+        // inflatable menu lines
+        /*
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        */
     }
 
     @Override
@@ -53,7 +73,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        /*
+        getSupportMenuInflater().inflate(R.menu.main, menu);
+        */
         return true;
     }
 
