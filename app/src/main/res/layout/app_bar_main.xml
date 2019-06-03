@@ -18,7 +18,11 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             >
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center">
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -27,38 +31,32 @@
                 android:text="Profile"
                 android:drawablePadding="10dip"
                 />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                >
-
-                <Spinner
-                    android:id="@+id/spinner_sports"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:overlapAnchor="false"
-                    />
-
-                <Spinner
-                    android:id="@+id/spinner_types"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toRightOf="@id/spinner_sports"
-                    android:overlapAnchor="false"
-                    />
-            </RelativeLayout>
-
-            <Button
+            <Spinner
+                android:id="@+id/spinner_sports"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/connectDevicesButton"
-                android:drawableLeft="@drawable/ic_bluetooth_searching_signal_indicator"
-                android:text="Connect"
-                android:layout_toRightOf="@id/spinner_types"
-                android:drawablePadding="10dip"
+                android:overlapAnchor="false"
                 />
+
+            <Spinner
+                android:id="@+id/spinner_types"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:overlapAnchor="false"
+                />
+
+        <Button
+            android:id="@+id/connectDevicesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ic_bluetooth_searching_signal_indicator"
+            android:drawablePadding="10dip"
+            android:text="Connect"
+
+            />
+        </LinearLayout>
+
+
 
         </android.support.v7.widget.Toolbar>
 
