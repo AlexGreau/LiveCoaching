@@ -46,14 +46,13 @@ public class MainActivity extends AppCompatActivity
         sportsSpinner.setAdapter(adapterSports);
 
         // Connect button
-            // TODO : add a listenner reffering to another function later
+            // TODO : add a listener referring to another function later
 
 
         // Profile
             // TODO : Profile
 
         // ReccyclerView for Tactics
-            // TODO : Recycler view for them
         RecyclerView catalogue = findViewById(R.id.tactics_recyclerView);
         catalogue.setLayoutManager(new LinearLayoutManager(this));
         tacticsAdapter = new TacticsAdapter();
@@ -62,12 +61,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
             super.onBackPressed();
-        }
     }
 
     public void onItemSelected(AdapterView<?> parent, View view,
