@@ -13,11 +13,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.livecoaching.GameObjects.Sports;
+import com.example.livecoaching.GameObjects.Tactic;
+import com.example.livecoaching.GameObjects.TacticTypes;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements AdapterView.OnItemSelectedListener {
+    private String sport;
+    private String tacticType;
+    private Tactic[] tactics; // stored somewhere
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +38,12 @@ public class MainActivity extends AppCompatActivity
         ArrayAdapter<CharSequence> adapterTypes = ArrayAdapter.createFromResource(this,
                 R.array.tacticTypes, android.R.layout.simple_spinner_item);
         adapterTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tacticFilter.setOnItemSelectedListener(this);
         tacticFilter.setAdapter(adapterTypes);
 
         //sports spinner
         Spinner sportsSpinner = findViewById(R.id.spinner_sports);
+        sportsSpinner.setOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> adapterSports = ArrayAdapter.createFromResource(this,
                 R.array.sports, android.R.layout.simple_spinner_item);
         adapterSports.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -49,19 +59,6 @@ public class MainActivity extends AppCompatActivity
         // ReccyclerView for Tactics
             // TODO : Tactics object
             // TODO : Recycler view for them
-
-
-        // inflatable menu lines
-        /*
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
-        */
     }
 
     @Override
@@ -74,52 +71,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        /*
-        getSupportMenuInflater().inflate(R.menu.main, menu);
-        */
-        return true;
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        // An item was selected. You can retrieve the selected item using
+        System.err.println(parent.getItemAtPosition(pos));
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
     }
 }
