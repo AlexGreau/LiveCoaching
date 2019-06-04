@@ -1,6 +1,8 @@
 package com.example.livecoaching;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,12 +13,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.livecoaching.Adapter.TacticsAdapter;
 import com.example.livecoaching.Model.Tactic;
 
 public class MainActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
     private String sport;
     private String tacticType;
+    private TacticsAdapter tacticsAdapter;
     private Tactic[] tactics; // stored somewhere
 
     @Override
@@ -49,8 +53,11 @@ public class MainActivity extends AppCompatActivity
             // TODO : Profile
 
         // ReccyclerView for Tactics
-            // TODO : Tactics object
             // TODO : Recycler view for them
+        RecyclerView catalogue = findViewById(R.id.tactics_recyclerView);
+        catalogue.setLayoutManager(new LinearLayoutManager(this));
+        tacticsAdapter = new TacticsAdapter();
+        catalogue.setAdapter(tacticsAdapter);
     }
 
     @Override

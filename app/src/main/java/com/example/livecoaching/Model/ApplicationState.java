@@ -37,9 +37,13 @@ public class ApplicationState {
         allTactics.addAll(defensiveTactics);
 
         // sorting lists
+        /*
         sort(this.offensiveTactics, Collator.getInstance());
         sort(this.defensiveTactics, Collator.getInstance());
         sort(this.allTactics, Collator.getInstance());
+        */
+
+        System.out.println(this.allTactics);
     }
 
     public List<Tactic> getOffensiveTactics(){
