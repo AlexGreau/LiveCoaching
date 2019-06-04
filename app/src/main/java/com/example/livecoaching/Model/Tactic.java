@@ -3,12 +3,23 @@ package com.example.livecoaching.Model;
 public class Tactic {
 
     private String name;
-    private String ID;
-    private Sports sport;
-    private TacticTypes type;
+    private int ID;
+    private String sport;
+    private String type;
     private int playersNeeded;
     private String creator;
     private int image;
+
+    Tactic(String name, int id, String sport, String typ, int pNeeded){
+        this.name = name;
+        this.ID = id;
+        this.sport = sport;
+        this.type = typ;
+        this.playersNeeded = pNeeded;
+        // for now
+        this.creator = "TITI";
+        this.image = 0;
+    }
 
     public String getName() {
         return name;
@@ -18,27 +29,27 @@ public class Tactic {
         this.name = name;
     }
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 
-    public Sports getSport() {
+    public String getSport() {
         return sport;
     }
 
-    public void setSport(Sports sport) {
+    public void setSport(String sport) {
         this.sport = sport;
     }
 
-    public TacticTypes getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(TacticTypes type) {
+    public void setType(String type) {
         this.type = type;
     }
 
