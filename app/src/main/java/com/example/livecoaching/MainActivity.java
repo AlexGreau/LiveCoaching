@@ -40,11 +40,15 @@ public class MainActivity extends AppCompatActivity
         sportsSpinner.setAdapter(adapterSports);
 
         // Connect button
-            // add a listenner reffering to another function later
+            // TODO : add a listenner reffering to another function later
 
 
         // Profile
+            // TODO : Profile
 
+        // ReccyclerView for Tactics
+            // TODO : Tactics object
+            // TODO : Recycler view for them
 
 
         // inflatable menu lines
