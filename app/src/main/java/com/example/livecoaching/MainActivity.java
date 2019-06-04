@@ -73,8 +73,16 @@ public class MainActivity extends AppCompatActivity
 
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        System.err.println(parent.getItemAtPosition(pos));
+        if (parent.getId() == R.id.spinner_sports){
+            this.sport = (String) parent.getItemAtPosition(pos);
+            System.out.println(this.sport);
+            // TODO : sort tactics accordingly
+        }
+        else if (parent.getId() == R.id.spinner_types){
+            this.tacticType = (String) parent.getItemAtPosition(pos);
+            System.out.println(this.tacticType);
+            // TODO : sort tactics accordingly
+        }
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
