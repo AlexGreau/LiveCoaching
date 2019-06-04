@@ -1,4 +1,4 @@
-package com.example.livecoaching.GameObjects;
+package com.example.livecoaching.Model;
 
 public enum Sports {
     Ultimate,

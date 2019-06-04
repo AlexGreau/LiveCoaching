@@ -1,4 +1,4 @@
-package com.example.livecoaching.GameObjects;
+package com.example.livecoaching.Model;
 
 public class Tactic {
 
@@ -8,8 +8,7 @@ public class Tactic {
     private TacticTypes type;
     private int playersNeeded;
     private String creator;
-    // TODO : image
-
+    private int image;
 
     public String getName() {
         return name;
@@ -57,5 +56,13 @@ public class Tactic {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 }
