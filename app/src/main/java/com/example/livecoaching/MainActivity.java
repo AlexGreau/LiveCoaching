@@ -1,6 +1,7 @@
 package com.example.livecoaching;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity
 
         // ReccyclerView for Tactics
         RecyclerView catalogue = findViewById(R.id.tactics_recyclerView);
-        catalogue.setLayoutManager(new LinearLayoutManager(this));
+        catalogue.setLayoutManager(new GridLayoutManager(this, 3));
         tacticsAdapter = new TacticsAdapter();
         catalogue.setAdapter(tacticsAdapter);
     }
