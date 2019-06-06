@@ -1,6 +1,7 @@
 package com.example.livecoaching.Adapter;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +24,11 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
 
     class TacticViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public RelativeLayout tacticLayout;
+        public CardView tacticLayout;
         public TextView name;
         public TacticViewHolder(final View itemView) {
             super(itemView);
-            tacticLayout = (RelativeLayout) itemView.findViewById(R.id.tactic);
+            tacticLayout = (CardView) itemView.findViewById(R.id.tactic);
             name = (TextView) itemView.findViewById(R.id.test);
         }
 
@@ -45,7 +46,7 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
     @NonNull
     @Override
     public TacticsAdapter.TacticViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        RelativeLayout item =(RelativeLayout) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.tactic, viewGroup, false);
+        CardView item =(CardView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.tactic, viewGroup, false);
 
         TacticViewHolder vh = new TacticViewHolder(item);
 
