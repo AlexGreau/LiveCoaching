@@ -25,12 +25,12 @@ public class ApplicationState {
     private ApplicationState(){
         userProfile = new UserProfile();
         offensiveTactics = new ArrayList<>(Arrays.asList(
-                new Tactic("Horizontal Stack",0,"Ultimate","Offense",7, R.drawable.stack_h),
+                new Tactic("Horizontal Stack",0,"Ultimate","Offense",7, R.drawable.stack_horizontal),
                 new Tactic("Vertical Stack",1,"Ultimate","Offense",7,R.drawable.stack_v)
         ));
 
         defensiveTactics = new ArrayList<>(Arrays.asList(
-                new Tactic("junk",3,"Ultimate","Defense",7, R.drawable.junk),
+                new Tactic("Junk",3,"Ultimate","Defense",7, R.drawable.junk),
                 new Tactic("4-4-2",4,"Football","Defense",11,R.drawable.foot_442)
                 ));
 
@@ -39,12 +39,7 @@ public class ApplicationState {
         allTactics.addAll(defensiveTactics);
 
         // sorting lists
-        /*
-        sort(this.offensiveTactics, Collator.getInstance());
-        sort(this.defensiveTactics, Collator.getInstance());
-        sort(this.allTactics, Collator.getInstance());
-        System.out.println(this.allTactics);
-        */
+        // TODO : sort lists
     }
 
     public List<Tactic> getOffensiveTactics(){
