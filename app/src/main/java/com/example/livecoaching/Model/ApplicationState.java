@@ -2,6 +2,7 @@ package com.example.livecoaching.Model;
 
 import com.example.livecoaching.R;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,9 +43,8 @@ public class ApplicationState {
         sort(this.offensiveTactics, Collator.getInstance());
         sort(this.defensiveTactics, Collator.getInstance());
         sort(this.allTactics, Collator.getInstance());
-        */
-
         System.out.println(this.allTactics);
+        */
     }
 
     public List<Tactic> getOffensiveTactics(){
