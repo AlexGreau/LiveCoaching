@@ -60,7 +60,7 @@ public class Tactic {
             System.out.println("OffenseColor");
             this.color = R.color.tacticOffense;
         } else if (this.type.equals("Defense")){
-            System.out.println("DefenseColor");
+            System.out.println("DefenseColor : " + R.color.tacticDefense);
             this.color = R.color.tacticDefense;
         } else {
             System.out.println("otherColor");
