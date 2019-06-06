@@ -13,7 +13,7 @@ public class Tactic {
     private int image;
     private int color;
 
-    Tactic(String name, int id, String sport, String typ, int pNeeded){
+    Tactic(String name, int id, String sport, String typ, int pNeeded, int img){
         this.name = name;
         this.ID = id;
         this.setSport(sport);
@@ -21,7 +21,7 @@ public class Tactic {
         this.playersNeeded = pNeeded;
         // for now
         this.creator = "TITI";
-        this.image = 0;
+        this.image = img;
     }
 
     public String getName() {

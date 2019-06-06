@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,10 +27,12 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
 
         public CardView tacticLayout;
         public TextView name;
+        public ImageView img;
         public TacticViewHolder(final View itemView) {
             super(itemView);
             tacticLayout = (CardView) itemView.findViewById(R.id.tactic);
-            name = (TextView) itemView.findViewById(R.id.test);
+            name = (TextView) itemView.findViewById(R.id.tactic_name);
+            img = (ImageView) itemView.findViewById(R.id.tactic_image);
         }
 
         @Override
@@ -42,6 +45,7 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
             // rest of tactic fields to bind correctly
             System.out.println(t);
             tacticLayout.setCardBackgroundColor(t.getColor());
+            img.setImageResource(t.getImage());
         }
     }
 

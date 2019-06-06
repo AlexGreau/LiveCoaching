@@ -1,6 +1,7 @@
 package com.example.livecoaching.Model;
 
-import java.text.Collator;
+import com.example.livecoaching.R;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,13 +24,13 @@ public class ApplicationState {
     private ApplicationState(){
         userProfile = new UserProfile();
         offensiveTactics = new ArrayList<>(Arrays.asList(
-                new Tactic("Horizontal Stack",0,"Ultimate","Offense",7),
-                new Tactic("Vertical Stack",1,"Ultimate","Offense",7)
+                new Tactic("Horizontal Stack",0,"Ultimate","Offense",7, R.drawable.stack_h),
+                new Tactic("Vertical Stack",1,"Ultimate","Offense",7,R.drawable.stack_v)
         ));
 
         defensiveTactics = new ArrayList<>(Arrays.asList(
-                new Tactic("Diamond Zone",3,"Ultimate","Defense",7),
-                new Tactic("4-4-2",4,"Football","Defense",11)
+                new Tactic("junk",3,"Ultimate","Defense",7, R.drawable.junk),
+                new Tactic("4-4-2",4,"Football","Defense",11,R.drawable.foot_442)
                 ));
 
         // concat for alltactics
