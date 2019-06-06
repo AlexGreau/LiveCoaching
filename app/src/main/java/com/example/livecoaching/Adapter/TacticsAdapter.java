@@ -40,6 +40,8 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
         public void bind (Tactic t, int index){
             name.setText(t.getName());
             // rest of tactic fields to bind correctly
+            System.out.println(t);
+            tacticLayout.setCardBackgroundColor(t.getColor());
         }
     }
 

@@ -2,10 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/tactic"
-    app:cardBackgroundColor="@color/tacticOther">
-
+    android:id="@+id/tactic">
 
     <TextView
         android:layout_width="match_parent"

@@ -23,14 +23,14 @@ public class ApplicationState {
     private ApplicationState(){
         userProfile = new UserProfile();
         offensiveTactics = new ArrayList<>(Arrays.asList(
-                new Tactic("Horizontal Stack",0,"Ultimate","Offensive",7),
-                new Tactic("Vertical Stack",1,"Ultimate","Offensive",7)
+                new Tactic("Horizontal Stack",0,"Ultimate","Offense",7),
+                new Tactic("Vertical Stack",1,"Ultimate","Offense",7)
         ));
 
         defensiveTactics = new ArrayList<>(Arrays.asList(
-                new Tactic("Horizontal Stack",3,"Ultimate","Defensive",7),
-                new Tactic("4-4-2",4,"Football","Defensive",11)
-        ));
+                new Tactic("Diamond Zone",3,"Ultimate","Defense",7),
+                new Tactic("4-4-2",4,"Football","Defense",11)
+                ));
 
         // concat for alltactics
         allTactics = offensiveTactics;
