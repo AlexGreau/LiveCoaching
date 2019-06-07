@@ -57,13 +57,10 @@ public class Tactic {
         this.type = type;
         // set the color accordingly
         if (this.type.equals("Offense")){
-            System.out.println("OffenseColor");
             this.color = "#d13a58";
         } else if (this.type.equals("Defense")){
-            System.out.println("DefenseColor : " + R.color.tacticDefense);
             this.color = "#84b3ed";
         } else {
-            System.out.println("otherColor");
             this.color = "#ed6b34";
         }
     }

@@ -5,6 +5,8 @@ import com.example.livecoaching.R;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.Collections.sort;
@@ -39,7 +41,16 @@ public class ApplicationState {
         allTactics.addAll(defensiveTactics);
 
         // sorting lists
-        // TODO : sort lists
+        Comparator<Tactic> tacticNamesComparator =  new Comparator<Tactic>() {
+            @Override
+            public int compare(Tactic o1, Tactic o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        };
+        offensiveTactics.sort(tacticNamesComparator);
+        defensiveTactics.sort(tacticNamesComparator);
+        allTactics.sort(tacticNamesComparator);
+
     }
 
     public List<Tactic> getOffensiveTactics(){
