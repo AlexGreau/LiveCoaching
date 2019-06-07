@@ -1,5 +1,7 @@
 package com.example.livecoaching.Model;
 
+import com.example.livecoaching.R;
+
 public class Tactic {
 
     private String name;
@@ -9,16 +11,17 @@ public class Tactic {
     private int playersNeeded;
     private String creator;
     private int image;
+    private String color;
 
-    Tactic(String name, int id, String sport, String typ, int pNeeded){
+    Tactic(String name, int id, String sport, String typ, int pNeeded, int img){
         this.name = name;
         this.ID = id;
-        this.sport = sport;
-        this.type = typ;
+        this.setSport(sport);
+        this.setType(typ);
         this.playersNeeded = pNeeded;
         // for now
         this.creator = "TITI";
-        this.image = 0;
+        this.image = img;
     }
 
     public String getName() {
@@ -42,6 +45,7 @@ public class Tactic {
     }
 
     public void setSport(String sport) {
+
         this.sport = sport;
     }
 
@@ -51,6 +55,14 @@ public class Tactic {
 
     public void setType(String type) {
         this.type = type;
+        // set the color accordingly
+        if (this.type.equals("Offense")){
+            this.color = "#d13a58";
+        } else if (this.type.equals("Defense")){
+            this.color = "#84b3ed";
+        } else {
+            this.color = "#ed6b34";
+        }
     }
 
     public int getPlayersNeeded() {
@@ -75,5 +87,9 @@ public class Tactic {
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    public String getColor(){
+        return this.color;
     }
 }

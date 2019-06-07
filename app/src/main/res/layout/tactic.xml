@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    app:cardCornerRadius="10dp"
+    android:id="@+id/tacticView"
+    android:layout_gravity="center"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true"
+    app:cardPreventCornerOverlap="false"
+    app:cardBackgroundColor="@color/tacticOther"
+    >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:orientation="vertical"
+        android:gravity="center">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tactic">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitCenter"
+            android:id="@+id/tactic_image"
+            android:src="@drawable/group"
+            android:layout_marginTop="20dp"
+            />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="ZEUBY"
             android:gravity="center"
-            android:id="@+id/test"/>
-    </RelativeLayout>
+            android:id="@+id/tactic_name"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>
 
