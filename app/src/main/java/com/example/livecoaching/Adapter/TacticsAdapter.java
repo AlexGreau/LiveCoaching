@@ -30,7 +30,7 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
         public ImageView img;
         public TacticViewHolder(final View itemView) {
             super(itemView);
-            tacticLayout = (CardView) itemView.findViewById(R.id.tactic);
+            tacticLayout = (CardView) itemView.findViewById(R.id.tacticView);
             name = (TextView) itemView.findViewById(R.id.tactic_name);
             img = (ImageView) itemView.findViewById(R.id.tactic_image);
         }
@@ -42,7 +42,7 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
 
         public void bind (Tactic t, int index){
             name.setText(t.getName());
-            tacticLayout.setCardBackgroundColor(t.getColor());
+            tacticLayout.setBackgroundResource(t.getColor());
             img.setImageResource(t.getImage());
         }
     }
