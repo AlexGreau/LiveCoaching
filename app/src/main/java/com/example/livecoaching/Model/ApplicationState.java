@@ -23,6 +23,7 @@ public class ApplicationState {
     private List<Tactic> offensiveTactics;
     private List<Tactic> defensiveTactics;
     private List<Tactic> allTactics;
+    private List<Tactic> displayedList;
 
     private ApplicationState(){
         userProfile = new UserProfile();
@@ -36,8 +37,10 @@ public class ApplicationState {
                 new Tactic("4-4-2",4,"Football","Defense",11,R.drawable.foot_442)
                 ));
 
+        allTactics = new ArrayList<Tactic>();
+        displayedList = new ArrayList<Tactic>();
         // concat for alltactics
-        allTactics = offensiveTactics;
+        allTactics.addAll(offensiveTactics);
         allTactics.addAll(defensiveTactics);
 
         // sorting lists
@@ -50,7 +53,7 @@ public class ApplicationState {
         offensiveTactics.sort(tacticNamesComparator);
         defensiveTactics.sort(tacticNamesComparator);
         allTactics.sort(tacticNamesComparator);
-
+        displayedList.addAll(this.allTactics);
     }
 
     public List<Tactic> getOffensiveTactics(){
@@ -67,5 +70,25 @@ public class ApplicationState {
 
     public UserProfile getUserProfile(){
         return userProfile;
+    }
+
+    public List<Tactic> getDisplayedList(){
+        return this.displayedList;
+    }
+    public List<Tactic> filterList(String sport, String type){
+        this.displayedList.clear();
+        for (Tactic t : ApplicationState.getInstance().getAllTactics()) {
+            if (t.getType().equals(type) || type.startsWith("All")){
+                if (t.getSport().equals(sport) || sport.startsWith("All")){
+                    this.displayedList.add(t);
+                }
+            } else if (t.getSport().equals(sport) || sport.startsWith("All")){
+                if (t.getType().equals(type) || type.startsWith("All")){
+                    this.displayedList.add(t);
+                }
+            }
+        }
+
+        return this.displayedList;
     }
 }

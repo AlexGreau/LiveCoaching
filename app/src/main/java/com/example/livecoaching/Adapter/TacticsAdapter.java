@@ -21,7 +21,7 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
     private List<Tactic> catalogue;
 
     public TacticsAdapter (){
-        this.catalogue = ApplicationState.getInstance().getAllTactics();
+        this.catalogue = ApplicationState.getInstance().getDisplayedList();
     }
 
     class TacticViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
