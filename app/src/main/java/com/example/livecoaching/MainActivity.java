@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         } else if (parent.getId() == R.id.spinner_types) {
             this.tacticType = (String) parent.getItemAtPosition(pos);
         }
-        ApplicationState.getInstance().filterList(this.sport,this.tacticType);
+        tacticsAdapter.filterList(this.sport,this.tacticType);
     }
 
     public void onNothingSelected(AdapterView<?> parent) {

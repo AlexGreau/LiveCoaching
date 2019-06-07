@@ -15,6 +15,7 @@ import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.Tactic;
 import com.example.livecoaching.R;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticViewHolder> {
@@ -60,7 +61,9 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
 
     @Override
     public void onBindViewHolder(@NonNull TacticsAdapter.TacticViewHolder holder, int i) {
-        holder.bind(catalogue.get(i),i);
+        holder.bind(catalogue.get(holder.getAdapterPosition()),holder.getAdapterPosition()); // maybe here
+        System.out.println("position searched : " + holder.getAdapterPosition());
+        System.out.println("item : " + catalogue.get(holder.getAdapterPosition()).getName());
     }
 
     @Override
@@ -68,5 +71,24 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
         return catalogue.size();
     }
 
-
+    public List<Tactic> filterList(String sport, String type){
+        System.out.println("parameters of filter : " + sport + ", " + type);
+        this.catalogue.clear();
+        for (Tactic t : ApplicationState.getInstance().getAllTactics()) {
+            if (t.getType().equals(type) || type.startsWith("All")){
+                if (t.getSport().equals(sport) || sport.startsWith("All")){
+                    this.catalogue.add(t);
+                    System.out.println("Added : " + t.getName());
+                }
+            } else if (t.getSport().equals(sport) || sport.startsWith("All")){
+                if (t.getType().equals(type) || type.startsWith("All")){
+                    this.catalogue.add(t);
+                    System.out.println("Added : " + t.getName());
+                }
+            }
+        }
+        System.out.println("End Size : " + this.catalogue.size());
+        notifyDataSetChanged();
+        return this.catalogue;
+    }
 }

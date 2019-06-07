@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Filter;
+import java.util.logging.LogRecord;
 
 public class ApplicationState {
     private static final ApplicationState ourInstance = new ApplicationState();
@@ -72,7 +74,14 @@ public class ApplicationState {
     public List<Tactic> getDisplayedList(){
         return this.displayedList;
     }
-    public List<Tactic> filterList(String sport, String type){
+
+    Filter filter = new Filter() {
+        @Override
+        public boolean isLoggable(LogRecord record) {
+            return false;
+        }
+    };
+  /*  public List<Tactic> filterList(String sport, String type){
         System.out.println("parameters of filter : " + sport + ", " + type);
         this.displayedList.clear();
         for (Tactic t : this.allTactics) {
@@ -88,6 +97,8 @@ public class ApplicationState {
                 }
             }
         }
+        System.out.println("End Size : " + this.displayedList.size());
         return this.displayedList;
     }
+    */
 }
