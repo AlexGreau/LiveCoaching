@@ -1,5 +1,6 @@
 package com.example.livecoaching.Adapter;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +43,7 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
 
         public void bind (Tactic t, int index){
             name.setText(t.getName());
-            tacticLayout.setBackgroundResource(t.getColor());
+            tacticLayout.setCardBackgroundColor(Color.parseColor(t.getColor()));
             img.setImageResource(t.getImage());
         }
     }

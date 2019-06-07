@@ -11,7 +11,7 @@ public class Tactic {
     private int playersNeeded;
     private String creator;
     private int image;
-    private int color;
+    private String color;
 
     Tactic(String name, int id, String sport, String typ, int pNeeded, int img){
         this.name = name;
@@ -58,13 +58,13 @@ public class Tactic {
         // set the color accordingly
         if (this.type.equals("Offense")){
             System.out.println("OffenseColor");
-            this.color = R.color.tacticOffense;
+            this.color = "#d13a58";
         } else if (this.type.equals("Defense")){
             System.out.println("DefenseColor : " + R.color.tacticDefense);
-            this.color = R.color.tacticDefense;
+            this.color = "#84b3ed";
         } else {
             System.out.println("otherColor");
-            this.color = R.color.tacticOther;
+            this.color = "#ed6b34";
         }
     }
 
@@ -92,7 +92,7 @@ public class Tactic {
         this.image = image;
     }
 
-    public int getColor(){
+    public String getColor(){
         System.out.println("tactic : " + this.name + ", color : " + this.color);
         return this.color;
     }
