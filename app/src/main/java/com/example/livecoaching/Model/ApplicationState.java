@@ -5,11 +5,8 @@ import com.example.livecoaching.R;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import static java.util.Collections.sort;
 
 public class ApplicationState {
     private static final ApplicationState ourInstance = new ApplicationState();
@@ -27,6 +24,8 @@ public class ApplicationState {
 
     private ApplicationState(){
         userProfile = new UserProfile();
+        allTactics = new ArrayList<Tactic>();
+        displayedList = new ArrayList<Tactic>();
         offensiveTactics = new ArrayList<>(Arrays.asList(
                 new Tactic("Horizontal Stack",0,"Ultimate","Offense",7, R.drawable.stack_horizontal),
                 new Tactic("Vertical Stack",1,"Ultimate","Offense",7,R.drawable.stack_v)
@@ -37,8 +36,6 @@ public class ApplicationState {
                 new Tactic("4-4-2",4,"Football","Defense",11,R.drawable.foot_442)
                 ));
 
-        allTactics = new ArrayList<Tactic>();
-        displayedList = new ArrayList<Tactic>();
         // concat for alltactics
         allTactics.addAll(offensiveTactics);
         allTactics.addAll(defensiveTactics);
@@ -76,19 +73,21 @@ public class ApplicationState {
         return this.displayedList;
     }
     public List<Tactic> filterList(String sport, String type){
+        System.out.println("parameters of filter : " + sport + ", " + type);
         this.displayedList.clear();
-        for (Tactic t : ApplicationState.getInstance().getAllTactics()) {
+        for (Tactic t : this.allTactics) {
             if (t.getType().equals(type) || type.startsWith("All")){
                 if (t.getSport().equals(sport) || sport.startsWith("All")){
                     this.displayedList.add(t);
+                    System.out.println("Added : " + t.getName());
                 }
             } else if (t.getSport().equals(sport) || sport.startsWith("All")){
                 if (t.getType().equals(type) || type.startsWith("All")){
                     this.displayedList.add(t);
+                    System.out.println("Added : " + t.getName());
                 }
             }
         }
-
         return this.displayedList;
     }
 }

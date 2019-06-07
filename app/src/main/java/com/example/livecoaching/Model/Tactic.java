@@ -90,7 +90,6 @@ public class Tactic {
     }
 
     public String getColor(){
-        System.out.println("tactic : " + this.name + ", color : " + this.color);
         return this.color;
     }
 }
