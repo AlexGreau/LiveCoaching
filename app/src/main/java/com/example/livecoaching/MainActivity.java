@@ -92,7 +92,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onChooseClickListener(int clickedIndex) {
-        //Intent transition = new Intent(MainActivity.this, PlayActivity.class);
-        System.out.println("making transition from main listener : " + clickedIndex);
+        Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+        System.out.println("making transition from main listener : " + ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getName());
+        intent.putExtra("tacticIndex", clickedIndex);
+        startActivity(intent);
     }
 }
