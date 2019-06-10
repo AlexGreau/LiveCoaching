@@ -1,5 +1,6 @@
 package com.example.livecoaching.Adapter;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -11,8 +12,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.livecoaching.MainActivity;
 import com.example.livecoaching.Model.ApplicationState;
+import com.example.livecoaching.Model.Player;
 import com.example.livecoaching.Model.Tactic;
+import com.example.livecoaching.PlayActivity;
 import com.example.livecoaching.R;
 
 import java.sql.SQLOutput;
@@ -20,9 +24,16 @@ import java.util.List;
 
 public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticViewHolder> {
     private List<Tactic> catalogue;
+    final private TacticClickListener tacticClickListener;
 
-    public TacticsAdapter (){
+    public interface TacticClickListener{
+        void onChooseClickListener(int clickedIndex);
+    }
+
+    public TacticsAdapter (TacticClickListener listener){
         this.catalogue = ApplicationState.getInstance().getDisplayedList();
+        this.tacticClickListener = listener;
+        System.out.println("Listener set");
     }
 
     class TacticViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -40,12 +51,20 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
         @Override
         public void onClick(View v){
             // later will have to make the transition to other activity or special view of tactic
+            System.out.println("from listener in tactic adapter; clicked on item : " + catalogue.get(getAdapterPosition()));
+            tacticClickListener.onChooseClickListener(getAdapterPosition());
         }
 
-        public void bind (Tactic t, int index){
+        public void bind (Tactic t, int index) {
             name.setText(t.getName());
             tacticLayout.setCardBackgroundColor(Color.parseColor(t.getColor()));
             img.setImageResource(t.getImage());
+            tacticLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tacticClickListener.onChooseClickListener(getAdapterPosition());
+                }
+            });
         }
     }
 
@@ -61,9 +80,7 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
 
     @Override
     public void onBindViewHolder(@NonNull TacticsAdapter.TacticViewHolder holder, int i) {
-        holder.bind(catalogue.get(holder.getAdapterPosition()),holder.getAdapterPosition()); // maybe here
-        System.out.println("position searched : " + holder.getAdapterPosition());
-        System.out.println("item : " + catalogue.get(holder.getAdapterPosition()).getName());
+        holder.bind(catalogue.get(holder.getAdapterPosition()),holder.getAdapterPosition());
     }
 
     @Override
@@ -78,16 +95,15 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
             if (t.getType().equals(type) || type.startsWith("All")){
                 if (t.getSport().equals(sport) || sport.startsWith("All")){
                     this.catalogue.add(t);
-                    System.out.println("Added : " + t.getName());
+                    //System.out.println("Added : " + t.getName());
                 }
             } else if (t.getSport().equals(sport) || sport.startsWith("All")){
                 if (t.getType().equals(type) || type.startsWith("All")){
                     this.catalogue.add(t);
-                    System.out.println("Added : " + t.getName());
+                    //System.out.println("Added : " + t.getName());
                 }
             }
         }
-        System.out.println("End Size : " + this.catalogue.size());
         notifyDataSetChanged();
         return this.catalogue;
     }

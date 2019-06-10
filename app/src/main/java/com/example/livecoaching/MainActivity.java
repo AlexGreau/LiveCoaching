@@ -1,5 +1,6 @@
 package com.example.livecoaching;
 
+import android.content.Intent;
 import android.media.AsyncPlayer;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements AdapterView.OnItemSelectedListener {
+        implements AdapterView.OnItemSelectedListener, TacticsAdapter.TacticClickListener {
     private String sport;
     private String tacticType;
     private TacticsAdapter tacticsAdapter;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         // types spinner
         Spinner tacticFilter = findViewById(R.id.spinner_types);
@@ -61,11 +62,11 @@ public class MainActivity extends AppCompatActivity
         // Profile
         // TODO : Profile
 
-        // ReccyclerView for Tactics
+        // RecyclerView for Tactics
         RecyclerView catalogue = findViewById(R.id.tactics_recyclerView);
         catalogue.setLayoutManager(new GridLayoutManager(this, 3));
-        tacticsAdapter = new TacticsAdapter();
-        catalogue.setAdapter(tacticsAdapter);
+        this.tacticsAdapter = new TacticsAdapter(this);
+        catalogue.setAdapter(this.tacticsAdapter);
     }
 
     @Override
@@ -87,5 +88,13 @@ public class MainActivity extends AppCompatActivity
         // Another interface callback
         this.tacticType = "All tactics";
         this.sport = "All sports";
+    }
+
+    @Override
+    public void onChooseClickListener(int clickedIndex) {
+        Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+        System.out.println("making transition from main listener : " + ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getName());
+        intent.putExtra("tacticIndex", clickedIndex);
+        startActivity(intent);
     }
 }
