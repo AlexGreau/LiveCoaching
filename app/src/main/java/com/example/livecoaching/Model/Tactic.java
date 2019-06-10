@@ -2,6 +2,8 @@ package com.example.livecoaching.Model;
 
 import com.example.livecoaching.R;
 
+import java.util.ArrayList;
+
 public class Tactic {
 
     private String name;
@@ -12,6 +14,8 @@ public class Tactic {
     private String creator;
     private int image;
     private String color;
+    private ArrayList finishZones;
+    private ArrayList startZones;
 
     Tactic(String name, int id, String sport, String typ, int pNeeded, int img){
         this.name = name;
@@ -22,6 +26,19 @@ public class Tactic {
         // for now
         this.creator = "TITI";
         this.image = img;
+    }
+
+    Tactic(String name, int id, String sport, String typ, int pNeeded, int img, ArrayList zones_start, ArrayList zones_finish){
+        this.name = name;
+        this.ID = id;
+        this.setSport(sport);
+        this.setType(typ);
+        this.playersNeeded = pNeeded;
+        // for now
+        this.creator = "TITI";
+        this.image = img;
+        this.startZones = zones_start;
+        this.finishZones = zones_finish;
     }
 
     public String getName() {
