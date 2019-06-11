@@ -84,7 +84,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:id="@+id/play_content"
         android:layout_below="@+id/toolbar_play"
         android:gravity="center"

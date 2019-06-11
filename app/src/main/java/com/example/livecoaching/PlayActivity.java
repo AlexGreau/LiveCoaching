@@ -1,6 +1,5 @@
 package com.example.livecoaching;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.livecoaching.Model.ApplicationState;
@@ -31,15 +31,38 @@ public class PlayActivity extends AppCompatActivity {
         TextView testText = (TextView) findViewById(R.id.testPlay);
         testText.setText(tactic.getName());
 
-        // toolbar
+        setupPlayToolbar();
+    }
+
+    public void setupPlayToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar_play);
         setSupportActionBar(toolbar);
-            // play button
+        // play button
         Button playButton = findViewById(R.id.button_start);
-            // TODO : start monitoring players' positions and calculate feedback
-            // stop button
+        // TODO : start monitoring players' positions and calculate feedback
+
+        // stop button
         Button finishButton = findViewById(R.id.button_finish);
-                // end of tactic dialog
+        AlertDialog dialog = setupDialog();
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
+        // reset Button
+        Button resetButton = findViewById(R.id.button_reset);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetSequence(sequence);
+            }
+        });
+
+    }
+
+    public AlertDialog setupDialog(){
+        // dialog
         AlertDialog.Builder builder  = new AlertDialog.Builder(this);
         builder.setMessage("zeuby ?");
         builder.setPositiveButton(R.string.returnToMain, new DialogInterface.OnClickListener() {
@@ -57,22 +80,7 @@ public class PlayActivity extends AppCompatActivity {
             }
         });
         AlertDialog dialog = builder.create();
-        finishButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.show();
-            }
-        });
-
-        // reset Button
-        Button resetButton = findViewById(R.id.button_reset);
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetSequence(sequence);
-            }
-        });
-
+        return dialog;
     }
 
     public void resetSequence(Sequence s){
@@ -83,13 +91,17 @@ public class PlayActivity extends AppCompatActivity {
 
     public void setupSequence(Sequence s) {
         // set background
+        setBackground(s.getTactic());
         // set players (verify too)
+        setPlayers(s.getTactic());
 
     }
 
     public void setBackground(Tactic t){
+        RelativeLayout content = findViewById(R.id.play_content);
         if (t.getSport().equals("Football")){
             // load football field
+            content.setBackground(getDrawable(R.drawable.foot_442));
         }
         else if (t.getSport().equals("Ultimate")){
             
