@@ -48,7 +48,8 @@ public class PlayActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked return button
                 Intent intent = new Intent(PlayActivity.this, MainActivity.class);
-                startActivity(intent);
+                setResult(RESULT_OK);
+                finish();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
