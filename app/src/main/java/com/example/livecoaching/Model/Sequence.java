@@ -11,6 +11,11 @@ public class Sequence {
         this.players = tab;
     }
 
+    public Sequence (Tactic t){
+        this.tactic = t;
+        this.players = new ArrayList<Player>();
+    }
+
     public void drawPLayers(){
         // TODO : get players coordinates and update their positions on the screen
         // For now, just draw them on their goal zones

@@ -95,12 +95,10 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
             if (t.getType().equals(type) || type.startsWith("All")){
                 if (t.getSport().equals(sport) || sport.startsWith("All")){
                     this.catalogue.add(t);
-                    //System.out.println("Added : " + t.getName());
                 }
             } else if (t.getSport().equals(sport) || sport.startsWith("All")){
                 if (t.getType().equals(type) || type.startsWith("All")){
                     this.catalogue.add(t);
-                    //System.out.println("Added : " + t.getName());
                 }
             }
         }

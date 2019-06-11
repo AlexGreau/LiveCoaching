@@ -32,6 +32,7 @@ public class PlayActivity extends AppCompatActivity {
         testText.setText(tactic.getName());
 
         setupPlayToolbar();
+        setupSequence();
     }
 
     public void setupPlayToolbar(){
@@ -86,14 +87,15 @@ public class PlayActivity extends AppCompatActivity {
     public void resetSequence(Sequence s){
         // cleanup then setup
         System.out.println("Resetting sequence");
-        this.setupSequence(s);
+        this.setupSequence();
     }
 
-    public void setupSequence(Sequence s) {
+    public void setupSequence() {
+        this.sequence = new Sequence(tactic);
         // set background
-        setBackground(s.getTactic());
+        setBackground(this.sequence.getTactic());
         // set players (verify too)
-        setPlayers(s.getTactic());
+        setPlayers(this.sequence.getTactic());
 
     }
 
