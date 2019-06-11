@@ -95,6 +95,6 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(MainActivity.this, PlayActivity.class);
         System.out.println("making transition from main listener : " + ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getName());
         intent.putExtra("tacticIndex", clickedIndex);
-        startActivity(intent);
+        startActivityForResult(intent, RESULT_OK);
     }
 }
