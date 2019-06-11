@@ -55,6 +55,7 @@ public class PlayActivity extends AppCompatActivity {
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User wants to redo the play
+                // TODO : reset sequence
             }
         });
         AlertDialog dialog = builder.create();
@@ -64,5 +65,9 @@ public class PlayActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        // reset Button
+        Button resetButton = findViewById(R.id.button_reset);
+        // TODO : reset sequence
     }
 }
