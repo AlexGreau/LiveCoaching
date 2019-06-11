@@ -24,13 +24,13 @@ public class Sequence {
 
     public void differenceToGoal(Player player){
         // TODO : difference between players coordinates and his goal zone
-        // TODO : change return type of this function
+        // TODO : change return type of this function (vector ?)
 
     }
 
     public void differenceToStartZone( Player player){
         // TODO : function to guide players to starting points
-        // TODO : change return type of this function
+        // TODO : change return type of this function (vector ?)
 
     }
 
