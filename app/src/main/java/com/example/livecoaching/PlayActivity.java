@@ -34,11 +34,9 @@ public class PlayActivity extends AppCompatActivity {
         // toolbar
         Toolbar toolbar = findViewById(R.id.toolbar_play);
         setSupportActionBar(toolbar);
-
-        // toolbar buttons
             // play button
         Button playButton = findViewById(R.id.button_start);
-
+            // TODO : start monitoring players' positions and calculate feedback
             // stop button
         Button finishButton = findViewById(R.id.button_finish);
                 // end of tactic dialog
@@ -55,7 +53,7 @@ public class PlayActivity extends AppCompatActivity {
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User wants to redo the play
-                // TODO : reset sequence
+                resetSequence(sequence);
             }
         });
         AlertDialog dialog = builder.create();
@@ -68,6 +66,39 @@ public class PlayActivity extends AppCompatActivity {
 
         // reset Button
         Button resetButton = findViewById(R.id.button_reset);
-        // TODO : reset sequence
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetSequence(sequence);
+            }
+        });
+
+    }
+
+    public void resetSequence(Sequence s){
+        // cleanup then setup
+        System.out.println("Resetting sequence");
+        this.setupSequence(s);
+    }
+
+    public void setupSequence(Sequence s) {
+        // set background
+        // set players (verify too)
+
+    }
+
+    public void setBackground(Tactic t){
+        if (t.getSport().equals("Football")){
+            // load football field
+        }
+        else if (t.getSport().equals("Ultimate")){
+            
+        }
+    }
+
+    public void setPlayers(Tactic t){
+        // verify
+
+        // place on the field
     }
 }

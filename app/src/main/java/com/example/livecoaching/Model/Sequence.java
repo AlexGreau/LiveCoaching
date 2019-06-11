@@ -14,12 +14,6 @@ public class Sequence {
     public void drawPLayers(){
         // TODO : get players coordinates and update their positions on the screen
         // For now, just draw them on their goal zones
-
-    }
-
-    public void setBackground(){
-        // TODO : if tactic is football; load football field, else load sport's field
-
     }
 
     public void differenceToGoal(Player player){
@@ -32,6 +26,10 @@ public class Sequence {
         // TODO : function to guide players to starting points
         // TODO : change return type of this function (vector ?)
 
+    }
+
+    public Tactic getTactic(){
+        return this.tactic;
     }
 
 

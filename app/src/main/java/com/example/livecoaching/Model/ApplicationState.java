@@ -81,24 +81,4 @@ public class ApplicationState {
             return false;
         }
     };
-  /*  public List<Tactic> filterList(String sport, String type){
-        System.out.println("parameters of filter : " + sport + ", " + type);
-        this.displayedList.clear();
-        for (Tactic t : this.allTactics) {
-            if (t.getType().equals(type) || type.startsWith("All")){
-                if (t.getSport().equals(sport) || sport.startsWith("All")){
-                    this.displayedList.add(t);
-                    System.out.println("Added : " + t.getName());
-                }
-            } else if (t.getSport().equals(sport) || sport.startsWith("All")){
-                if (t.getType().equals(type) || type.startsWith("All")){
-                    this.displayedList.add(t);
-                    System.out.println("Added : " + t.getName());
-                }
-            }
-        }
-        System.out.println("End Size : " + this.displayedList.size());
-        return this.displayedList;
-    }
-    */
 }
