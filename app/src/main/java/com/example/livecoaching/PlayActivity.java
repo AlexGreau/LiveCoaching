@@ -96,7 +96,6 @@ public class PlayActivity extends AppCompatActivity {
         setBackground(this.sequence.getTactic());
         // set players (verify too)
         setPlayers(this.sequence.getTactic());
-
     }
 
     public void setBackground(Tactic t){
@@ -111,7 +110,15 @@ public class PlayActivity extends AppCompatActivity {
 
     public void setPlayers(Tactic t){
         // verify
-
+        
         // place on the field
+    }
+
+    public void monitorPlayers(){
+        // fetch positions
+
+        // difference to goal zones and way to go
+
+        //
     }
 }
