@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onChooseClickListener(int clickedIndex) {
+        /* for now commented out; waiting for connect activity
         if (ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getPlayersNeeded() == ApplicationState.getInstance().getPlayersConnected().size()){
             Intent intent = new Intent(MainActivity.this, PlayActivity.class);
             System.out.println("making transition from main listener : " + ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getName());
@@ -104,6 +105,11 @@ public class MainActivity extends AppCompatActivity
             Dialog dialog = getPlayerErrorDialog(ApplicationState.getInstance().getDisplayedList().get(clickedIndex));
             dialog.show();
         }
+        */
+        Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+        System.out.println("making transition from main listener : " + ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getName());
+        intent.putExtra("tacticIndex", clickedIndex);
+        startActivityForResult(intent, RESULT_OK);
     }
 
     public AlertDialog getPlayerErrorDialog(Tactic tactic){
