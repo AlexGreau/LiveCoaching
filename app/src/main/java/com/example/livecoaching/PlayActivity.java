@@ -102,11 +102,10 @@ public class PlayActivity extends AppCompatActivity {
     public void setBackground(Tactic t){
         RelativeLayout content = findViewById(R.id.play_content);
         if (t.getSport().equals("Football")){
-            // load football field
             content.setBackground(getDrawable(R.drawable.terrain_foot));
         }
         else if (t.getSport().equals("Ultimate")){
-            
+            content.setBackground(getDrawable(R.drawable.terrain_ultimate));
         }
     }
 
