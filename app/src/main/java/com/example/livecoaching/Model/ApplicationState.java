@@ -23,11 +23,13 @@ public class ApplicationState {
     private List<Tactic> defensiveTactics;
     private List<Tactic> allTactics;
     private List<Tactic> displayedList;
+    private List<Player> playersConnected;
 
     private ApplicationState(){
         userProfile = new UserProfile();
         allTactics = new ArrayList<Tactic>();
         displayedList = new ArrayList<Tactic>();
+        playersConnected = new ArrayList<Player>();
         offensiveTactics = new ArrayList<>(Arrays.asList(
                 new Tactic("Horizontal Stack",0,"Ultimate","Offense",7, R.drawable.stack_horizontal),
                 new Tactic("Vertical Stack",1,"Ultimate","Offense",7,R.drawable.stack_v)
@@ -81,4 +83,21 @@ public class ApplicationState {
             return false;
         }
     };
+
+    public List<Player> getPlayersConnected(){
+        return this.playersConnected;
+    }
+
+    public void addPlayer(Player p){
+        this.playersConnected.add(p);
+    }
+
+    public void resetPlayers(){
+        this.playersConnected.clear();
+    }
+
+    public void setPlayersConnected(List<Player> listOfPlayers){
+        this.playersConnected.clear();
+        this.playersConnected.addAll(listOfPlayers);
+    }
 }
