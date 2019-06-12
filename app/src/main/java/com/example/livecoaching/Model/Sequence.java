@@ -37,5 +37,12 @@ public class Sequence {
         return this.tactic;
     }
 
+    public void start(){
+        // start monitoring players
+
+        // calculate differences
+
+        // send differences to activity
+    }
 
 }

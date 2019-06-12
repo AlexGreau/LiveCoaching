@@ -109,8 +109,6 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void setPlayers(Tactic t){
-        // verify
-        
         // place on the field
     }
 
