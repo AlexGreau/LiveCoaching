@@ -41,7 +41,12 @@ public class PlayActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // play button
         Button playButton = findViewById(R.id.button_start);
-        // TODO : start monitoring players' positions and calculate feedback
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sequence.start();
+            }
+        });
 
         // stop button
         Button finishButton = findViewById(R.id.button_finish);
