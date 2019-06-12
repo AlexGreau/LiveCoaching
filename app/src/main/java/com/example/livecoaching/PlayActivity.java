@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.livecoaching.Model.ApplicationState;
-import com.example.livecoaching.Model.Player;
 import com.example.livecoaching.Model.Sequence;
 import com.example.livecoaching.Model.Tactic;
 
