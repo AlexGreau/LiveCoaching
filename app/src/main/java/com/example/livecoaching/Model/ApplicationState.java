@@ -2,11 +2,9 @@ package com.example.livecoaching.Model;
 
 import com.example.livecoaching.R;
 
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
@@ -19,11 +17,11 @@ public class ApplicationState {
 
     // Fields
     private UserProfile userProfile;
-    private List<Tactic> offensiveTactics;
-    private List<Tactic> defensiveTactics;
-    private List<Tactic> allTactics;
-    private List<Tactic> displayedList;
-    private List<Player> playersConnected;
+    private ArrayList<Tactic> offensiveTactics;
+    private ArrayList<Tactic> defensiveTactics;
+    private ArrayList<Tactic> allTactics;
+    private ArrayList<Tactic> displayedList;
+    private ArrayList<Player> playersConnected;
 
     private ApplicationState(){
         userProfile = new UserProfile();
@@ -57,15 +55,15 @@ public class ApplicationState {
         displayedList.addAll(this.allTactics);
     }
 
-    public List<Tactic> getOffensiveTactics(){
+    public ArrayList<Tactic> getOffensiveTactics(){
         return this.offensiveTactics;
     }
 
-    public List<Tactic> getDefensisveTactics(){
+    public ArrayList<Tactic> getDefensisveTactics(){
         return  this.defensiveTactics;
     }
 
-    public List<Tactic> getAllTactics(){
+    public ArrayList<Tactic> getAllTactics(){
         return this.allTactics;
     }
 
@@ -73,7 +71,7 @@ public class ApplicationState {
         return userProfile;
     }
 
-    public List<Tactic> getDisplayedList(){
+    public ArrayList<Tactic> getDisplayedList(){
         return this.displayedList;
     }
 
@@ -84,7 +82,7 @@ public class ApplicationState {
         }
     };
 
-    public List<Player> getPlayersConnected(){
+    public ArrayList<Player> getPlayersConnected(){
         return this.playersConnected;
     }
 
@@ -96,7 +94,7 @@ public class ApplicationState {
         this.playersConnected.clear();
     }
 
-    public void setPlayersConnected(List<Player> listOfPlayers){
+    public void setPlayersConnected(ArrayList<Player> listOfPlayers){
         this.playersConnected.clear();
         this.playersConnected.addAll(listOfPlayers);
     }

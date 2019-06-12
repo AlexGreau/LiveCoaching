@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.livecoaching.Model.ApplicationState;
+import com.example.livecoaching.Model.Player;
 import com.example.livecoaching.Model.Sequence;
 import com.example.livecoaching.Model.Tactic;
 
@@ -91,11 +92,11 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void setupSequence() {
-        this.sequence = new Sequence(tactic);
+        this.sequence = new Sequence(tactic, ApplicationState.getInstance().getPlayersConnected());
         // set background
         setBackground(this.sequence.getTactic());
         // set players (verify too)
-        setPlayers(this.sequence.getTactic());
+        this.sequence.drawPLayers();
     }
 
     public void setBackground(Tactic t){
@@ -108,15 +109,10 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    public void setPlayers(Tactic t){
-        // place on the field
-    }
-
     public void monitorPlayers(){
         // fetch positions
 
         // difference to goal zones and way to go
 
-        //
     }
 }
