@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -14,25 +15,29 @@ import android.widget.TextView;
 import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.Sequence;
 import com.example.livecoaching.Model.Tactic;
+import com.example.livecoaching.RenderEngine.TacticPanel;
 
 public class PlayActivity extends AppCompatActivity {
     private Tactic tactic;
     private Sequence sequence;
 
+    private static final String TAG = PlayActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play);
+        setContentView(new TacticPanel(this));
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
         int index = intent.getIntExtra("tacticIndex", 0);
         tactic = ApplicationState.getInstance().getDisplayedList().get(index);
-        TextView testText = (TextView) findViewById(R.id.testPlay);
+        /*TextView testText = (TextView) findViewById(R.id.testPlay);
         testText.setText(tactic.getName());
 
         setupPlayToolbar();
         setupSequence();
+        */
     }
 
     public void setupPlayToolbar(){
@@ -117,5 +122,17 @@ public class PlayActivity extends AppCompatActivity {
 
         // difference to goal zones and way to go
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "Destroying...");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "Stopping...");
+        super.onStop();
     }
 }

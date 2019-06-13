@@ -1,10 +1,16 @@
 package com.example.livecoaching.RenderEngine;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
 import com.example.livecoaching.Model.Tactic;
+
+import static android.content.ContentValues.TAG;
 
 public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
     private TacticThread thread;
@@ -12,7 +18,7 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
     public TacticPanel(Context context){
         super(context);
         getHolder().addCallback(this);
-        thread = new TacticThread();
+        thread = new TacticThread(getHolder(), this);
         setFocusable(true);
     }
 
@@ -38,5 +44,23 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
                 // try again to shut down the thread
             }
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (event.getY() > getHeight() - 50) {
+                thread.setRunning(false);
+                ((Activity)getContext()).finish();
+            } else {
+                Log.d(TAG, "Coords: x=" + event.getX() + ",y=" + event.getY());
+            }
+        }
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public void onDraw(Canvas canvas){
+
     }
 }
