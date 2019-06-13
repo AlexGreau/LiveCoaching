@@ -61,7 +61,7 @@ public class PlayActivity extends AppCompatActivity {
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetSequence(sequence);
+                resetSequence();
             }
         });
 
@@ -70,11 +70,10 @@ public class PlayActivity extends AppCompatActivity {
     public AlertDialog setupDialog(){
         // dialog
         AlertDialog.Builder builder  = new AlertDialog.Builder(this);
-        builder.setMessage("zeuby ?");
+        builder.setMessage("Tactic complete ! what's next ?");
         builder.setPositiveButton(R.string.returnToMain, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked return button
-                Intent intent = new Intent(PlayActivity.this, MainActivity.class);
                 setResult(RESULT_OK);
                 finish();
             }
@@ -82,14 +81,14 @@ public class PlayActivity extends AppCompatActivity {
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User wants to redo the play
-                resetSequence(sequence);
+                resetSequence();
             }
         });
         AlertDialog dialog = builder.create();
         return dialog;
     }
 
-    public void resetSequence(Sequence s){
+    public void resetSequence(){
         // cleanup then setup
         System.out.println("Resetting sequence");
         this.setupSequence();
