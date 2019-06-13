@@ -14,7 +14,6 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:orientation="horizontal">
 
             <Button
@@ -68,15 +67,6 @@
                     />
 
             </RelativeLayout>
-
-            <Button
-                android:id="@+id/connectDevicesButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:drawableLeft="@drawable/ic_bluetooth_searching_signal_indicator"
-                android:drawablePadding="10dip"
-                android:text="Connect" />
         </RelativeLayout>
 
 
@@ -84,7 +74,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:id="@+id/play_content"
         android:layout_below="@+id/toolbar_play"
         android:gravity="center"

@@ -11,15 +11,14 @@ public class Sequence {
         this.players = tab;
     }
 
+    public Sequence (Tactic t){
+        this.tactic = t;
+        this.players = new ArrayList<Player>();
+    }
+
     public void drawPLayers(){
         // TODO : get players coordinates and update their positions on the screen
         // For now, just draw them on their goal zones
-
-    }
-
-    public void setBackground(){
-        // TODO : if tactic is football; load football field, else load sport's field
-
     }
 
     public void differenceToGoal(Player player){
@@ -34,5 +33,16 @@ public class Sequence {
 
     }
 
+    public Tactic getTactic(){
+        return this.tactic;
+    }
+
+    public void start(){
+        // start monitoring players
+
+        // calculate differences
+
+        // send differences to activity
+    }
 
 }
