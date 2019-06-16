@@ -1,5 +1,7 @@
 package com.example.livecoaching.RenderEngine;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -22,10 +24,23 @@ public class TacticThread extends Thread{
 
     @Override
     public void run(){
+        Canvas canvas;
         long tickCount = 0L;
         Log.d(TAG,"Starting Game loop");
         while (running){
+            canvas = null;
             tickCount ++;
+            try {
+                canvas = this.surfaceHolder.lockCanvas();
+                synchronized (surfaceHolder){
+                    this.tacticPanel.onDraw(canvas);
+                }
+            } finally {
+                System.out.println("canvas is null");
+                if (canvas != null) {
+                    surfaceHolder.unlockCanvasAndPost(canvas);
+                }
+            }
             // update game state here
             // render state to the screen
         }

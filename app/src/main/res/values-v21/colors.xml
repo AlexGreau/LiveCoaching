@@ -7,4 +7,8 @@
     <color name="tacticOffense">#d13a58</color>
     <color name="tacticDefense">#84b3ed</color>
     <color name="tacticOther">#ed6b34</color>
+
+    <color name="team1Color">#2196F3</color>
+    <color name="team2Color">#d13a58</color>
+
 </resources>

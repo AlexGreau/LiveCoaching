@@ -27,12 +27,13 @@ public class PlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(new TacticPanel(this));
-
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
         int index = intent.getIntExtra("tacticIndex", 0);
         tactic = ApplicationState.getInstance().getDisplayedList().get(index);
-        /*TextView testText = (TextView) findViewById(R.id.testPlay);
+        /*
+        setContentView(R.layout.activity_play);
+        TextView testText = (TextView) findViewById(R.id.testPlay);
         testText.setText(tactic.getName());
 
         setupPlayToolbar();
