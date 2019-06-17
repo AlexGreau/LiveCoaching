@@ -84,12 +84,14 @@ public class PlayActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked return button
                 setResult(RESULT_OK);
+                tacticPanel.stop();
                 finish();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User wants to redo the play
+                tacticPanel.stop();
                 resetSequence();
             }
         });

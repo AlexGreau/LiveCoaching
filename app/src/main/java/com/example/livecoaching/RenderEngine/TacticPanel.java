@@ -68,6 +68,7 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
         boolean retry = true;
         while (retry) {
             try {
+                System.out.println("trying to shut down thread");
                 thread.join();
                 retry = false;
             } catch (InterruptedException e){
@@ -102,6 +103,11 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     protected void onSizeChanged(int w,int h, int oldw,int oldh){
         super.onSizeChanged(w,h,oldw,oldh);
+
+    }
+
+    public void stop(){
+        thread.setRunning(false);
 
     }
 }
