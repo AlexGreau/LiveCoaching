@@ -21,26 +21,30 @@ import com.example.livecoaching.RenderEngine.TacticPanel;
 public class PlayActivity extends AppCompatActivity {
     private Tactic tactic;
     private Sequence sequence;
+    private TacticPanel tacticPanel;
 
     private static final String TAG = PlayActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(new TacticPanel(this));
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
         int index = intent.getIntExtra("tacticIndex", 0);
         tactic = ApplicationState.getInstance().getDisplayedList().get(index);
 
         setContentView(R.layout.activity_play);
-        TextView testText = (TextView) findViewById(R.id.testPlay);
+        // test text
+        TextView testText = findViewById(R.id.testPlay);
         testText.setText(tactic.getName());
-
-        SurfaceView tacticPanel = findViewById(R.id.tacticPanel);
+        // panel
+        this.tacticPanel = findViewById(R.id.tacticPanel);
+        System.out.println("panel is : " + tacticPanel);
 
         setupPlayToolbar();
         setupSequence();
+
+
 
     }
 
@@ -106,18 +110,17 @@ public class PlayActivity extends AppCompatActivity {
     public void setupSequence() {
         this.sequence = new Sequence(tactic, ApplicationState.getInstance().getPlayersConnected());
         // set background
-        setBackground(this.sequence.getTactic());
+        //setBackground(this.sequence.getTactic());
         // set players (verify too)
         this.sequence.drawPLayers();
     }
 
     public void setBackground(Tactic t){
-        RelativeLayout content = findViewById(R.id.play_content);
         if (t.getSport().equals("Football")){
-            content.setBackground(getDrawable(R.drawable.terrain_foot));
+            tacticPanel.setBackground(getDrawable(R.drawable.terrain_foot));
         }
         else if (t.getSport().equals("Ultimate")){
-            content.setBackground(getDrawable(R.drawable.terrain_ultimate));
+            tacticPanel.setBackground(getDrawable(R.drawable.terrain_ultimate));
         }
     }
 

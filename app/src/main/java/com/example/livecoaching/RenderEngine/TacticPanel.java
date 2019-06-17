@@ -21,6 +21,8 @@ import com.example.livecoaching.Model.Player;
 import com.example.livecoaching.Model.Tactic;
 import com.example.livecoaching.R;
 
+import org.w3c.dom.Attr;
+
 import static android.content.ContentValues.TAG;
 
 public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
@@ -31,14 +33,16 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public TacticPanel(Context context, AttributeSet attrs){
         super(context);
-        init(context);
+        init(context,attrs);
     }
 
-    private void init(Context context){
+    private void init(Context context, AttributeSet attributeSet){
         this.context = context;
         getHolder().addCallback(this);
         setFocusable(true);
         thread = new TacticThread(getHolder(), this);
+
+        this.setBackground(getResources().getDrawable(R.drawable.terrain_ultimate));
     }
 
     @Override
@@ -82,8 +86,10 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
     protected void onDraw(Canvas canvas){
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.GREEN);
+        /*
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.terrain_ultimate);
         canvas.drawBitmap(bitmap,0,0,paint);
+        */
     }
 
     @Override

@@ -35,7 +35,6 @@ public class TacticThread extends Thread{
                     this.tacticPanel.onDraw(canvas);
                 }
             } finally {
-                System.out.println("canvas is null");
                 if (canvas != null) {
                     surfaceHolder.unlockCanvasAndPost(canvas);
                 }
