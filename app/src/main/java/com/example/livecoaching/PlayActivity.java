@@ -38,14 +38,11 @@ public class PlayActivity extends AppCompatActivity {
         TextView testText = findViewById(R.id.testPlay);
         testText.setText(tactic.getName());
         // panel
-        this.tacticPanel = findViewById(R.id.tacticPanel);
+        this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
         System.out.println("panel is : " + tacticPanel);
 
         setupPlayToolbar();
         setupSequence();
-
-
-
     }
 
     public void setupPlayToolbar(){

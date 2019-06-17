@@ -2,6 +2,7 @@ package com.example.livecoaching.RenderEngine;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -32,7 +33,7 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
 
 
     public TacticPanel(Context context, AttributeSet attrs){
-        super(context);
+        super(context,attrs);
         init(context,attrs);
     }
 
@@ -41,6 +42,12 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
         setFocusable(true);
         thread = new TacticThread(getHolder(), this);
+
+        TypedArray a=getContext().obtainStyledAttributes(
+                attributeSet,
+                R.styleable.TacticPanel);
+        Log.i("test", a.getString(R.styleable.TacticPanel_android_text));
+        a.recycle();
 
         this.setBackground(getResources().getDrawable(R.drawable.terrain_ultimate));
     }
