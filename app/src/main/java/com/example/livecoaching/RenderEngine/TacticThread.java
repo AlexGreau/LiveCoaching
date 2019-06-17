@@ -1,7 +1,6 @@
 package com.example.livecoaching.RenderEngine;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.SurfaceHolder;
 

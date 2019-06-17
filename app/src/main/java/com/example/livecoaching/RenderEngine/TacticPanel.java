@@ -11,6 +11,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -28,7 +29,7 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
     private Context context;
 
 
-    public TacticPanel(Context context){
+    public TacticPanel(Context context, AttributeSet attrs){
         super(context);
         init(context);
     }
@@ -83,8 +84,6 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
         paint.setColor(Color.GREEN);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.terrain_ultimate);
         canvas.drawBitmap(bitmap,0,0,paint);
-        //canvas.drawPicture(R.drawable.terrain_ultimate);
-        //canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_player_coin_round), 10,10,null); // makes error
     }
 
     @Override

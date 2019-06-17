@@ -89,5 +89,11 @@
             />
     </RelativeLayout>
 
+    <com.example.livecoaching.RenderEngine.TacticPanel
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tacticPanel"
+        android:layout_below="@+id/toolbar_play"/>
+
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -26,19 +27,21 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new TacticPanel(this));
+        //setContentView(new TacticPanel(this));
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
         int index = intent.getIntExtra("tacticIndex", 0);
         tactic = ApplicationState.getInstance().getDisplayedList().get(index);
-        /*
+
         setContentView(R.layout.activity_play);
         TextView testText = (TextView) findViewById(R.id.testPlay);
         testText.setText(tactic.getName());
 
+        SurfaceView tacticPanel = findViewById(R.id.tacticPanel);
+
         setupPlayToolbar();
         setupSequence();
-        */
+
     }
 
     public void setupPlayToolbar(){
