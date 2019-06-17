@@ -39,7 +39,6 @@ public class PlayActivity extends AppCompatActivity {
         testText.setText(tactic.getName());
         // panel
         this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
-        System.out.println("panel is : " + tacticPanel);
 
         setupPlayToolbar();
         setupSequence();
@@ -107,7 +106,7 @@ public class PlayActivity extends AppCompatActivity {
     public void setupSequence() {
         this.sequence = new Sequence(tactic, ApplicationState.getInstance().getPlayersConnected());
         // set background
-        //setBackground(this.sequence.getTactic());
+        setBackground(this.sequence.getTactic());
         // set players (verify too)
         this.sequence.drawPLayers();
     }
