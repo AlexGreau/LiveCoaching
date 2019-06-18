@@ -3,6 +3,7 @@ package com.example.livecoaching;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.ArrayRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,9 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.livecoaching.Model.ApplicationState;
+import com.example.livecoaching.Model.Player;
 import com.example.livecoaching.Model.Sequence;
 import com.example.livecoaching.Model.Tactic;
 import com.example.livecoaching.RenderEngine.TacticPanel;
+
+import java.util.ArrayList;
 
 public class PlayActivity extends AppCompatActivity {
     private Tactic tactic;
@@ -124,6 +128,7 @@ public class PlayActivity extends AppCompatActivity {
 
     public void monitorPlayers(){
         // fetch positions
+        ArrayList<Player> Players = ApplicationState.getInstance().getPlayersConnected();
 
         // difference to goal zones and way to go
 

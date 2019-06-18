@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
+import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.Player;
 import com.example.livecoaching.Model.Tactic;
 import com.example.livecoaching.R;
@@ -35,6 +36,10 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
     public TacticPanel(Context context, AttributeSet attrs){
         super(context,attrs);
         init(context,attrs);
+        player = new Player();
+        player.setLatitude(10);
+        player.setLongitude(30);
+        System.out.println("player : " + player);
     }
 
     private void init(Context context, AttributeSet attributeSet){
@@ -92,12 +97,12 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     protected void onDraw(Canvas canvas){
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.GREEN);
-        /*
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.terrain_ultimate);
-        canvas.drawBitmap(bitmap,0,0,paint);
-        */
+        System.out.println(ApplicationState.getInstance().getPlayersConnected().size());
+        for (Player p : ApplicationState.getInstance().getPlayersConnected()){
+            drawPlayer(p, canvas);
+        }
+
+        drawPlayer(player,canvas);
     }
 
     @Override
@@ -108,6 +113,13 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public void stop(){
         thread.setRunning(false);
+    }
 
+    public void drawPlayer(Player p, Canvas canvas){
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.WHITE);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.llama_attack);
+        System.out.println("bitmap :"  + bitmap);
+        //canvas.drawBitmap(bitmap,p.getLatitude(),p.getLongitude(),paint);
     }
 }
