@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import com.example.livecoaching.Adapter.TacticsAdapter;
@@ -59,8 +60,15 @@ public class MainActivity extends AppCompatActivity
         this.sport = "All sports";
 
         // Connect button
-        // TODO : add a listener referring to another function later
-
+        Button connectButton = findViewById(R.id.connectDevicesButton);
+        connectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ConnectActivity.class);
+                intent.putExtra("msg", sport);
+                startActivity(intent);
+            }
+        });
 
         // Profile
         // TODO : Profile
