@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class ConnectActivity extends AppCompatActivity {
 
     @Override
@@ -23,6 +25,12 @@ public class ConnectActivity extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.testConnect);
         textView.setText(zeub);
+
+        TextView title = findViewById(R.id.title_connectActivity);
+        title.setText(R.string.connectActivity_title);
+        title.setTextSize(40);
+
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
