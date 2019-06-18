@@ -20,5 +20,5 @@
     <string name="goToConnect">Manage players</string>
     <string name="title_activity_connect">ConnectActivity</string>
 
-    <string name="connectActivity_title">Devices connected</string>
+    <string name="connectActivity_title">Connected devices</string>
 </resources>
