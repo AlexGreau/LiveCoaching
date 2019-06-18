@@ -3,33 +3,46 @@ package com.example.livecoaching;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.ArrayRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.livecoaching.Model.ApplicationState;
+import com.example.livecoaching.Model.Player;
 import com.example.livecoaching.Model.Sequence;
 import com.example.livecoaching.Model.Tactic;
+import com.example.livecoaching.RenderEngine.TacticPanel;
+
+import java.util.ArrayList;
 
 public class PlayActivity extends AppCompatActivity {
     private Tactic tactic;
     private Sequence sequence;
+    private TacticPanel tacticPanel;
+
+    private static final String TAG = PlayActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play);
-
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
         int index = intent.getIntExtra("tacticIndex", 0);
         tactic = ApplicationState.getInstance().getDisplayedList().get(index);
-        TextView testText = (TextView) findViewById(R.id.testPlay);
+
+        setContentView(R.layout.activity_play);
+        // test text
+        TextView testText = findViewById(R.id.testPlay);
         testText.setText(tactic.getName());
+        // panel
+        this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
 
         setupPlayToolbar();
         setupSequence();
@@ -75,12 +88,14 @@ public class PlayActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked return button
                 setResult(RESULT_OK);
+                tacticPanel.stop();
                 finish();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User wants to redo the play
+                tacticPanel.stop();
                 resetSequence();
             }
         });
@@ -103,19 +118,31 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void setBackground(Tactic t){
-        RelativeLayout content = findViewById(R.id.play_content);
         if (t.getSport().equals("Football")){
-            content.setBackground(getDrawable(R.drawable.terrain_foot));
+            tacticPanel.setBackground(getDrawable(R.drawable.terrain_foot));
         }
         else if (t.getSport().equals("Ultimate")){
-            content.setBackground(getDrawable(R.drawable.terrain_ultimate));
+            tacticPanel.setBackground(getDrawable(R.drawable.terrain_ultimate));
         }
     }
 
     public void monitorPlayers(){
         // fetch positions
+        ArrayList<Player> Players = ApplicationState.getInstance().getPlayersConnected();
 
         // difference to goal zones and way to go
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "Destroying...");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "Stopping...");
+        super.onStop();
     }
 }

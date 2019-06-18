@@ -1,19 +1,60 @@
 package com.example.livecoaching.RenderEngine;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
+import com.example.livecoaching.Model.ApplicationState;
+import com.example.livecoaching.Model.Player;
 import com.example.livecoaching.Model.Tactic;
+import com.example.livecoaching.R;
+
+import org.w3c.dom.Attr;
+
+import static android.content.ContentValues.TAG;
 
 public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
     private TacticThread thread;
+    private Player player;
+    private Context context;
 
-    public TacticPanel(Context context){
-        super(context);
+
+    public TacticPanel(Context context, AttributeSet attrs){
+        super(context,attrs);
+        init(context,attrs);
+        player = new Player();
+        player.setLatitude(10);
+        player.setLongitude(30);
+        System.out.println("player : " + player);
+    }
+
+    private void init(Context context, AttributeSet attributeSet){
+        this.context = context;
         getHolder().addCallback(this);
-        thread = new TacticThread();
         setFocusable(true);
+        thread = new TacticThread(getHolder(), this);
+
+        TypedArray a=getContext().obtainStyledAttributes(
+                attributeSet,
+                R.styleable.TacticPanel);
+        Log.i("test", a.getString(R.styleable.TacticPanel_android_text));
+        a.recycle();
+
+        this.setBackground(getResources().getDrawable(R.drawable.terrain_ultimate));
     }
 
     @Override
@@ -32,11 +73,52 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
         boolean retry = true;
         while (retry) {
             try {
+                System.out.println("trying to shut down thread");
                 thread.join();
                 retry = false;
             } catch (InterruptedException e){
                 // try again to shut down the thread
             }
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (event.getY() > getHeight() - 50) {
+                thread.setRunning(false);
+                ((Activity)getContext()).finish();
+            } else {
+                Log.d(TAG, "Coords: x=" + event.getX() + ",y=" + event.getY());
+            }
+        }
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas){
+        System.out.println(ApplicationState.getInstance().getPlayersConnected().size());
+        for (Player p : ApplicationState.getInstance().getPlayersConnected()){
+            drawPlayer(p, canvas);
+        }
+
+        drawPlayer(player,canvas);
+    }
+
+    @Override
+    protected void onSizeChanged(int w,int h, int oldw,int oldh){
+        super.onSizeChanged(w,h,oldw,oldh);
+
+    }
+
+    public void stop(){
+        thread.setRunning(false);
+    }
+
+    public void drawPlayer(Player p, Canvas canvas){
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.WHITE);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.mipmap.two);
+        canvas.drawBitmap(bitmap,p.getLatitude(),p.getLongitude(),paint);
     }
 }
