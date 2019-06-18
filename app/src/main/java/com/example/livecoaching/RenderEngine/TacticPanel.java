@@ -118,8 +118,7 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
     public void drawPlayer(Player p, Canvas canvas){
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.WHITE);
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.llama_attack);
-        System.out.println("bitmap :"  + bitmap);
-        //canvas.drawBitmap(bitmap,p.getLatitude(),p.getLongitude(),paint);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.mipmap.two);
+        canvas.drawBitmap(bitmap,p.getLatitude(),p.getLongitude(),paint);
     }
 }
