@@ -47,7 +47,11 @@ public class ConnectActivity extends AppCompatActivity {
 
         List<String> list = getPairedDevices();
         TextView textView = findViewById(R.id.testConnect);
-        textView.setText("size of list : " + list.size());
+        try {
+            textView.setText(list.get(0));
+        } catch (IndexOutOfBoundsException e){
+            textView.setText("out of bounds size of list : " + list.size());
+        }
     }
 
     public List getPairedDevices(){
@@ -57,7 +61,6 @@ public class ConnectActivity extends AppCompatActivity {
         if (!bluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             System.out.println(bluetoothAdapter.isEnabled());
-
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
             Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
