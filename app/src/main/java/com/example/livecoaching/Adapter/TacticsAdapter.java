@@ -33,7 +33,6 @@ public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticVi
     public TacticsAdapter (TacticClickListener listener){
         this.catalogue = ApplicationState.getInstance().getDisplayedList();
         this.tacticClickListener = listener;
-        System.out.println("Listener set");
     }
 
     class TacticViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
