@@ -26,6 +26,12 @@ public class ConnectActivity extends AppCompatActivity {
         initView();
     }
 
+    public void initView(){
+        initTest();
+        initToolbar();
+        initFloatingButton();
+    }
+
     public void initToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -41,15 +47,24 @@ public class ConnectActivity extends AppCompatActivity {
 
         List<String> list = getPairedDevices();
         TextView textView = findViewById(R.id.testConnect);
-        textView.setText(list.get(0));
+        textView.setText("size of list : " + list.size());
     }
 
     public List getPairedDevices(){
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        int REQUEST_ENABLE_BT = 1;
         List<String> list = new ArrayList<>();
-        for (BluetoothDevice bt : pairedDevices){
-            list.add(bt.getName());
+        if (!bluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            System.out.println(bluetoothAdapter.isEnabled());
+
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        } else {
+            Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+
+            for (BluetoothDevice bt : pairedDevices){
+                list.add(bt.getName());
+            }
         }
         return list;
     }
@@ -64,11 +79,4 @@ public class ConnectActivity extends AppCompatActivity {
             }
         });
     }
-
-    public void initView(){
-        initTest();
-        initToolbar();
-        initFloatingButton();
-    }
-
 }
