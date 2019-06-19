@@ -1,5 +1,7 @@
 package com.example.livecoaching;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +12,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class ConnectActivity extends AppCompatActivity {
 
@@ -33,8 +39,19 @@ public class ConnectActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String zeub = intent.getStringExtra("msg");
 
+        List<String> list = getPairedDevices();
         TextView textView = findViewById(R.id.testConnect);
-        textView.setText(zeub);
+        textView.setText(list.get(0));
+    }
+
+    public List getPairedDevices(){
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        List<String> list = new ArrayList<>();
+        for (BluetoothDevice bt : pairedDevices){
+            list.add(bt.getName());
+        }
+        return list;
     }
 
     public void initFloatingButton(){
