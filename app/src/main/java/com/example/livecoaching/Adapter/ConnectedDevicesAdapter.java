@@ -10,6 +10,7 @@ public class ConnectedDevicesAdapter {
     class connectDevicesHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public connectDevicesHolder(@NonNull View itemView) {
+
             super(itemView);
         }
 
@@ -19,7 +20,7 @@ public class ConnectedDevicesAdapter {
         }
 
         public void bind (){
-            
+
         }
     }
 }

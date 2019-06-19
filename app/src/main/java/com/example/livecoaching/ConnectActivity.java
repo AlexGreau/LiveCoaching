@@ -17,20 +17,27 @@ public class ConnectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
+        initView();
+    }
+
+    public void initToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        TextView title = findViewById(R.id.title_connectActivity);
+        title.setText(R.string.connectActivity_title);
+        title.setTextSize(40);
+    }
+
+    public void initTest(){
         Intent intent = getIntent();
         String zeub = intent.getStringExtra("msg");
 
         TextView textView = findViewById(R.id.testConnect);
         textView.setText(zeub);
+    }
 
-        TextView title = findViewById(R.id.title_connectActivity);
-        title.setText(R.string.connectActivity_title);
-        title.setTextSize(40);
-
-
+    public void initFloatingButton(){
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,6 +46,12 @@ public class ConnectActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    public void initView(){
+        initTest();
+        initToolbar();
+        initFloatingButton();
     }
 
 }
