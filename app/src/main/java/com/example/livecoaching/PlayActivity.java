@@ -145,4 +145,10 @@ public class PlayActivity extends AppCompatActivity {
         Log.d(TAG, "Stopping...");
         super.onStop();
     }
+
+    @Override
+    public void onBackPressed() {
+        tacticPanel.stop();
+        finish();
+    }
 }
