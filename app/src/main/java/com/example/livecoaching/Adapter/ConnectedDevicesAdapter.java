@@ -51,7 +51,7 @@ public class ConnectedDevicesAdapter extends RecyclerView.Adapter<ConnectedDevic
 
         public void bind (BluetoothDevice btDevice, int index){
             name.setText(btDevice.getName());
-            //details.setText(btDevice.getBluetoothClass().describeContents());
+            details.setText(btDevice.getAddress());
         }
     }
 

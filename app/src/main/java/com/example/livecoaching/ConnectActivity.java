@@ -36,9 +36,10 @@ public class ConnectActivity extends AppCompatActivity
     }
 
     public void initView(){
-        initTest();
+        getPairedDevices();
+        // initTest();
         initToolbar();
-        initFloatingButton();
+      //  initFloatingButton();
         initRecyclerView();
     }
 
@@ -58,11 +59,10 @@ public class ConnectActivity extends AppCompatActivity
         title.setTextSize(40);
     }
 
-    public void initTest(){
+/*    public void initTest(){
         Intent intent = getIntent();
         String zeub = intent.getStringExtra("msg");
 
-       getPairedDevices();
         TextView textView = findViewById(R.id.testConnect);
         try {
             textView.setText(ApplicationState.getInstance().getConnectedDevices().get(0).getName());
@@ -70,7 +70,7 @@ public class ConnectActivity extends AppCompatActivity
             textView.setText("out of bounds, size of the list : " + ApplicationState.getInstance().getConnectedDevices().size());
         }
     }
-
+*/
     public void getPairedDevices(){
         // updates the list of connected devices in application state
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -93,7 +93,7 @@ public class ConnectActivity extends AppCompatActivity
         return;
     }
 
-    public void initFloatingButton(){
+   /* public void initFloatingButton(){
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +103,7 @@ public class ConnectActivity extends AppCompatActivity
             }
         });
     }
-
+*/
     public void onActivityResult(int reqCode, int resCode){
         if (resCode == RESULT_OK){
             // refresh devices
