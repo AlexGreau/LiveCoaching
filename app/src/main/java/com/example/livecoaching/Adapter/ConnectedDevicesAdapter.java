@@ -1,35 +1,26 @@
 package com.example.livecoaching.Adapter;
 
+import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.livecoaching.ConnectActivity;
+import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.R;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ConnectedDevicesAdapter extends RecyclerView.Adapter<ConnectedDevicesAdapter.ConnectedDevicesHolder> {
     final private DeviceClickListener deviceClickListener;
-
-    @NonNull
-    @Override
-    public ConnectedDevicesHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return null;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ConnectedDevicesHolder connectedDevicesHolder, int i) {
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
+    private List<BluetoothDevice> connectedDevices;
 
     public interface DeviceClickListener{
         void onChooseClickListener(int clickedIndex);
@@ -37,6 +28,7 @@ public class ConnectedDevicesAdapter extends RecyclerView.Adapter<ConnectedDevic
 
     public ConnectedDevicesAdapter (DeviceClickListener listener){
         this.deviceClickListener = listener;
+        this.connectedDevices =  ApplicationState.getInstance().getConnectedDevices();
     }
 
     class ConnectedDevicesHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -57,9 +49,28 @@ public class ConnectedDevicesAdapter extends RecyclerView.Adapter<ConnectedDevic
             deviceClickListener.onChooseClickListener(getAdapterPosition());
         }
 
-        public void bind (){
-
+        public void bind (BluetoothDevice btDevice, int index){
+            name.setText(btDevice.getName());
+            //details.setText(btDevice.getBluetoothClass().describeContents());
         }
+    }
+
+    @NonNull
+    @Override
+    public ConnectedDevicesHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        CardView item =(CardView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.device_connected, viewGroup, false);
+        ConnectedDevicesHolder vh = new ConnectedDevicesHolder(item);
+        return vh;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ConnectedDevicesHolder connectedDevicesHolder, int i) {
+        connectedDevicesHolder.bind(connectedDevices.get(connectedDevicesHolder.getAdapterPosition()),connectedDevicesHolder.getAdapterPosition());
+    }
+
+    @Override
+    public int getItemCount() {
+        return this.connectedDevices.size();
     }
 
 
