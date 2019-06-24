@@ -21,4 +21,9 @@
     <string name="title_activity_connect">ConnectActivity</string>
 
     <string name="connectActivity_title">Connected devices</string>
+    <string name="permission_denied_explanation">Permission denied</string>
+    <string name="settings">Settings</string>
+    <string name="ok">Ok</string>
+    <string name="permission_rationale">Permision rationale</string>
+    <string name="action_unregister_listener">unregistering listener</string>
 </resources>
