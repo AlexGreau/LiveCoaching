@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.appwidget.AppWidgetProvider;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.net.sip.SipSession;
 import android.os.Bundle;
 import android.renderscript.Element;
@@ -55,6 +57,9 @@ public class ConnectActivity extends AppCompatActivity
     private static final String TAG = ConnectActivity.class.getSimpleName();
     private static final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = 2;
 
+    //sensors
+    private SensorManager sensorManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +71,8 @@ public class ConnectActivity extends AppCompatActivity
         getPairedDevices();
         initToolbar();
         initRecyclerView();
-        //initFIT();
-        initTEST();
+        // initTEST();
+        initSensors();
     }
 
     public void initRecyclerView() {
@@ -124,6 +129,7 @@ public class ConnectActivity extends AppCompatActivity
     }
 
     public void initTEST(){
+        System.out.println("init TEST");
         FitnessOptions fitnessOptions = FitnessOptions.builder()
                 .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
@@ -134,22 +140,36 @@ public class ConnectActivity extends AppCompatActivity
                     GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
                     GoogleSignIn.getLastSignedInAccount(this),
                     fitnessOptions);
+            System.out.println("requesting permission");
         } else {
+            System.out.println("trying to access googlefit");
             accessGoogleFit();
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("wanting to connect");
+        System.out.println(resultCode);
         if (resultCode == Activity.RESULT_OK) {
+            System.out.println("result was ok");
             if (requestCode == GOOGLE_FIT_PERMISSIONS_REQUEST_CODE) {
+                System.out.println("trying to access googlefit");
                 accessGoogleFit();
             }
         }
     }
 
 
+    public void initSensors(){
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
+        System.out.println(sensors);
+        //Log.d(TAG, "" + sensors);
+    }
+
     private void accessGoogleFit() {
+        System.out.println("accessing goggle Fit");
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         long endTime = cal.getTimeInMillis();
@@ -185,7 +205,9 @@ public class ConnectActivity extends AppCompatActivity
                     }
                 });
     }
-    /*    public void initTest(){
+
+    /*
+    public void initTest(){
         Intent intent = getIntent();
         String zeub = intent.getStringExtra("msg");
 
