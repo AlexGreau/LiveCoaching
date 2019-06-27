@@ -1,8 +1,11 @@
 package com.example.livecoaching;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.FeatureInfo;
+import android.content.pm.PackageManager;
 import android.media.AsyncPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
+        System.out.println(this.isWifiDirectSupported(this));
     }
 
     public void init() {
@@ -161,5 +165,16 @@ public class MainActivity extends AppCompatActivity
         });
         AlertDialog dialog = builder.create();
         return dialog;
+    }
+
+    private boolean isWifiDirectSupported(Context ctx) {
+        PackageManager pm = ctx.getPackageManager();
+        FeatureInfo[] features = pm.getSystemAvailableFeatures();
+        for (FeatureInfo info : features) {
+            if (info != null && info.name != null && info.name.equalsIgnoreCase("android.hardware.wifi.direct")) {
+                return true;
+            }
+        }
+        return false;
     }
 }
