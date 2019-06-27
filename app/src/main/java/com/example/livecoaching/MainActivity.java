@@ -1,14 +1,18 @@
 package com.example.livecoaching;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.FeatureInfo;
+import android.content.pm.PackageManager;
 import android.media.AsyncPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +28,7 @@ import com.example.livecoaching.Adapter.TacticsAdapter;
 import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.Tactic;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,30 +41,33 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
+        System.out.println(this.isWifiDirectSupported(this));
+    }
+
+    public void init() {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
-        // types spinner
-        Spinner tacticFilter = findViewById(R.id.spinner_types);
-        ArrayAdapter<CharSequence> adapterTypes = ArrayAdapter.createFromResource(this,
-                R.array.tacticTypes, android.R.layout.simple_spinner_item);
-        adapterTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tacticFilter.setOnItemSelectedListener(this);
-        tacticFilter.setAdapter(adapterTypes);
-
-        //sports spinner
-        Spinner sportsSpinner = findViewById(R.id.spinner_sports);
-        sportsSpinner.setOnItemSelectedListener(this);
-        ArrayAdapter<CharSequence> adapterSports = ArrayAdapter.createFromResource(this,
-                R.array.sports, android.R.layout.simple_spinner_item);
-        adapterSports.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sportsSpinner.setAdapter(adapterSports);
-
-        // init
         this.tacticType = "All tactics";
         this.sport = "All sports";
+        initConnect();
+        initProfile();
+        initSpinners();
+        initTacticsView();
+    }
 
-        // Connect button
+    public void initProfile() {
+        Button profileBtn = findViewById(R.id.profile);
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("Accessing to profile");
+            }
+        });
+    }
+
+    public void initConnect() {
         Button connectButton = findViewById(R.id.connectDevicesButton);
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,15 +77,36 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+    }
 
-        // Profile
-        // TODO : Profile
-
-        // RecyclerView for Tactics
+    public void initTacticsView() {
         RecyclerView catalogue = findViewById(R.id.tactics_recyclerView);
         catalogue.setLayoutManager(new GridLayoutManager(this, 3));
         this.tacticsAdapter = new TacticsAdapter(this);
         catalogue.setAdapter(this.tacticsAdapter);
+    }
+
+    public void initSportSpinner() {
+        Spinner sportsSpinner = findViewById(R.id.spinner_sports);
+        sportsSpinner.setOnItemSelectedListener(this);
+        ArrayAdapter<CharSequence> adapterSports = ArrayAdapter.createFromResource(this,
+                R.array.sports, android.R.layout.simple_spinner_item);
+        adapterSports.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sportsSpinner.setAdapter(adapterSports);
+    }
+
+    public void initTypeSpinner() {
+        Spinner tacticFilter = findViewById(R.id.spinner_types);
+        ArrayAdapter<CharSequence> adapterTypes = ArrayAdapter.createFromResource(this,
+                R.array.tacticTypes, android.R.layout.simple_spinner_item);
+        adapterTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tacticFilter.setOnItemSelectedListener(this);
+        tacticFilter.setAdapter(adapterTypes);
+    }
+
+    public void initSpinners() {
+        initSportSpinner();
+        initTypeSpinner();
     }
 
     @Override
@@ -92,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         } else if (parent.getId() == R.id.spinner_types) {
             this.tacticType = (String) parent.getItemAtPosition(pos);
         }
-        tacticsAdapter.filterList(this.sport,this.tacticType);
+        tacticsAdapter.filterList(this.sport, this.tacticType);
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
@@ -120,7 +149,7 @@ public class MainActivity extends AppCompatActivity
         startActivityForResult(intent, RESULT_OK);
     }
 
-    public AlertDialog getPlayerErrorDialog(Tactic tactic){
+    public AlertDialog getPlayerErrorDialog(Tactic tactic) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("The number of players connected does not match the requirements : " + ApplicationState.getInstance().getPlayersConnected().size() + " / " + tactic.getPlayersNeeded() + " needed");
         builder.setPositiveButton(R.string.goToConnect, new DialogInterface.OnClickListener() {
@@ -136,5 +165,16 @@ public class MainActivity extends AppCompatActivity
         });
         AlertDialog dialog = builder.create();
         return dialog;
+    }
+
+    private boolean isWifiDirectSupported(Context ctx) {
+        PackageManager pm = ctx.getPackageManager();
+        FeatureInfo[] features = pm.getSystemAvailableFeatures();
+        for (FeatureInfo info : features) {
+            if (info != null && info.name != null && info.name.equalsIgnoreCase("android.hardware.wifi.direct")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -112,4 +112,14 @@ public class ApplicationState {
         this.connectedDevices.clear();
         this.connectedDevices.addAll(listOfDevices);
     }
+
+    public void mock442(){
+        Player player = new Player();
+        for (int i = 1; i<11; i++){
+            // set latitude
+            // set longitude
+            // set image
+            // add it to the list of players
+        }
+    }
 }
