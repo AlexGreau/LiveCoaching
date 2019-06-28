@@ -26,8 +26,11 @@ public class ApplicationState {
     private ArrayList<Tactic> displayedList;
     private ArrayList<Player> playersConnected;
     private ArrayList<BluetoothDevice>connectedDevices;
+    private int SERVERPORT;
+    private String serverIP;
 
     private ApplicationState(){
+        SERVERPORT = 8080;
         userProfile = new UserProfile();
         allTactics = new ArrayList<Tactic>();
         displayedList = new ArrayList<Tactic>();
@@ -121,5 +124,13 @@ public class ApplicationState {
             // set image
             // add it to the list of players
         }
+    }
+
+    public int getSERVERPORT(){
+        return  SERVERPORT;
+    }
+
+    public String getServerIP(){
+        return serverIP;
     }
 }

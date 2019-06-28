@@ -23,8 +23,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.livecoaching.Adapter.TacticsAdapter;
+import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.Tactic;
 
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity
     private String sport;
     private String tacticType;
     private TacticsAdapter tacticsAdapter;
+    public TextView msg;
+    private Server server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity
         initProfile();
         initSpinners();
         initTacticsView();
+        initSocketTest();
     }
 
     public void initProfile() {
@@ -107,6 +112,11 @@ public class MainActivity extends AppCompatActivity
     public void initSpinners() {
         initSportSpinner();
         initTypeSpinner();
+    }
+
+    public void initSocketTest(){
+        msg = findViewById(R.id.textSocket);
+        server = new Server(this);
     }
 
     @Override
@@ -176,5 +186,12 @@ public class MainActivity extends AppCompatActivity
             }
         }
         return false;
+    }
+
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        server.onDestroy();
     }
 }

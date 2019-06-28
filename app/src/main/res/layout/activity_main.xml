@@ -32,6 +32,13 @@
                     android:drawablePadding="10dip"
                     android:text="Profile" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textSocket"
+                    android:text="ZEUBY"
+                    android:layout_toRightOf="@id/profile"/>
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

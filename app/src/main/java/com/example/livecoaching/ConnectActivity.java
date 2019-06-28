@@ -204,7 +204,9 @@ public class ConnectActivity extends AppCompatActivity
                         Log.d(TAG, "onComplete()");
                     }
                 });
+
     }
+
 
     /*
     public void initTest(){

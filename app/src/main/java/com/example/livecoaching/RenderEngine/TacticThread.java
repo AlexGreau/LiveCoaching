@@ -32,7 +32,7 @@ public class TacticThread extends Thread{
             try {
                 canvas = this.surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder){
-                    // actualiser positions dans Application state (demander aux dispositifs ou ils sont
+                    // actualiser positions dans Application state (demander aux dispositifs ou ils sont)
 
                     // dessiner le tout
                     this.tacticPanel.onDraw(canvas);
