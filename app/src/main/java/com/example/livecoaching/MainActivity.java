@@ -29,20 +29,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Get the Intent that started this activity and extract the string
+        retrieveTactic();
+        initFilledScreen();
+    }
+
+    public void initBlankScreen(){
+        // replace the content view by a green screen with buttons to
+        // force user to choose a tactic
+    }
+
+    public void initFilledScreen(){
+        setContentView(R.layout.activity_main);
+        this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
+        setupPlayToolbar();
+        setupSequence();
+    }
+
+    public void retrieveTactic(){
+        // get the intent and sets the tactic accordingly
         Intent intent = getIntent();
         int index = intent.getIntExtra("tacticIndex", 0);
         tactic = ApplicationState.getInstance().getDisplayedList().get(index);
-
-        setContentView(R.layout.activity_main);
-        // test text
-        TextView testText = findViewById(R.id.testPlay);
-        testText.setText(tactic.getName());
-        // panel
-        this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
-
-        setupPlayToolbar();
-        setupSequence();
     }
 
     public void setupPlayToolbar(){
