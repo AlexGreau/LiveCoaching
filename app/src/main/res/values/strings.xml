@@ -28,4 +28,5 @@
     <string name="action_unregister_listener">unregistering listener</string>
 
     <string name="blank_explanation">Please choose a tactic to start the training</string>
+    <string name="blank_buttonText">Check out the catalogue</string>
 </resources>

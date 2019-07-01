@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         TextView text = findViewById(R.id.blank_text);
 
         text.setText(R.string.blank_explanation);
+        choose.setText(R.string.blank_buttonText);
         choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
