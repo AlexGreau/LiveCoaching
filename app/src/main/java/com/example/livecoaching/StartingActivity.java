@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -23,7 +22,7 @@ public class StartingActivity extends AppCompatActivity {
     }
 
     protected void startMainActivity(){
-        Intent proceed = new Intent(this, MainActivity.class);
+        Intent proceed = new Intent(this, ChoosingTacticActivity.class);
         startActivity(proceed);
     }
 

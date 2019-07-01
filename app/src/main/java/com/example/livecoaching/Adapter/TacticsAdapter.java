@@ -1,6 +1,5 @@
 package com.example.livecoaching.Adapter;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -9,17 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.livecoaching.MainActivity;
 import com.example.livecoaching.Model.ApplicationState;
-import com.example.livecoaching.Model.Player;
 import com.example.livecoaching.Model.Tactic;
-import com.example.livecoaching.PlayActivity;
 import com.example.livecoaching.R;
 
-import java.sql.SQLOutput;
 import java.util.List;
 
 public class TacticsAdapter extends RecyclerView.Adapter<TacticsAdapter.TacticViewHolder> {
