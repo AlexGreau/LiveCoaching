@@ -26,11 +26,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        retrieveTactic();
-        initBlankScreen2();
+        initBlankScreen();
     }
 
-    public void initBlankScreen(){
+    public void initBlankScreenLayout(){
         // replace the content view by a green screen with buttons to
         // force user to choose a tactic
         setContentView(R.layout.activity_main_blank);
@@ -48,13 +47,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void initBlankScreen2(){
+    public void initBlankScreen(){
         setContentView(R.layout.activity_main);
         this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
         setupPlayToolbar();
         // display dialog to force choice
-        setupBlankDialog().show();
+        AlertDialog dialog = setupBlankDialog();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
+
     public void startChoosingActivity(){
         Intent intent = new Intent(MainActivity.this, ChoosingTacticActivity.class);
         startActivityForResult(intent, ApplicationState.PICK_A_TACTIC);
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
         setupPlayToolbar();
+        retrieveTactic();
         setupSequence();
     }
 

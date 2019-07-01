@@ -32,7 +32,6 @@ public class ChoosingTacticActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
-        System.out.println(this.isWifiDirectSupported(this));
     }
 
     public void init() {
@@ -122,39 +121,10 @@ public class ChoosingTacticActivity extends AppCompatActivity
 
     @Override
     public void onChooseClickListener(int clickedIndex) {
-        /* for now commented out; waiting for connect activity
-        if (ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getPlayersNeeded() == ApplicationState.getInstance().getPlayersConnected().size()){
-            Intent intent = new Intent(ChoosingTacticActivity.this, MainActivity.class);
-            System.out.println("making transition from main listener : " + ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getName());
-            intent.putExtra("tacticIndex", clickedIndex);
-            startActivityForResult(intent, RESULT_OK);
-        } else {
-            Dialog dialog = getPlayerErrorDialog(ApplicationState.getInstance().getDisplayedList().get(clickedIndex));
-            dialog.show();
-        }
-        */
         Intent intent = new Intent();
         intent.putExtra("tacticIndex", clickedIndex);
         setResult(RESULT_OK, intent);
         finish();
-    }
-
-    public AlertDialog getPlayerErrorDialog(Tactic tactic) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("The number of players connected does not match the requirements : " + ApplicationState.getInstance().getPlayersConnected().size() + " / " + tactic.getPlayersNeeded() + " needed");
-        builder.setPositiveButton(R.string.goToConnect, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked go to connect button
-                // TODO : transition to connect Activity
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        return dialog;
     }
 
     private boolean isWifiDirectSupported(Context ctx) {
