@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 // User clicked return button
                 setResult(RESULT_OK);
                 tacticPanel.stop();
-                finish();
+                startChoosingActivity();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -165,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ApplicationState.PICK_A_TACTIC){
-            // just received tactic id
             tactic = ApplicationState.getInstance().getDisplayedList().get(data.getIntExtra("tacticIndex",0));
             initFilledScreen();
         }

@@ -16,7 +16,7 @@
 
     <string name="redoPlay">Redo play</string>
     <string name="cancel">Cancel</string>
-    <string name="returnToMain">Return to catalogue</string>
+    <string name="returnToMain">Choose another tactic</string>
     <string name="goToConnect">Manage players</string>
     <string name="title_activity_connect">ConnectActivity</string>
 
