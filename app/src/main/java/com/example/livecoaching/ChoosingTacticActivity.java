@@ -133,10 +133,10 @@ public class ChoosingTacticActivity extends AppCompatActivity
             dialog.show();
         }
         */
-        Intent intent = new Intent(ChoosingTacticActivity.this, MainActivity.class);
-        System.out.println("making transition from main listener : " + ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getName());
+        Intent intent = new Intent();
         intent.putExtra("tacticIndex", clickedIndex);
-        startActivityForResult(intent, RESULT_OK);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     public AlertDialog getPlayerErrorDialog(Tactic tactic) {

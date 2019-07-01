@@ -27,6 +27,8 @@ public class ApplicationState {
     private ArrayList<Player> playersConnected;
     private ArrayList<BluetoothDevice>connectedDevices;
 
+    public static final int PICK_A_TACTIC = 1;
+
     private ApplicationState(){
         userProfile = new UserProfile();
         allTactics = new ArrayList<Tactic>();

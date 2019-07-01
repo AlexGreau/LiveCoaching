@@ -22,7 +22,7 @@ public class StartingActivity extends AppCompatActivity {
     }
 
     protected void startMainActivity(){
-        Intent proceed = new Intent(this, ChoosingTacticActivity.class);
+        Intent proceed = new Intent(this, MainActivity.class);
         startActivity(proceed);
     }
 

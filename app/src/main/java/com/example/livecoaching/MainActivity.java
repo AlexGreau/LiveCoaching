@@ -12,12 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.livecoaching.Model.ApplicationState;
-import com.example.livecoaching.Model.Player;
 import com.example.livecoaching.Model.Sequence;
 import com.example.livecoaching.Model.Tactic;
 import com.example.livecoaching.RenderEngine.TacticPanel;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private Tactic tactic;
@@ -30,12 +27,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         retrieveTactic();
-        initFilledScreen();
+        initBlankScreen();
     }
 
     public void initBlankScreen(){
         // replace the content view by a green screen with buttons to
         // force user to choose a tactic
+        setContentView(R.layout.activity_main_blank);
+        Button choose = findViewById(R.id.blank_chooseTactic);
+        TextView text = findViewById(R.id.blank_text);
+
+        text.setText(R.string.blank_explanation);
+        choose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // starting choosing tactic activity
+                startChoosingActivity();
+            }
+        });
+    }
+
+    public void startChoosingActivity(){
+        Intent intent = new Intent(MainActivity.this, ChoosingTacticActivity.class);
+        startActivityForResult(intent, ApplicationState.PICK_A_TACTIC);
     }
 
     public void initFilledScreen(){
@@ -130,14 +144,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void monitorPlayers(){
-        // fetch positions
-        ArrayList<Player> Players = ApplicationState.getInstance().getPlayersConnected();
-
-        // difference to goal zones and way to go
-
-    }
-
     @Override
     protected void onDestroy() {
         Log.d(TAG, "Destroying...");
@@ -154,5 +160,14 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         tacticPanel.stop();
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ApplicationState.PICK_A_TACTIC){
+            // just received tactic id
+            tactic = ApplicationState.getInstance().getDisplayedList().get(data.getIntExtra("tacticIndex",0));
+            initFilledScreen();
+        }
     }
 }

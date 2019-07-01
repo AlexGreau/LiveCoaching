@@ -26,4 +26,6 @@
     <string name="ok">Ok</string>
     <string name="permission_rationale">Permision rationale</string>
     <string name="action_unregister_listener">unregistering listener</string>
+
+    <string name="blank_explanation">Please choose a tactic to start the training</string>
 </resources>
