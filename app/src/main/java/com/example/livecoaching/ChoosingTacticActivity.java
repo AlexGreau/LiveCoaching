@@ -36,7 +36,7 @@ public class ChoosingTacticActivity extends AppCompatActivity
     }
 
     public void init() {
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_choosing);
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         this.tacticType = "All tactics";

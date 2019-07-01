@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         int index = intent.getIntExtra("tacticIndex", 0);
         tactic = ApplicationState.getInstance().getDisplayedList().get(index);
 
-        setContentView(R.layout.activity_play);
+        setContentView(R.layout.activity_main);
         // test text
         TextView testText = findViewById(R.id.testPlay);
         testText.setText(tactic.getName());
