@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         retrieveTactic();
-        initBlankScreen();
+        initBlankScreen2();
     }
 
     public void initBlankScreen(){
@@ -48,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void initBlankScreen2(){
+        setContentView(R.layout.activity_main);
+        this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
+        setupPlayToolbar();
+        // display dialog to force choice
+        setupBlankDialog().show();
+    }
     public void startChoosingActivity(){
         Intent intent = new Intent(MainActivity.this, ChoosingTacticActivity.class);
         startActivityForResult(intent, ApplicationState.PICK_A_TACTIC);
@@ -81,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         // stop button
         Button finishButton = findViewById(R.id.button_finish);
-        AlertDialog dialog = setupDialog();
+        AlertDialog dialog = setupStopDialog();
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public AlertDialog setupDialog(){
+    public AlertDialog setupStopDialog(){
         // dialog
         AlertDialog.Builder builder  = new AlertDialog.Builder(this);
         builder.setMessage("Tactic complete ! what's next ?");
@@ -118,6 +125,22 @@ public class MainActivity extends AppCompatActivity {
                 resetSequence();
             }
         });
+        AlertDialog dialog = builder.create();
+        return dialog;
+    }
+
+    public AlertDialog setupBlankDialog(){
+        AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.blank_explanation);
+        builder.setPositiveButton(R.string.blank_buttonText, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked return button
+                setResult(RESULT_OK);
+                tacticPanel.stop();
+                startChoosingActivity();
+            }
+        });
+
         AlertDialog dialog = builder.create();
         return dialog;
     }
