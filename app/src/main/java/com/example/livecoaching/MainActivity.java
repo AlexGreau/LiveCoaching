@@ -19,12 +19,12 @@ import com.example.livecoaching.RenderEngine.TacticPanel;
 
 import java.util.ArrayList;
 
-public class PlayActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     private Tactic tactic;
     private Sequence sequence;
     private TacticPanel tacticPanel;
 
-    private static final String TAG = PlayActivity.class.getSimpleName();
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

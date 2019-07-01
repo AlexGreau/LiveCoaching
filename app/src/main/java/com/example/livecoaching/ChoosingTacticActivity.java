@@ -124,7 +124,7 @@ public class ChoosingTacticActivity extends AppCompatActivity
     public void onChooseClickListener(int clickedIndex) {
         /* for now commented out; waiting for connect activity
         if (ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getPlayersNeeded() == ApplicationState.getInstance().getPlayersConnected().size()){
-            Intent intent = new Intent(ChoosingTacticActivity.this, PlayActivity.class);
+            Intent intent = new Intent(ChoosingTacticActivity.this, MainActivity.class);
             System.out.println("making transition from main listener : " + ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getName());
             intent.putExtra("tacticIndex", clickedIndex);
             startActivityForResult(intent, RESULT_OK);
@@ -133,7 +133,7 @@ public class ChoosingTacticActivity extends AppCompatActivity
             dialog.show();
         }
         */
-        Intent intent = new Intent(ChoosingTacticActivity.this, PlayActivity.class);
+        Intent intent = new Intent(ChoosingTacticActivity.this, MainActivity.class);
         System.out.println("making transition from main listener : " + ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getName());
         intent.putExtra("tacticIndex", clickedIndex);
         startActivityForResult(intent, RESULT_OK);
