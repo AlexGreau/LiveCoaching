@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.Sequence;
@@ -29,25 +28,7 @@ public class MainActivity extends AppCompatActivity {
         initBlankScreen();
     }
 
-    public void initBlankScreenLayout(){
-        // replace the content view by a green screen with buttons to
-        // force user to choose a tactic
-        setContentView(R.layout.activity_main_blank);
-        Button choose = findViewById(R.id.blank_chooseTactic);
-        TextView text = findViewById(R.id.blank_text);
-
-        text.setText(R.string.blank_explanation);
-        choose.setText(R.string.blank_buttonText);
-        choose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // starting choosing tactic activity
-                startChoosingActivity();
-            }
-        });
-    }
-
-    public void initBlankScreen(){
+    public void initBlankScreen() {
         setContentView(R.layout.activity_main);
         this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
         setupPlayToolbar();
@@ -58,28 +39,24 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void startChoosingActivity(){
+    public void startChoosingActivity() {
         Intent intent = new Intent(MainActivity.this, ChoosingTacticActivity.class);
         startActivityForResult(intent, ApplicationState.PICK_A_TACTIC);
     }
 
-    public void initFilledScreen(){
+    public void terminateThreads() {
+        tacticPanel.stop();
+    }
+
+    public void initFilledScreen() {
         setContentView(R.layout.activity_main);
         this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
         setupPlayToolbar();
-        retrieveTactic();
         System.out.println("Tactic chosen is " + tactic.getName());
         setupSequence();
     }
 
-    public void retrieveTactic(){
-        // get the intent and sets the tactic accordingly
-        Intent intent = getIntent();
-        int index = intent.getIntExtra("tacticIndex", 0);
-        tactic = ApplicationState.getInstance().getDisplayedList().get(index);
-    }
-
-    public void setupPlayToolbar(){
+    public void setupPlayToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_play);
         setSupportActionBar(toolbar);
         // play button
@@ -109,24 +86,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // catalogue button
+        Button catalogButton = findViewById(R.id.catalogue);
+        catalogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                terminateThreads();
+                startChoosingActivity();
+            }
+        });
+
     }
 
-    public AlertDialog setupStopDialog(){
+    public AlertDialog setupStopDialog() {
         // dialog
-        AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Tactic complete ! what's next ?");
         builder.setPositiveButton(R.string.returnToMain, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked return button
-                setResult(RESULT_OK);
-                tacticPanel.stop();
+                terminateThreads();
                 startChoosingActivity();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User wants to redo the play
-                tacticPanel.stop();
+                terminateThreads();
                 resetSequence();
             }
         });
@@ -134,14 +120,13 @@ public class MainActivity extends AppCompatActivity {
         return dialog;
     }
 
-    public AlertDialog setupBlankDialog(){
-        AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+    public AlertDialog setupBlankDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.blank_explanation);
         builder.setPositiveButton(R.string.blank_buttonText, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked return button
-                setResult(RESULT_OK);
-                tacticPanel.stop();
+                terminateThreads();
                 startChoosingActivity();
             }
         });
@@ -150,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         return dialog;
     }
 
-    public void resetSequence(){
+    public void resetSequence() {
         // cleanup then setup
         System.out.println("Resetting sequence");
         this.setupSequence();
@@ -164,11 +149,10 @@ public class MainActivity extends AppCompatActivity {
         this.sequence.drawPLayers();
     }
 
-    public void setBackground(Tactic t){
-        if (t.getSport().equals("Football")){
+    public void setBackground(Tactic t) {
+        if (t.getSport().equals("Football")) {
             tacticPanel.setBackground(getDrawable(R.drawable.terrain_foot));
-        }
-        else if (t.getSport().equals("Ultimate")){
+        } else if (t.getSport().equals("Ultimate")) {
             tacticPanel.setBackground(getDrawable(R.drawable.terrain_ultimate));
         }
     }
@@ -187,14 +171,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        tacticPanel.stop();
+        terminateThreads();
         finish();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ApplicationState.PICK_A_TACTIC){
-            tactic = ApplicationState.getInstance().getDisplayedList().get(data.getIntExtra("tacticIndex",0));
+        if (requestCode == ApplicationState.PICK_A_TACTIC) {
+            this.tactic = ApplicationState.getInstance().getDisplayedList().get(data.getIntExtra("tacticIndex", 0));
             initFilledScreen();
         }
     }
