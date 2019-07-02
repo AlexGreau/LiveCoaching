@@ -40,21 +40,8 @@ public class ChoosingTacticActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         this.tacticType = "All tactics";
         this.sport = "All sports";
-        initConnect();
         initSpinners();
         initTacticsView();
-    }
-
-    public void initConnect() {
-        Button connectButton = findViewById(R.id.connectDevicesButton);
-        connectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ChoosingTacticActivity.this, ConnectActivity.class);
-                intent.putExtra("msg", sport);
-                startActivity(intent);
-            }
-        });
     }
 
     public void initTacticsView() {

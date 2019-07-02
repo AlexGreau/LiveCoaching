@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public void initBlankScreen() {
         setContentView(R.layout.activity_main);
         this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
-        setupPlayToolbar();
+        initToolbar();
         // display dialog to force choice
         AlertDialog dialog = setupBlankDialog();
         dialog.setCancelable(false);
@@ -51,12 +51,25 @@ public class MainActivity extends AppCompatActivity {
     public void initFilledScreen() {
         setContentView(R.layout.activity_main);
         this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
-        setupPlayToolbar();
+        initToolbar();
+        initConnect();
         System.out.println("Tactic chosen is " + tactic.getName());
         setupSequence();
     }
 
-    public void setupPlayToolbar() {
+    public void initConnect() {
+        Button connectButton = findViewById(R.id.connectDevicesButton);
+        connectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ConnectActivity.class);
+                terminateThreads();
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_play);
         setSupportActionBar(toolbar);
         // play button

@@ -40,15 +40,6 @@
                         android:layout_toRightOf="@id/spinner_sports"
                         android:overlapAnchor="false" />
                 </RelativeLayout>
-
-                <Button
-                    android:id="@+id/connectDevicesButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:drawableLeft="@drawable/ic_bluetooth_searching_signal_indicator"
-                    android:drawablePadding="10dip"
-                    android:text="Connect" />
             </RelativeLayout>
 
 
