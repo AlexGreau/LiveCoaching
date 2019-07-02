@@ -1,70 +1,60 @@
 package com.example.livecoaching;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.FeatureInfo;
-import android.content.pm.PackageManager;
-import android.media.AsyncPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
 
-import com.example.livecoaching.Adapter.TacticsAdapter;
 import com.example.livecoaching.Model.ApplicationState;
+import com.example.livecoaching.Model.Sequence;
 import com.example.livecoaching.Model.Tactic;
+import com.example.livecoaching.RenderEngine.TacticPanel;
 
-import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.List;
+public class MainActivity extends AppCompatActivity {
+    private Tactic tactic;
+    private Sequence sequence;
+    private TacticPanel tacticPanel;
 
-public class MainActivity extends AppCompatActivity
-        implements AdapterView.OnItemSelectedListener, TacticsAdapter.TacticClickListener {
-    private String sport;
-    private String tacticType;
-    private TacticsAdapter tacticsAdapter;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
-        System.out.println(this.isWifiDirectSupported(this));
+        initBlankScreen();
     }
 
-    public void init() {
+    public void initBlankScreen() {
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbar);
-        this.tacticType = "All tactics";
-        this.sport = "All sports";
-        initConnect();
-        initProfile();
-        initSpinners();
-        initTacticsView();
+        this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
+        initToolbar();
+        // display dialog to force choice
+        AlertDialog dialog = setupBlankDialog();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
-    public void initProfile() {
-        Button profileBtn = findViewById(R.id.profile);
-        profileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("Accessing to profile");
-            }
-        });
+    public void startChoosingActivity() {
+        Intent intent = new Intent(MainActivity.this, ChoosingTacticActivity.class);
+        startActivityForResult(intent, ApplicationState.PICK_A_TACTIC);
+    }
+
+    public void terminateThreads() {
+        tacticPanel.stop();
+    }
+
+    public void initFilledScreen() {
+        setContentView(R.layout.activity_main);
+        this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
+        initToolbar();
+        initConnect();
+        System.out.println("Tactic chosen is " + tactic.getName());
+        setupSequence();
     }
 
     public void initConnect() {
@@ -73,108 +63,136 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ConnectActivity.class);
-                intent.putExtra("msg", sport);
+                terminateThreads();
                 startActivity(intent);
             }
         });
     }
 
-    public void initTacticsView() {
-        RecyclerView catalogue = findViewById(R.id.tactics_recyclerView);
-        catalogue.setLayoutManager(new GridLayoutManager(this, 3));
-        this.tacticsAdapter = new TacticsAdapter(this);
-        catalogue.setAdapter(this.tacticsAdapter);
+    public void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar_play);
+        setSupportActionBar(toolbar);
+        // play button
+        Button playButton = findViewById(R.id.button_start);
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sequence.start();
+            }
+        });
+
+        // stop button
+        Button finishButton = findViewById(R.id.button_finish);
+        AlertDialog dialog = setupStopDialog();
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
+        // reset Button
+        Button resetButton = findViewById(R.id.button_reset);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetSequence();
+            }
+        });
+
+        // catalogue button
+        Button catalogButton = findViewById(R.id.catalogue);
+        catalogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                terminateThreads();
+                startChoosingActivity();
+            }
+        });
+
     }
 
-    public void initSportSpinner() {
-        Spinner sportsSpinner = findViewById(R.id.spinner_sports);
-        sportsSpinner.setOnItemSelectedListener(this);
-        ArrayAdapter<CharSequence> adapterSports = ArrayAdapter.createFromResource(this,
-                R.array.sports, android.R.layout.simple_spinner_item);
-        adapterSports.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sportsSpinner.setAdapter(adapterSports);
-    }
-
-    public void initTypeSpinner() {
-        Spinner tacticFilter = findViewById(R.id.spinner_types);
-        ArrayAdapter<CharSequence> adapterTypes = ArrayAdapter.createFromResource(this,
-                R.array.tacticTypes, android.R.layout.simple_spinner_item);
-        adapterTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tacticFilter.setOnItemSelectedListener(this);
-        tacticFilter.setAdapter(adapterTypes);
-    }
-
-    public void initSpinners() {
-        initSportSpinner();
-        initTypeSpinner();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        if (parent.getId() == R.id.spinner_sports) {
-            this.sport = (String) parent.getItemAtPosition(pos);
-        } else if (parent.getId() == R.id.spinner_types) {
-            this.tacticType = (String) parent.getItemAtPosition(pos);
-        }
-        tacticsAdapter.filterList(this.sport, this.tacticType);
-    }
-
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
-        this.tacticType = "All tactics";
-        this.sport = "All sports";
-    }
-
-    @Override
-    public void onChooseClickListener(int clickedIndex) {
-        /* for now commented out; waiting for connect activity
-        if (ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getPlayersNeeded() == ApplicationState.getInstance().getPlayersConnected().size()){
-            Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-            System.out.println("making transition from main listener : " + ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getName());
-            intent.putExtra("tacticIndex", clickedIndex);
-            startActivityForResult(intent, RESULT_OK);
-        } else {
-            Dialog dialog = getPlayerErrorDialog(ApplicationState.getInstance().getDisplayedList().get(clickedIndex));
-            dialog.show();
-        }
-        */
-        Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-        System.out.println("making transition from main listener : " + ApplicationState.getInstance().getDisplayedList().get(clickedIndex).getName());
-        intent.putExtra("tacticIndex", clickedIndex);
-        startActivityForResult(intent, RESULT_OK);
-    }
-
-    public AlertDialog getPlayerErrorDialog(Tactic tactic) {
+    public AlertDialog setupStopDialog() {
+        // dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("The number of players connected does not match the requirements : " + ApplicationState.getInstance().getPlayersConnected().size() + " / " + tactic.getPlayersNeeded() + " needed");
-        builder.setPositiveButton(R.string.goToConnect, new DialogInterface.OnClickListener() {
+        builder.setMessage("Tactic complete ! what's next ?");
+        builder.setPositiveButton(R.string.returnToMain, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked go to connect button
-                // TODO : transition to connect Activity
+                // User clicked return button
+                terminateThreads();
+                startChoosingActivity();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
+                // User wants to redo the play
+                terminateThreads();
+                resetSequence();
             }
         });
         AlertDialog dialog = builder.create();
         return dialog;
     }
 
-    private boolean isWifiDirectSupported(Context ctx) {
-        PackageManager pm = ctx.getPackageManager();
-        FeatureInfo[] features = pm.getSystemAvailableFeatures();
-        for (FeatureInfo info : features) {
-            if (info != null && info.name != null && info.name.equalsIgnoreCase("android.hardware.wifi.direct")) {
-                return true;
+    public AlertDialog setupBlankDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.blank_explanation);
+        builder.setPositiveButton(R.string.blank_buttonText, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked return button
+                terminateThreads();
+                startChoosingActivity();
             }
+        });
+
+        AlertDialog dialog = builder.create();
+        return dialog;
+    }
+
+    public void resetSequence() {
+        // cleanup then setup
+        System.out.println("Resetting sequence");
+        this.setupSequence();
+    }
+
+    public void setupSequence() {
+        this.sequence = new Sequence(tactic, ApplicationState.getInstance().getPlayersConnected());
+        // set background
+        setBackground(this.sequence.getTactic());
+        // set players (verify too)
+        this.sequence.drawPLayers();
+    }
+
+    public void setBackground(Tactic t) {
+        if (t.getSport().equals("Football")) {
+            tacticPanel.setBackground(getDrawable(R.drawable.terrain_foot));
+        } else if (t.getSport().equals("Ultimate")) {
+            tacticPanel.setBackground(getDrawable(R.drawable.terrain_ultimate));
         }
-        return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "Destroying...");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "Stopping...");
+        super.onStop();
+    }
+
+    @Override
+    public void onBackPressed() {
+        terminateThreads();
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ApplicationState.PICK_A_TACTIC) {
+            this.tactic = ApplicationState.getInstance().getDisplayedList().get(data.getIntExtra("tacticIndex", 0));
+            initFilledScreen();
+        }
     }
 }

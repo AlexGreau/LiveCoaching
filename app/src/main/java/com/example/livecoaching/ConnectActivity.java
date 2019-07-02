@@ -68,10 +68,9 @@ public class ConnectActivity extends AppCompatActivity
     }
 
     public void initView() {
-        getPairedDevices();
         initToolbar();
+        getPairedDevices();
         initRecyclerView();
-        // initTEST();
         initSensors();
     }
 
@@ -94,22 +93,27 @@ public class ConnectActivity extends AppCompatActivity
     public void getPairedDevices() {
         // updates the list of connected devices in application state
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        int REQUEST_ENABLE_BT = 1;
-        ArrayList<BluetoothDevice> btDevices = new ArrayList();
-        if (!bluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            onActivityResult(REQUEST_ENABLE_BT, RESULT_OK);
-        } else {
-            Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-            for (BluetoothDevice bt : pairedDevices) {
-                btDevices.add(bt);
+        try {
+            int REQUEST_ENABLE_BT = 1;
+            ArrayList<BluetoothDevice> btDevices = new ArrayList();
+            if (!bluetoothAdapter.isEnabled()) {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                onActivityResult(REQUEST_ENABLE_BT, RESULT_OK);
+            } else {
+                Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+                for (BluetoothDevice bt : pairedDevices) {
+                    btDevices.add(bt);
+                }
             }
-        }
-        ApplicationState.getInstance().setConnectedDevices(btDevices);
+            ApplicationState.getInstance().setConnectedDevices(btDevices);
 
-        // update recyclerView
-        initRecyclerView();
+            // update recyclerView
+            initRecyclerView();
+        } catch (NullPointerException e){
+            System.out.println("bluetoothadapter is null bruh");
+        }
+
         return;
     }
 
