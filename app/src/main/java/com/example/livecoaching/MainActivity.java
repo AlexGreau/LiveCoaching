@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
         setupPlayToolbar();
         retrieveTactic();
+        System.out.println("Tactic chosen is " + tactic.getName());
         setupSequence();
     }
 

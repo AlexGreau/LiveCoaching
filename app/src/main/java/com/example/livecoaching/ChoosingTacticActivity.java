@@ -36,24 +36,13 @@ public class ChoosingTacticActivity extends AppCompatActivity
 
     public void init() {
         setContentView(R.layout.activity_choosing);
-        Toolbar toolbar = findViewById(R.id.toolbar_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         this.tacticType = "All tactics";
         this.sport = "All sports";
         initConnect();
-        initProfile();
         initSpinners();
         initTacticsView();
-    }
-
-    public void initProfile() {
-        Button profileBtn = findViewById(R.id.profile);
-        profileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("Accessing to profile");
-            }
-        });
     }
 
     public void initConnect() {
