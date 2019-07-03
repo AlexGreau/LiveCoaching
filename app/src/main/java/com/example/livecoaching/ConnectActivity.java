@@ -111,7 +111,7 @@ public class ConnectActivity extends AppCompatActivity
             // update recyclerView
             initRecyclerView();
         } catch (NullPointerException e){
-            System.out.println("bluetoothadapter is null bruh");
+            System.out.println("bluetoothAdapter is null, are you on an emulated device ?");
         }
 
         return;

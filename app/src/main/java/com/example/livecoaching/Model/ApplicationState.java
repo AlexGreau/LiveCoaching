@@ -28,6 +28,7 @@ public class ApplicationState {
     private ArrayList<BluetoothDevice>connectedDevices;
 
     public static final int PICK_A_TACTIC = 1;
+    public static final int PORT = 8080;
 
     private ApplicationState(){
         userProfile = new UserProfile();

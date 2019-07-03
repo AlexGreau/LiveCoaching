@@ -10,21 +10,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.Sequence;
 import com.example.livecoaching.Model.Tactic;
 import com.example.livecoaching.RenderEngine.TacticPanel;
 
+import java.net.ServerSocket;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
     private Tactic tactic;
     private Sequence sequence;
     private TacticPanel tacticPanel;
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    protected ServerSocket serverSocket;
+    protected Server server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        server = new Server();
         initBlankScreen();
     }
 
@@ -170,6 +176,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public ServerSocket getServerSocket(){
+        return serverSocket;
+    }
+
+    public void setServerSocket(ServerSocket socket) {
+        this.serverSocket = socket;
+    }
     @Override
     protected void onDestroy() {
         Log.d(TAG, "Destroying...");
