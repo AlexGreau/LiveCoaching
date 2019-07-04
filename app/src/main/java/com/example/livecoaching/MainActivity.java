@@ -21,6 +21,7 @@ import java.net.ServerSocket;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Tactic tactic;
+    private int previousTacticIndex;
     private Sequence sequence;
     private TacticPanel tacticPanel;
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         server = new Server();
         initBlankScreen();
+        previousTacticIndex = 0;
     }
 
     public void initBlankScreen() {
@@ -204,8 +206,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ApplicationState.PICK_A_TACTIC) {
-            this.tactic = ApplicationState.getInstance().getDisplayedList().get(data.getIntExtra("tacticIndex", 0));
-            initFilledScreen();
+            if (resultCode == RESULT_OK) {
+                this.tactic = ApplicationState.getInstance().getDisplayedList().get(data.getIntExtra("tacticIndex", 0));
+                this.previousTacticIndex = data.getIntExtra("tacticIndex", 0);
+                initFilledScreen();
+            } else if (resultCode == RESULT_CANCELED) {
+                System.out.println("result = canceled");
+                this.tactic = ApplicationState.getInstance().getDisplayedList().get(previousTacticIndex);
+                initFilledScreen();
+            }
         }
     }
 }

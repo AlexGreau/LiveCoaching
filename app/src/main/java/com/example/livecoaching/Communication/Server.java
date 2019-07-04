@@ -15,6 +15,8 @@ public class Server {
     protected ServerSocket serverSocket;
     protected boolean running;
 
+    protected int count = 0;
+
     protected String messageFromClient;
 
     public Server() {
@@ -43,7 +45,8 @@ public class Server {
                     messageFromClient = dataInputStream.readUTF();
                     System.out.println("received message from client : " + messageFromClient);
 
-                    String replyMsg = "Hello from server little bro";
+                    String replyMsg = "Hello from server little bro #" + count;
+                    count ++;
                     dataOutputStream.writeUTF(replyMsg);
                 }
             } catch (IOException e) {
