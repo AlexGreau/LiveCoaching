@@ -15,6 +15,8 @@ public class Server {
     protected ServerSocket serverSocket;
     protected boolean running;
 
+    protected String messageFromClient;
+
     public Server() {
         serverSocketThread = new Thread(new SocketServerThread());
         running = true;
@@ -38,7 +40,8 @@ public class Server {
                     dataInputStream = new DataInputStream(socket.getInputStream());
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
-                    System.out.println("received message from client");
+                    messageFromClient = dataInputStream.readUTF();
+                    System.out.println("received message from client : " + messageFromClient);
 
                     String replyMsg = "Hello from server little bro";
                     dataOutputStream.writeUTF(replyMsg);
