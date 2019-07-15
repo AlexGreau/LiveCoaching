@@ -18,6 +18,7 @@ public class Server {
     protected int count = 0;
 
     protected String messageFromClient;
+    protected String replyMsg;
 
     public Server() {
         serverSocketThread = new Thread(new SocketServerThread());
@@ -25,6 +26,26 @@ public class Server {
         serverSocketThread.start();
         System.out.println("Server launched");
     }
+
+    protected void decodeMessage(String msg){
+        // split message
+        String[] parts = msg.split(":");
+        String senderState = parts[0];
+        String infos = parts[1];
+        // interpret results
+        if (senderState.equals("Ready")){
+            replyMsg = "Continue";
+        } else {
+
+        }
+
+        if (infos.equals("0.0-0.0")){
+            System.out.println("dammit");
+        }
+
+
+    }
+
 
     private class SocketServerThread extends Thread {
         @Override
@@ -41,17 +62,10 @@ public class Server {
                     socket = serverSocket.accept();
                     dataInputStream = new DataInputStream(socket.getInputStream());
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    String replyMsg = "reply message not defined yet";
-
                     messageFromClient = dataInputStream.readUTF();
                     System.out.println("received message from client : " + messageFromClient);
 
-                    if (messageFromClient.equals("Ready")){
-                        replyMsg = "Continue";
-                    } else {
-                        replyMsg = "Hello from server little bro #" + count;
-                    }
-                    count ++;
+                    decodeMessage(messageFromClient);
                     dataOutputStream.writeUTF(replyMsg);
                 }
             } catch (IOException e) {
