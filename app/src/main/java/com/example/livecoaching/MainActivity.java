@@ -10,22 +10,30 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.Sequence;
 import com.example.livecoaching.Model.Tactic;
 import com.example.livecoaching.RenderEngine.TacticPanel;
 
+import java.net.ServerSocket;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
     private Tactic tactic;
+    private int previousTacticIndex;
     private Sequence sequence;
     private TacticPanel tacticPanel;
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    protected ServerSocket serverSocket;
+    protected Server server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        server = new Server();
         initBlankScreen();
+        previousTacticIndex = 0;
     }
 
     public void initBlankScreen() {
@@ -170,6 +178,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public ServerSocket getServerSocket(){
+        return serverSocket;
+    }
+
+    public void setServerSocket(ServerSocket socket) {
+        this.serverSocket = socket;
+    }
     @Override
     protected void onDestroy() {
         Log.d(TAG, "Destroying...");
@@ -191,8 +206,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ApplicationState.PICK_A_TACTIC) {
-            this.tactic = ApplicationState.getInstance().getDisplayedList().get(data.getIntExtra("tacticIndex", 0));
-            initFilledScreen();
+            if (resultCode == RESULT_OK) {
+                this.tactic = ApplicationState.getInstance().getDisplayedList().get(data.getIntExtra("tacticIndex", 0));
+                this.previousTacticIndex = data.getIntExtra("tacticIndex", 0);
+                initFilledScreen();
+            } else if (resultCode == RESULT_CANCELED) {
+                System.out.println("result = canceled");
+                this.tactic = ApplicationState.getInstance().getDisplayedList().get(previousTacticIndex);
+                initFilledScreen();
+            }
         }
     }
 }
