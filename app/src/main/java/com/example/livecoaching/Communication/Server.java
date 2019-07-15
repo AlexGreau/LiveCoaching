@@ -41,11 +41,16 @@ public class Server {
                     socket = serverSocket.accept();
                     dataInputStream = new DataInputStream(socket.getInputStream());
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    String replyMsg = "reply message not defined yet";
 
                     messageFromClient = dataInputStream.readUTF();
                     System.out.println("received message from client : " + messageFromClient);
 
-                    String replyMsg = "Hello from server little bro #" + count;
+                    if (messageFromClient.equals("Ready")){
+                        replyMsg = "Continue";
+                    } else {
+                        replyMsg = "Hello from server little bro #" + count;
+                    }
                     count ++;
                     dataOutputStream.writeUTF(replyMsg);
                 }
