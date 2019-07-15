@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server {
 
@@ -16,6 +17,7 @@ public class Server {
     protected boolean running;
 
     protected int count = 0;
+    protected float[] location;
 
     protected String messageFromClient;
     protected String replyMsg;
@@ -23,29 +25,34 @@ public class Server {
     public Server() {
         serverSocketThread = new Thread(new SocketServerThread());
         running = true;
+        location = new float[2];
         serverSocketThread.start();
         System.out.println("Server launched");
     }
 
-    protected void decodeMessage(String msg){
+    protected void decodeMessage(String msg) {
         // split message
         String[] parts = msg.split(":");
         String senderState = parts[0];
-        String infos = parts[1];
         // interpret results
-        if (senderState.equals("Ready")){
+        if (senderState.equals("Ready")) {
             replyMsg = "Continue";
-        } else {
-
+            parseInfos(parts[1]);
+        } else if (senderState.equals("Running")) {
+            System.out.println("detected " + senderState);
+            parseInfos(parts[1]);
+        } else if (senderState.equals("Stop")) {
+            System.out.println("detected " + senderState);
+            parseInfos(parts[1]);
+            // stop logging
         }
-
-        if (infos.equals("0.0-0.0")){
-            System.out.println("dammit");
-        }
-
-
     }
 
+    private void parseInfos(String str) {
+        String[] infos = str.split("-");
+        location[0] = Float.parseFloat(infos[0]);
+        location[0] = Float.parseFloat(infos[1]);
+    }
 
     private class SocketServerThread extends Thread {
         @Override
@@ -55,6 +62,7 @@ public class Server {
             Socket socket = null;
             DataInputStream dataInputStream = null;
             DataOutputStream dataOutputStream = null;
+            replyMsg = "";
 
             try {
                 serverSocket = new ServerSocket(PORT);
@@ -66,7 +74,9 @@ public class Server {
                     System.out.println("received message from client : " + messageFromClient);
 
                     decodeMessage(messageFromClient);
-                    dataOutputStream.writeUTF(replyMsg);
+                    if (!replyMsg.isEmpty() || replyMsg != null) {
+                        dataOutputStream.writeUTF(replyMsg);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
