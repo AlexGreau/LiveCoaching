@@ -7,7 +7,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class Server {
 
@@ -16,7 +15,6 @@ public class Server {
     protected ServerSocket serverSocket;
     protected boolean running;
 
-    protected int count = 0;
     protected float[] location;
 
     protected String messageFromClient;
@@ -37,14 +35,23 @@ public class Server {
         // interpret results
         if (senderState.equals("Ready")) {
             replyMsg = "Continue";
-            parseInfos(parts[1]);
+            if (parts.length >= 2) {
+                parseInfos(parts[1]);
+            }
         } else if (senderState.equals("Running")) {
             System.out.println("detected " + senderState);
-            parseInfos(parts[1]);
+            replyMsg = "";
+            if (parts.length >= 2) {
+                parseInfos(parts[1]);
+            }
         } else if (senderState.equals("Stop")) {
             System.out.println("detected " + senderState);
-            parseInfos(parts[1]);
-            // stop logging
+            if (parts.length >= 2) {
+                parseInfos(parts[1]);
+            }
+            stopLogging();
+        } else if (senderState.equals("End")) {
+            replyMsg = "reset";
         }
     }
 
@@ -52,6 +59,10 @@ public class Server {
         String[] infos = str.split("-");
         location[0] = Float.parseFloat(infos[0]);
         location[0] = Float.parseFloat(infos[1]);
+    }
+
+    private void stopLogging() {
+
     }
 
     private class SocketServerThread extends Thread {
@@ -75,6 +86,7 @@ public class Server {
 
                     decodeMessage(messageFromClient);
                     if (!replyMsg.isEmpty() || replyMsg != null) {
+                        System.out.println("Sent : " + replyMsg);
                         dataOutputStream.writeUTF(replyMsg);
                     }
                 }

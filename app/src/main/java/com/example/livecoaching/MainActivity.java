@@ -178,13 +178,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public ServerSocket getServerSocket(){
+    public ServerSocket getServerSocket() {
         return serverSocket;
     }
 
     public void setServerSocket(ServerSocket socket) {
         this.serverSocket = socket;
     }
+
     @Override
     protected void onDestroy() {
         Log.d(TAG, "Destroying...");
