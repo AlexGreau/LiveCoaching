@@ -52,13 +52,16 @@ public class Server {
             stopLogging();
         } else if (senderState.equals("End")) {
             replyMsg = "reset";
+        } else if (senderState.equals("Asking")){
+            parseInfos(parts[1]);
+            replyMsg = "route:" + location[0] +"-" + location[1] +";";
         }
     }
 
     private void parseInfos(String str) {
         String[] infos = str.split("-");
         location[0] = Float.parseFloat(infos[0]);
-        location[0] = Float.parseFloat(infos[1]);
+        location[1] = Float.parseFloat(infos[1]);
     }
 
     private void stopLogging() {
