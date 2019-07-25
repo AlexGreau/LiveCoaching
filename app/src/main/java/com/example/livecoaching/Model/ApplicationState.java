@@ -19,7 +19,6 @@ public class ApplicationState {
     }
 
     // Fields
-    private UserProfile userProfile;
     private ArrayList<Tactic> offensiveTactics;
     private ArrayList<Tactic> defensiveTactics;
     private ArrayList<Tactic> allTactics;
@@ -31,7 +30,6 @@ public class ApplicationState {
     public static final int PORT = 8080;
 
     private ApplicationState(){
-        userProfile = new UserProfile();
         allTactics = new ArrayList<Tactic>();
         displayedList = new ArrayList<Tactic>();
         playersConnected = new ArrayList<Player>();
@@ -73,10 +71,6 @@ public class ApplicationState {
 
     public ArrayList<Tactic> getAllTactics(){
         return this.allTactics;
-    }
-
-    public UserProfile getUserProfile(){
-        return userProfile;
     }
 
     public ArrayList<Tactic> getDisplayedList(){
