@@ -7,7 +7,6 @@ import com.example.livecoaching.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
@@ -108,15 +107,5 @@ public class ApplicationState {
     public void setConnectedDevices(ArrayList<BluetoothDevice> listOfDevices){
         this.connectedDevices.clear();
         this.connectedDevices.addAll(listOfDevices);
-    }
-
-    public void mock442(){
-        Player player = new Player();
-        for (int i = 1; i<11; i++){
-            // set latitude
-            // set longitude
-            // set image
-            // add it to the list of players
-        }
     }
 }

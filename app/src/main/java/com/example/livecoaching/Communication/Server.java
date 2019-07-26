@@ -1,5 +1,8 @@
 package com.example.livecoaching.Communication;
 
+import android.location.Location;
+import android.location.LocationManager;
+
 import com.example.livecoaching.Model.ApplicationState;
 
 import java.io.DataInputStream;
@@ -7,6 +10,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server {
 
@@ -16,6 +20,7 @@ public class Server {
     protected boolean running;
 
     protected float[] location;
+    protected ArrayList<Location> log;
 
     protected String messageFromClient;
     protected String replyMsg;
@@ -25,6 +30,7 @@ public class Server {
         running = true;
         location = new float[2];
         serverSocketThread.start();
+        log = new ArrayList<Location>();
         System.out.println("Server launched");
     }
 
@@ -54,7 +60,7 @@ public class Server {
             replyMsg = "reset";
         } else if (senderState.equals("Asking")){
             parseInfos(parts[1]);
-            replyMsg = "route:" + location[0] +"-" + location[1] +";";
+            replyMsg = "route:" + log.get(log.size()-1).getLatitude() +"-" + log.get(log.size()-1).getLongitude()                                                                                                                                                                                                                                                                                                                                                                                           +";";
         }
     }
 
@@ -62,10 +68,17 @@ public class Server {
         String[] infos = str.split("-");
         location[0] = Float.parseFloat(infos[0]);
         location[1] = Float.parseFloat(infos[1]);
+        Location loc  = new Location("");
+        loc.setLatitude(Float.parseFloat(infos[0]));
+        loc.setLongitude(Float.parseFloat(infos[1]));
+        log.add(loc);
+        System.out.println("added location to log : " + loc);
     }
 
     private void stopLogging() {
-
+        System.out.println("stopping the logging");
+        // close the file
+        // send it to database ?
     }
 
     private class SocketServerThread extends Thread {
