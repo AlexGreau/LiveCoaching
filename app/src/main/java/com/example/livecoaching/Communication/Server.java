@@ -3,6 +3,7 @@ package com.example.livecoaching.Communication;
 import android.location.Location;
 
 import com.example.livecoaching.Model.ApplicationState;
+import com.example.livecoaching.Model.RouteCalculator;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -24,6 +25,8 @@ public class Server {
     protected String messageFromClient;
     protected String replyMsg;
 
+    protected RouteCalculator routeCalculator;
+
     public Server() {
         serverSocketThread = new Thread(new SocketServerThread());
         running = true;
@@ -42,6 +45,7 @@ public class Server {
             replyMsg = "Continue";
             if (parts.length >= 2) {
                 parseInfos(parts[1]);
+                initRouteCalculator(log.get(0));
             }
         } else if (senderState.equals("Running")) {
             System.out.println("detected " + senderState);
@@ -80,6 +84,11 @@ public class Server {
         this.log.clear();
         // close the file
         // send it to database ?
+    }
+
+    private void initRouteCalculator(Location loc){
+        routeCalculator = new RouteCalculator(loc);
+        System.out.println("route L : " + routeCalculator.getRouteL());
     }
 
     private class SocketServerThread extends Thread {
