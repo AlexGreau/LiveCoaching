@@ -1,5 +1,7 @@
 package com.example.livecoaching.Communication;
 
+import android.location.Location;
+
 import com.example.livecoaching.Model.ApplicationState;
 
 import java.io.DataInputStream;
@@ -7,6 +9,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server {
 
@@ -15,15 +18,68 @@ public class Server {
     protected ServerSocket serverSocket;
     protected boolean running;
 
-    protected int count = 0;
+    protected float[] location;
+    protected ArrayList<Location> log;
 
     protected String messageFromClient;
+    protected String replyMsg;
 
     public Server() {
         serverSocketThread = new Thread(new SocketServerThread());
         running = true;
+        location = new float[2];
         serverSocketThread.start();
+        log = new ArrayList<Location>();
         System.out.println("Server launched");
+    }
+
+    protected void decodeMessage(String msg) {
+        // split message
+        String[] parts = msg.split(":");
+        String senderState = parts[0];
+        // interpret results
+        if (senderState.equals("Ready")) {
+            replyMsg = "Continue";
+            if (parts.length >= 2) {
+                parseInfos(parts[1]);
+            }
+        } else if (senderState.equals("Running")) {
+            System.out.println("detected " + senderState);
+            replyMsg = "";
+            if (parts.length >= 2) {
+                parseInfos(parts[1]);
+            }
+        } else if (senderState.equals("Stop")) {
+            System.out.println("detected " + senderState);
+            if (parts.length >= 2) {
+                parseInfos(parts[1]);
+            }
+            stopLogging();
+        } else if (senderState.equals("End")) {
+            replyMsg = "reset";
+        } else if (senderState.equals("Asking")){
+            parseInfos(parts[1]);
+            replyMsg = "route:" + log.get(0).getLatitude() +"-" + log.get(0).getLongitude()                                                                                                                                                                                                                                                                                                                                                                                           +";";
+        }
+    }
+
+    private void parseInfos(String str) {
+        String[] infos = str.split("-");
+        location[0] = Float.parseFloat(infos[0]);
+        location[1] = Float.parseFloat(infos[1]);
+        Location loc  = new Location("");
+        loc.setLatitude(Float.parseFloat(infos[0]));
+        loc.setLongitude(Float.parseFloat(infos[1]));
+        log.add(loc);
+        System.out.println("added location to log : " + loc);
+    }
+
+    private void stopLogging() {
+        System.out.println("stopping the logging");
+        System.out.println(log.size());
+        this.log.clear();
+        // close the file
+        // send it to database ?
     }
 
     private class SocketServerThread extends Thread {
@@ -34,6 +90,7 @@ public class Server {
             Socket socket = null;
             DataInputStream dataInputStream = null;
             DataOutputStream dataOutputStream = null;
+            replyMsg = "";
 
             try {
                 serverSocket = new ServerSocket(PORT);
@@ -41,18 +98,14 @@ public class Server {
                     socket = serverSocket.accept();
                     dataInputStream = new DataInputStream(socket.getInputStream());
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    String replyMsg = "reply message not defined yet";
-
                     messageFromClient = dataInputStream.readUTF();
                     System.out.println("received message from client : " + messageFromClient);
 
-                    if (messageFromClient.equals("Ready")){
-                        replyMsg = "Continue";
-                    } else {
-                        replyMsg = "Hello from server little bro #" + count;
+                    decodeMessage(messageFromClient);
+                    if (!replyMsg.isEmpty() || replyMsg != null) {
+                        System.out.println("Sent : " + replyMsg);
+                        dataOutputStream.writeUTF(replyMsg);
                     }
-                    count ++;
-                    dataOutputStream.writeUTF(replyMsg);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
