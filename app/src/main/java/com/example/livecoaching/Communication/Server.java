@@ -1,7 +1,6 @@
 package com.example.livecoaching.Communication;
 
 import android.location.Location;
-import android.location.LocationManager;
 
 import com.example.livecoaching.Model.ApplicationState;
 
@@ -60,7 +59,7 @@ public class Server {
             replyMsg = "reset";
         } else if (senderState.equals("Asking")){
             parseInfos(parts[1]);
-            replyMsg = "route:" + log.get(log.size()-1).getLatitude() +"-" + log.get(log.size()-1).getLongitude()                                                                                                                                                                                                                                                                                                                                                                                           +";";
+            replyMsg = "route:" + log.get(0).getLatitude() +"-" + log.get(0).getLongitude()                                                                                                                                                                                                                                                                                                                                                                                           +";";
         }
     }
 
@@ -77,6 +76,8 @@ public class Server {
 
     private void stopLogging() {
         System.out.println("stopping the logging");
+        System.out.println(log.size());
+        this.log.clear();
         // close the file
         // send it to database ?
     }
