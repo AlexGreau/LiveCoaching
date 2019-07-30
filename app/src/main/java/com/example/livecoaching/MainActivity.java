@@ -12,7 +12,6 @@ import android.widget.Button;
 
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Model.ApplicationState;
-import com.example.livecoaching.Model.RouteCalculator;
 import com.example.livecoaching.Model.Sequence;
 import com.example.livecoaching.Model.Tactic;
 import com.example.livecoaching.RenderEngine.TacticPanel;

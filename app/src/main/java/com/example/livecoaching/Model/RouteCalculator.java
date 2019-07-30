@@ -32,7 +32,8 @@ public class RouteCalculator {
     }
 
     public ArrayList<Location> getRouteI(){
-        // calculate the route
+        // 2 critical points, straight line, distance of 10 meters
+
         return route;
     }
 }
