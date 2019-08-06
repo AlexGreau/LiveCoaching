@@ -64,7 +64,7 @@ public class Server {
             replyMsg = "reset";
         } else if (senderState.equals("Asking")){
             parseInfos(parts[1]);
-            replyMsg = "route:" + format(routeCalculator.getRouteI());
+            replyMsg = "route:" + format(routeCalculator.getActualRoute());
             // replyMsg = "route:" + log.get(0).getLatitude() +"-" + log.get(0).getLongitude()                                                                                                                                                                                                                                                                                                                                                                                           +";";
         }
     }
@@ -74,20 +74,18 @@ public class Server {
         actualLocation.setLatitude(Float.parseFloat(infos[0]));
         actualLocation.setLongitude(Float.parseFloat(infos[1]));
         log.add(actualLocation);
-        System.out.println("added location to log : " + actualLocation);
+       // System.out.println("added location to log : " + actualLocation);
     }
 
     private void stopLogging() {
         System.out.println("stopping the logging");
         System.out.println(log.size());
         this.log.clear();
-        // close the file
-        // send it to database ?
     }
 
     private void initRouteCalculator(Location loc){
         routeCalculator = new RouteCalculator(loc);
-        System.out.println("route I : " + routeCalculator.getActualRoute());
+        System.out.println("route I : " + routeCalculator.getRouteI());
     }
 
     private String format(ArrayList<Location> locs){
