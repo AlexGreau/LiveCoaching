@@ -42,7 +42,17 @@ public class RouteCalculator {
 
     // different shapes of routes
     public ArrayList <Location> getRouteL(){
-        // calculate the route
+        // 3 criticals points, L shaped with a turn of random angle
+        if (route.size() == 1){
+            double firstDistance = 30.0;
+            double secondDistance = 10.0;
+            double turnAngle = 45.0;
+            double startAngle = 0.0;
+            Location firstCP = calculateLocation(startingPoint, applyMagic(firstDistance), startAngle);
+            route.add(firstCP);
+            Location secondCP = calculateLocation(firstCP,applyMagic(secondDistance), turnAngle);
+            route.add(secondCP);
+        }
         return route;
     }
 
@@ -51,9 +61,8 @@ public class RouteCalculator {
         if(route.size() < 2 ){
             double distWanted = 20.0;
             double angleWanted = 90.0;
-            Location nextLoc = calculateLocation(startingPoint, distWanted / 4.37, angleWanted); // rectif de 4.37 par magie
+            Location nextLoc = calculateLocation(startingPoint, applyMagic(distWanted), angleWanted);
             route.add(nextLoc);
-            Log.d(TAG, "route : " + route);
             Log.d(TAG, "Distance test : " + distanceTest(route.get(0),route.get(1), distWanted) );
         }
         return route;
@@ -79,5 +88,9 @@ public class RouteCalculator {
 
     public ArrayList<Location> getActualRoute(){
         return route;
+    }
+
+    private double applyMagic(double d){
+        return d/4.37;
     }
 }

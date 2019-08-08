@@ -45,6 +45,7 @@ public class Server {
         if (senderState.equals("Ready")) {
             replyMsg = "Continue";
             if (parts.length >= 2) {
+                log.clear();
                 parseInfos(parts[1]);
                 initRouteCalculator(log.get(0));
             }
