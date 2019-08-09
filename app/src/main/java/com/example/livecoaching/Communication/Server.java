@@ -86,7 +86,8 @@ public class Server {
 
     private void initRouteCalculator(Location loc){
         routeCalculator = new RouteCalculator(loc);
-        System.out.println("route I : " + routeCalculator.getRouteI());
+        routeCalculator.getRouteI();
+        System.out.println("route : " + routeCalculator.getActualRoute());
     }
 
     private String format(ArrayList<Location> locs){

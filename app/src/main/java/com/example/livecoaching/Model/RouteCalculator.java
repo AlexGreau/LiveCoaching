@@ -23,15 +23,15 @@ public class RouteCalculator {
         initTestLocations();
     }
 
-    public Location getStartingPoint(){
-        return startingPoint;
-    }
-
     public void initTestLocations(){
         // library : 1.340482, 103.962946
         library = new Location(LocationManager.GPS_PROVIDER);
         library.setLatitude(1.340482);
         library.setLongitude(103.962946);
+    }
+
+    public Location getStartingPoint(){
+        return startingPoint;
     }
 
     public void setStartingPoint( Location loc) {
@@ -47,7 +47,7 @@ public class RouteCalculator {
             double firstDistance = 30.0;
             double secondDistance = 10.0;
             double turnAngle = 45.0;
-            double startAngle = 0.0;
+            double startAngle = 10.0;
             Location firstCP = calculateLocation(startingPoint, applyMagic(firstDistance), startAngle);
             route.add(firstCP);
             Location secondCP = calculateLocation(firstCP,applyMagic(secondDistance), turnAngle);
