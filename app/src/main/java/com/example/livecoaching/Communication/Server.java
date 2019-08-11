@@ -1,8 +1,10 @@
 package com.example.livecoaching.Communication;
 
 import android.location.Location;
+import android.location.LocationManager;
 
 import com.example.livecoaching.Model.ApplicationState;
+import com.example.livecoaching.Model.RouteCalculator;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -18,16 +20,18 @@ public class Server {
     protected ServerSocket serverSocket;
     protected boolean running;
 
-    protected float[] location;
+    protected Location actualLocation;
     protected ArrayList<Location> log;
 
     protected String messageFromClient;
     protected String replyMsg;
 
+    protected RouteCalculator routeCalculator;
+
     public Server() {
         serverSocketThread = new Thread(new SocketServerThread());
         running = true;
-        location = new float[2];
+        actualLocation = new Location(LocationManager.GPS_PROVIDER);
         serverSocketThread.start();
         log = new ArrayList<Location>();
         System.out.println("Server launched");
@@ -41,7 +45,9 @@ public class Server {
         if (senderState.equals("Ready")) {
             replyMsg = "Continue";
             if (parts.length >= 2) {
+                log.clear();
                 parseInfos(parts[1]);
+                initRouteCalculator(log.get(0));
             }
         } else if (senderState.equals("Running")) {
             System.out.println("detected " + senderState);
@@ -59,27 +65,39 @@ public class Server {
             replyMsg = "reset";
         } else if (senderState.equals("Asking")){
             parseInfos(parts[1]);
-            replyMsg = "route:" + log.get(0).getLatitude() +"-" + log.get(0).getLongitude()                                                                                                                                                                                                                                                                                                                                                                                           +";";
+            replyMsg = "route:" + format(routeCalculator.getActualRoute());
+            // replyMsg = "route:" + log.get(0).getLatitude() +"-" + log.get(0).getLongitude()                                                                                                                                                                                                                                                                                                                                                                                           +";";
         }
     }
 
     private void parseInfos(String str) {
         String[] infos = str.split("-");
-        location[0] = Float.parseFloat(infos[0]);
-        location[1] = Float.parseFloat(infos[1]);
-        Location loc  = new Location("");
-        loc.setLatitude(Float.parseFloat(infos[0]));
-        loc.setLongitude(Float.parseFloat(infos[1]));
-        log.add(loc);
-        System.out.println("added location to log : " + loc);
+        actualLocation.setLatitude(Float.parseFloat(infos[0]));
+        actualLocation.setLongitude(Float.parseFloat(infos[1]));
+        log.add(actualLocation);
+       // System.out.println("added location to log : " + actualLocation);
     }
 
     private void stopLogging() {
         System.out.println("stopping the logging");
         System.out.println(log.size());
         this.log.clear();
-        // close the file
-        // send it to database ?
+    }
+
+    private void initRouteCalculator(Location loc){
+        routeCalculator = new RouteCalculator(loc);
+        routeCalculator.getRouteI();
+        System.out.println("route : " + routeCalculator.getActualRoute());
+    }
+
+    private String format(ArrayList<Location> locs){
+        // formats the array of location into a sendable message
+        // replyMsg = "route:" + log.get(0).getLatitude() +"-" + log.get(0).getLongitude()                                                                                                                                                                                                                                                                                                                                                                                           +";";
+        String res = "";
+        for (Location loc : locs){
+            res += loc.getLatitude() + "-" + loc.getLongitude() + ";";
+        }
+        return res;
     }
 
     private class SocketServerThread extends Thread {

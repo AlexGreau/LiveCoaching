@@ -99,9 +99,9 @@ public class TacticPanel extends SurfaceView implements SurfaceHolder.Callback {
     protected void onDraw(Canvas canvas){
         // System.out.println(ApplicationState.getInstance().getPlayersConnected().size());
         for (Player p : ApplicationState.getInstance().getPlayersConnected()){
-            drawPlayer(p, canvas);
+           // drawPlayer(p, canvas);
         }
-        drawPlayer(player,canvas);
+       // drawPlayer(player,canvas);
     }
 
     @Override

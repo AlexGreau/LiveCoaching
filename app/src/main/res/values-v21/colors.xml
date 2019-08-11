@@ -11,4 +11,7 @@
     <color name="team1Color">#2196F3</color>
     <color name="team2Color">#d13a58</color>
 
+    <color name="screenBackgroundColor">#2e8037</color>
+    <color name="screenTxtColor">#fff</color>
+
 </resources>
