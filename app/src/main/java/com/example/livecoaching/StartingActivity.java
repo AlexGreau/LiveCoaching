@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ public class StartingActivity extends AppCompatActivity {
     // components
     TextView welcomeText;
     EditText nameField;
+    CheckBox checkBox;
     Spinner trajectory;
     Spinner interaction;
     Button continueButton;
@@ -41,6 +43,7 @@ public class StartingActivity extends AppCompatActivity {
     protected void init() {
         initText();
         initNameField();
+        initCheckBox();
         initSpinners();
         initButton();
     }
@@ -56,8 +59,20 @@ public class StartingActivity extends AppCompatActivity {
 
     }
 
-    protected void initSpinners() {
+    protected void initCheckBox(){
+        checkBox = findViewById(R.id.checkbox);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setSpinnersState(!checkBox.isChecked());
+            }
+        });
+    }
 
+    protected void initSpinners() {
+        trajectory = findViewById(R.id.trajectories);
+        interaction = findViewById(R.id.interactionType);
+        setSpinnersState(!checkBox.isChecked());
     }
 
     protected void initButton() {
@@ -65,7 +80,7 @@ public class StartingActivity extends AppCompatActivity {
         continueButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 testerName = nameField.getText().toString();
-                if (!testerName.equals("")){
+                if (!testerName.equals("")){ // TODO : REGEX
                     proceed();
                 } else {
                     buildErrorDialog().show();
@@ -76,6 +91,11 @@ public class StartingActivity extends AppCompatActivity {
 
     protected void proceed(){
         // startMainActivity();
+    }
+
+    protected void setSpinnersState(boolean bool){
+        interaction.setEnabled(bool);
+        trajectory.setEnabled(bool);
     }
 
     protected AlertDialog buildErrorDialog(){

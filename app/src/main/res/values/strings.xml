@@ -30,7 +30,7 @@
     <!--
     starting activity
     -->
-    <string name="blank_explanation">ex : Bob</string>
+    <string name="blank_explanation">Ex: Bob</string>
     <string name="blank_buttonText">Let\'s go !</string>
     <string name="welcome_text">Welcome !</string>
     <string name="fieldExplanation">Watch Tester Name : </string>
