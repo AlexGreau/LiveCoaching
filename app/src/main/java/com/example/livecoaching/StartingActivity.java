@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class StartingActivity extends AppCompatActivity {
-    // starting activity includes Cool Name and start button
+    String sequenceString = "All";
+    String interactionType = "All";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +27,8 @@ public class StartingActivity extends AppCompatActivity {
 
     protected void startMainActivity(){
         Intent proceed = new Intent(this, MainActivity.class);
+        proceed.putExtra("sequence", sequenceString);
+        proceed.putExtra("interactionType", interactionType);
         startActivity(proceed);
     }
 
