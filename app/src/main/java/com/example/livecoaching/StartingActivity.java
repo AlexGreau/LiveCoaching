@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -28,9 +29,6 @@ public class StartingActivity extends AppCompatActivity {
     String interactionType = "All";
     String testerName = "";
 
-    // TODO : "Enter name field" -> once entered make start button clickable
-    // TODO : Spinners : Trajectory/interaction type
-    // TODO : checkbox for complete test
     // TODO : launch server
 
     @Override
@@ -70,8 +68,20 @@ public class StartingActivity extends AppCompatActivity {
     }
 
     protected void initSpinners() {
+        // trajectory
         trajectory = findViewById(R.id.trajectories);
+        ArrayAdapter<CharSequence> adapterTrajectories = ArrayAdapter.createFromResource(this,
+                R.array.trajectories, android.R.layout.simple_spinner_item);
+        adapterTrajectories.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        trajectory.setAdapter(adapterTrajectories);
+
+        // interaction
         interaction = findViewById(R.id.interactionType);
+        ArrayAdapter<CharSequence> adapterInteractions = ArrayAdapter.createFromResource(this,
+                R.array.interactionTypes, android.R.layout.simple_spinner_item);
+        adapterInteractions.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        interaction.setAdapter(adapterInteractions);
+
         setSpinnersState(!checkBox.isChecked());
     }
 
