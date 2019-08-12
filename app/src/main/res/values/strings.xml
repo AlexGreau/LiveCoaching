@@ -27,6 +27,12 @@
     <string name="permission_rationale">Permision rationale</string>
     <string name="action_unregister_listener">unregistering listener</string>
 
-    <string name="blank_explanation">Enter the name of the watch Tester</string>
+    <!--
+    starting activity
+    -->
+    <string name="blank_explanation">ex : Bob</string>
     <string name="blank_buttonText">Let\'s go !</string>
+    <string name="welcome_text">Welcome !</string>
+    <string name="fieldExplanation">Watch Tester Name : </string>
+
 </resources>

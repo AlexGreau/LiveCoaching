@@ -9,27 +9,61 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:background="@color/screenBackgroundColor"
-        >
+        android:gravity="center">
 
         <TextView
-            android:id="@+id/StartText"
+            android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Live Coaching"
-            android:textColor="@color/screenTxtColor"
-            android:textSize="100sp"/>
+            android:textSize="70sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fieldExplanation"
+            android:text="@string/fieldExplanation"
+            android:layout_below="@+id/welcomeText"
+            android:textSize="30sp"/>
+
+        <EditText
+            android:id="@+id/nameField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/welcomeText"
+            android:layout_toRightOf="@id/fieldExplanation"
+            android:hint="@string/blank_explanation"
+            android:singleLine="true"
+            android:inputType="text"/>
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nameField"
+            android:text="Go through all tests"
+            android:textSize="20sp"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/trajectories"
+            android:layout_below="@+id/checkbox"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/interactionType"
+            android:layout_below="@+id/trajectories"/>
 
         <Button
-            android:id="@+id/StartButton"
+            android:id="@+id/continueButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/StartText"
-            android:layout_marginLeft="100dp"
+            android:clickable="false"
             android:text="Start Trainning"
-            android:textSize="50sp" />
+            android:textSize="50sp"
+            android:layout_below="@id/interactionType"
+           />
     </RelativeLayout>
 
 
