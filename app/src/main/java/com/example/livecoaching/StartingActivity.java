@@ -29,8 +29,6 @@ public class StartingActivity extends AppCompatActivity {
     String interactionType = "All";
     String testerName = "";
 
-    // TODO : launch server
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +80,7 @@ public class StartingActivity extends AppCompatActivity {
         adapterInteractions.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         interaction.setAdapter(adapterInteractions);
 
+        // state
         setSpinnersState(!checkBox.isChecked());
     }
 
@@ -100,7 +99,7 @@ public class StartingActivity extends AppCompatActivity {
     }
 
     protected void proceed(){
-        // startMainActivity();
+        startMainActivity();
     }
 
     protected void setSpinnersState(boolean bool){
