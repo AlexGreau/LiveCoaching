@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="interactionTypes">
+        <item>All</item>
+        <item>Haptic</item>
+        <item>Visual</item>
+    </string-array>
+
+    <string-array name="trajectories">
+        <item>All</item>
+        <item>I (straight line)</item>
+        <item>L (straight line and 90 degrees turn)</item>
+        <item>Z (2 turns)</item>
+    </string-array>
+</resources>
