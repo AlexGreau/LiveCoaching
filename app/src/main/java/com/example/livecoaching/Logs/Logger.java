@@ -2,11 +2,14 @@ package com.example.livecoaching.Logs;
 
 import android.content.Context;
 import android.location.Location;
+import android.os.Environment;
 import android.util.Log;
 
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,7 +23,8 @@ public class Logger {
 
     protected ArrayList<Location> logs;
     protected File logsFile;
-    protected final String fileName = "TrainingLogs.txt";
+    protected final String fileName = "trainingLogs.txt";
+    protected final String filePath = "LogsDirectory";
     protected final String separator = ";";
     protected final String coordinatesSeparator = ",";
     protected Context context;
@@ -32,11 +36,13 @@ public class Logger {
     }
 
     protected void initFile() {
-        logsFile = new File(context.getFilesDir(), fileName);
+        // Log.d(TAG, "external storage is available for read and write : " + isExternalStorageWritable());
+        // Log.d(TAG, " external storage is Available : " + isExternalStorageAvailable());
+        logsFile = new File(context.getExternalFilesDir(filePath), fileName);
         if (logsFile.exists()) {
             Log.d(TAG, "file exists !");
         } else {
-            Log.d(TAG, "file doesnt exist... creating it");
+            Log.e(TAG, "file does not exist... creating it");
             try {
                 logsFile.createNewFile();
                 writeToLogFile("TrainingLogs", false);
@@ -87,29 +93,21 @@ public class Logger {
     }
 
     public void readLogFile() {
-        String ret = "";
+        String line = "";
+        String myData = "";
         try {
-            InputStream inputStream = context.openFileInput(fileName);
-            if (inputStream != null) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
+            FileInputStream fileInputStream = new FileInputStream(logsFile);
+            DataInputStream dataInputStream = new DataInputStream(fileInputStream);
+            BufferedReader buff = new BufferedReader(new InputStreamReader(dataInputStream));
 
-                while ((receiveString = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(receiveString);
-                }
-
-                inputStream.close();
-                ret = stringBuilder.toString();
+            while ( (line = buff.readLine())!= null){
+                myData = myData + line;
             }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            dataInputStream.close();
         } catch (IOException e) {
             Log.e(TAG, "Can not read file: " + e.toString());
         }
-        Log.d(TAG, "whats on the file :" + ret);
+        Log.d(TAG, "whats on the file :" + myData);
     }
 
     public void resetLogsArray() {
@@ -119,4 +117,22 @@ public class Logger {
     public void clearFile() {
         writeToLogFile("", false);
     }
+
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean isExternalStorageAvailable() {
+        String extStorageState = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(extStorageState)) {
+            return true;
+        }
+        return false;
+    }
+
+
 }
