@@ -1,5 +1,5 @@
 package com.example.livecoaching.Communication;
 
 public interface Decoder {
-    void decodeResponse(String rep);
+    void decodeMessage(String rep);
 }

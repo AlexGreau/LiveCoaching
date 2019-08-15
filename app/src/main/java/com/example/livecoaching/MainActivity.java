@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.livecoaching.Communication.Server;
+import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.Sequence;
 import com.example.livecoaching.Model.Tactic;
@@ -28,12 +29,25 @@ public class MainActivity extends AppCompatActivity {
     protected ServerSocket serverSocket;
     protected Server server;
 
+    // logs
+    protected Logger logger;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        server = new Server();
+        initLogger();
+        server = new Server(this.logger);
         initBlankScreen();
         previousTacticIndex = 0;
+    }
+
+    protected void initLogger(){
+        logger = new Logger(this);
+        String ID = "zeub";
+        String trajectory = getIntent().getStringExtra("sequence");
+        String interactionType = getIntent().getStringExtra("interactionType");
+        logger.initNewLog(ID,trajectory,interactionType);
     }
 
     public void initBlankScreen() {
@@ -46,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+
 
     public void startChoosingActivity() {
         Intent intent = new Intent(MainActivity.this, ChoosingTacticActivity.class);
