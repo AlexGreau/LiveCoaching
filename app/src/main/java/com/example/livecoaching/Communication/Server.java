@@ -82,6 +82,7 @@ public class Server implements Decoder {
     private void stopLogging() {
         System.out.println("stopping the logging");
         System.out.println(logger.getLogsArray().size());
+        logger.flushLogArray();
         logger.readLogFile();
     }
 

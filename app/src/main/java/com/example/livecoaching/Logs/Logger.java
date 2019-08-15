@@ -19,10 +19,11 @@ public class Logger {
 
     private final String TAG = "Logger";
 
-    protected ArrayList logs;
+    protected ArrayList<Location> logs;
     protected File logsFile;
     protected final String fileName = "TrainingLogs.txt";
-    protected final String separator = ",";
+    protected final String separator = ";";
+    protected final String coordinatesSeparator = ",";
     protected Context context;
 
     public Logger(Context context) {
@@ -66,8 +67,22 @@ public class Logger {
 
     public void initNewLog(String ID, String trajectory, String interactionType) {
         // new id Subject, trajectory, interaction technique
-
         String res = ID + separator + trajectory + separator + interactionType + separator;
+        writeToLogFile(res);
+    }
+
+    public void flushLogArray(){
+        StringBuilder logString = new StringBuilder();
+        for (Location loc : logs){
+            logString.append(loc.getLatitude());
+            logString.append(coordinatesSeparator);
+            logString.append(loc.getLongitude());
+            logString.append(separator);
+        }
+        writeToLogFile(logString.toString());
+    }
+
+    public void writeToLogFile(String text){
         FileOutputStream stream = null;
         try {
             stream = new FileOutputStream(logsFile);
@@ -75,12 +90,11 @@ public class Logger {
             e.printStackTrace();
         }
         try {
-            stream.write(res.getBytes());
+            stream.write(text.getBytes());
             stream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.d(TAG, " written : " + res);
         readLogFile();
     }
 
@@ -108,6 +122,10 @@ public class Logger {
             Log.e(TAG, "Can not read file: " + e.toString());
         }
         Log.d(TAG,"whats on the file :" + ret);
+    }
+
+    public void resetLogsArray(){
+        logs = new ArrayList<Location>();
     }
 
 }
