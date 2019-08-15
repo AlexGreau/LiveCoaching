@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class Logger {
@@ -40,6 +39,7 @@ public class Logger {
             Log.d(TAG, "file doesnt exist... creating it");
             try {
                 logsFile.createNewFile();
+                writeToLogFile("TrainingLogs", false);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -56,7 +56,7 @@ public class Logger {
 
     public void initNewLog(String ID, String trajectory, String interactionType) {
         String res = "\r\n" + ID + separator + trajectory + separator + interactionType + separator;
-        writeToLogFile(res);
+        writeToLogFile(res, true);
     }
 
     public void flushLogArray() {
@@ -67,13 +67,13 @@ public class Logger {
             logString.append(loc.getLongitude());
             logString.append(separator);
         }
-        writeToLogFile(logString.toString());
+        writeToLogFile(logString.toString(), true);
     }
 
-    public void writeToLogFile(String text) {
+    public void writeToLogFile(String text, boolean append) {
         FileOutputStream stream = null;
         try {
-            stream = new FileOutputStream(logsFile,true);
+            stream = new FileOutputStream(logsFile, append);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -116,8 +116,7 @@ public class Logger {
         logs = new ArrayList<Location>();
     }
 
-    public void clearFile(){
-
+    public void clearFile() {
+        writeToLogFile("", false);
     }
-
 }

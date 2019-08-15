@@ -42,12 +42,12 @@ public class MainActivity extends AppCompatActivity {
         previousTacticIndex = 0;
     }
 
-    protected void initLogger(){
+    protected void initLogger() {
         logger = new Logger(this);
-        String ID = "zeub";
+        String ID = getIntent().getStringExtra("ID");
         String trajectory = getIntent().getStringExtra("sequence");
         String interactionType = getIntent().getStringExtra("interactionType");
-        logger.initNewLog(ID,trajectory,interactionType);
+        logger.initNewLog(ID, trajectory, interactionType);
     }
 
     public void initBlankScreen() {
