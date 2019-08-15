@@ -34,27 +34,16 @@ public class Logger {
 
     protected void initFile() {
         logsFile = new File(context.getFilesDir(), fileName);
-        if (logsFile.exists()){
-            try
-            {
-                FileOutputStream fOut = new FileOutputStream(logsFile);
-                OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-                myOutWriter.append("test");
-                myOutWriter.close();
-                fOut.close();
-            } catch(Exception e)
-            {
-
-            }
+        if (logsFile.exists()) {
+            Log.d(TAG, "file exists !");
         } else {
-            Log.d(TAG,"exists");
+            Log.d(TAG, "file doesnt exist... creating it");
             try {
                 logsFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     public ArrayList<Location> getLogsArray() {
@@ -66,14 +55,13 @@ public class Logger {
     }
 
     public void initNewLog(String ID, String trajectory, String interactionType) {
-        // new id Subject, trajectory, interaction technique
-        String res = ID + separator + trajectory + separator + interactionType + separator;
+        String res = "\r\n" + ID + separator + trajectory + separator + interactionType + separator;
         writeToLogFile(res);
     }
 
-    public void flushLogArray(){
+    public void flushLogArray() {
         StringBuilder logString = new StringBuilder();
-        for (Location loc : logs){
+        for (Location loc : logs) {
             logString.append(loc.getLatitude());
             logString.append(coordinatesSeparator);
             logString.append(loc.getLongitude());
@@ -82,10 +70,10 @@ public class Logger {
         writeToLogFile(logString.toString());
     }
 
-    public void writeToLogFile(String text){
+    public void writeToLogFile(String text) {
         FileOutputStream stream = null;
         try {
-            stream = new FileOutputStream(logsFile);
+            stream = new FileOutputStream(logsFile,true);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -98,17 +86,17 @@ public class Logger {
         readLogFile();
     }
 
-    public void readLogFile(){
+    public void readLogFile() {
         String ret = "";
         try {
             InputStream inputStream = context.openFileInput(fileName);
-            if ( inputStream != null ) {
+            if (inputStream != null) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String receiveString = "";
                 StringBuilder stringBuilder = new StringBuilder();
 
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                while ((receiveString = bufferedReader.readLine()) != null) {
                     stringBuilder.append(receiveString);
                 }
 
@@ -118,14 +106,18 @@ public class Logger {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }  catch (IOException e) {
+        } catch (IOException e) {
             Log.e(TAG, "Can not read file: " + e.toString());
         }
-        Log.d(TAG,"whats on the file :" + ret);
+        Log.d(TAG, "whats on the file :" + ret);
     }
 
-    public void resetLogsArray(){
+    public void resetLogsArray() {
         logs = new ArrayList<Location>();
+    }
+
+    public void clearFile(){
+
     }
 
 }
