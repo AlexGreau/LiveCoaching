@@ -2,8 +2,10 @@ package com.example.livecoaching.Communication;
 
 import android.location.Location;
 import android.location.LocationManager;
+import android.view.LayoutInflater;
 
 import com.example.livecoaching.Logs.Logger;
+import com.example.livecoaching.MainActivity;
 import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.RouteCalculator;
 
@@ -20,6 +22,7 @@ public class Server implements Decoder {
     protected Thread serverSocketThread;
     protected ServerSocket serverSocket;
     protected boolean running;
+    private MainActivity mainActivity;
 
     protected Location actualLocation;
     protected Logger logger;
@@ -29,8 +32,9 @@ public class Server implements Decoder {
 
     protected RouteCalculator routeCalculator;
 
-    public Server(Logger logger) {
-        this.logger = logger;
+    public Server(MainActivity activity) {
+        mainActivity = activity;
+        this.logger = activity.getLogger();
         serverSocketThread = new Thread(new SocketServerThread());
         running = true;
         actualLocation = new Location(LocationManager.GPS_PROVIDER);
@@ -45,7 +49,7 @@ public class Server implements Decoder {
         String senderState = parts[0];
         // interpret results
         if (senderState.equals("Ready")) {
-            replyMsg = "Continue";
+            replyMsg = "continue:" + mainActivity.getInteractionType();
             if (parts.length >= 2) {
                 logger.getLogsArray().clear();
                 parseInfos(parts[1]);
@@ -62,6 +66,7 @@ public class Server implements Decoder {
             if (parts.length >= 2) {
                 parseInfos(parts[1]);
             }
+            replyMsg ="";
             stopLogging();
         } else if (senderState.equals("End")) {
             replyMsg = "reset";

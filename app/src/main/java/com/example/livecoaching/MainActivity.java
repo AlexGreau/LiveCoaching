@@ -31,15 +31,18 @@ public class MainActivity extends AppCompatActivity {
 
     // logs
     protected Logger logger;
+    private int interactionType;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        interactionType = 1;
         initLogger();
-        server = new Server(this.logger);
+        server = new Server(this);
         initBlankScreen();
         previousTacticIndex = 0;
+
     }
 
     protected void initLogger() {
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         String ID = getIntent().getStringExtra("ID");
         String trajectory = getIntent().getStringExtra("sequence");
         String interactionType = getIntent().getStringExtra("interactionType");
-        logger.initNewLog(ID, trajectory, interactionType);
+        logger.initNewLog(ID, interactionType);
     }
 
     public void initBlankScreen() {
@@ -193,14 +196,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public ServerSocket getServerSocket() {
-        return serverSocket;
-    }
-
-    public void setServerSocket(ServerSocket socket) {
-        this.serverSocket = socket;
-    }
-
     @Override
     protected void onDestroy() {
         Log.d(TAG, "Destroying...");
@@ -232,5 +227,23 @@ public class MainActivity extends AppCompatActivity {
                 initFilledScreen();
             }
         }
+    }
+
+    // getters and setters
+
+    public int getInteractionType(){
+        return interactionType;
+    }
+
+    public ServerSocket getServerSocket() {
+        return serverSocket;
+    }
+
+    public void setServerSocket(ServerSocket socket) {
+        this.serverSocket = socket;
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 }
