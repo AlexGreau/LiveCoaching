@@ -24,16 +24,10 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/button_video"
-                    android:text="Video"
-                    />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
                     android:id="@+id/button_start"
-                    android:text="Start"
+                    android:text="Start EXP"
                     android:drawablePadding="10dip"
+                    android:backgroundTint="@color/correctColor"
                     android:drawableLeft="@drawable/ic_play_circle_outline_black_24dp"
                     />
 
@@ -50,9 +44,9 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/button_reset"
-                    android:text="Reset"
-                    android:drawableLeft="@drawable/ic_replay_black_24dp"
+                    android:id="@+id/button_test"
+                    android:text="Start Test"
+                    android:drawableLeft="@drawable/ic_test"
                     android:layout_toRightOf="@+id/button_finish"
                     android:drawablePadding="10dip"
                     />

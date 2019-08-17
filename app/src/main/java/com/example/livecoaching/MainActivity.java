@@ -11,31 +11,32 @@ import android.widget.Button;
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Logs.Logger;
 
-import java.net.ServerSocket;
-
-import static android.view.View.SYSTEM_UI_FLAG_FULLSCREEN;
-import static android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-import static android.view.View.SYSTEM_UI_FLAG_IMMERSIVE;
-
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    protected ServerSocket serverSocket;
     protected Server server;
 
+    // UI components
+    protected Button startButton;
+    protected Button startTestButton;
+    protected Button finishButton;
     // logs
     protected Logger logger;
     private int interactionType;
+    // logic variables
+    protected boolean isRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // for now
         interactionType = 1;
         initLogger();
         server = new Server(this);
         initUI();
     }
 
+    // init
     protected void initLogger() {
         logger = new Logger(this);
         String ID = getIntent().getStringExtra("ID");
@@ -54,33 +55,21 @@ public class MainActivity extends AppCompatActivity {
     public void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_play);
         setSupportActionBar(toolbar);
-        // play button
-        Button playButton = findViewById(R.id.button_start);
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "startButton pressed");
-            }
-        });
-
-        // stop button
-        Button finishButton = findViewById(R.id.button_finish);
-        finishButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "finishButton pressed");
-            }
-        });
-        // reset Button
-        Button resetButton = findViewById(R.id.button_reset);
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "resetButton pressed");
-            }
-        });
+        initStartTestButton();
+        initStartButton();
+        initFinishButton();
+        changeRunningStateTo(false);
     }
 
+    // Logic functions
+    public void changeRunningStateTo(boolean bool) {
+        this.isRunning = bool;
+        this.startTestButton.setEnabled(!isRunning);
+        this.startButton.setEnabled(!isRunning);
+        this.finishButton.setEnabled(isRunning);
+    }
+
+    // Overrides
     @Override
     protected void onDestroy() {
         Log.d(TAG, "Destroying...");
@@ -99,20 +88,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // getters and setters
-
     public int getInteractionType() {
         return interactionType;
     }
 
-    public ServerSocket getServerSocket() {
-        return serverSocket;
-    }
-
-    public void setServerSocket(ServerSocket socket) {
-        this.serverSocket = socket;
-    }
-
     public Logger getLogger() {
         return logger;
+    }
+
+
+    // setup button functions
+    public void initStartButton() {
+        this.startButton = findViewById(R.id.button_start);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "startButton pressed");
+                changeRunningStateTo(true);
+            }
+        });
+    }
+
+    public void initStartTestButton() {
+        this.startTestButton = findViewById(R.id.button_test);
+        startTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "startTestButton pressed");
+                changeRunningStateTo(true);
+            }
+        });
+    }
+
+    public void initFinishButton() {
+        this.finishButton = findViewById(R.id.button_finish);
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "finishButton pressed");
+                changeRunningStateTo(false);
+            }
+        });
     }
 }
