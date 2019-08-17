@@ -16,6 +16,9 @@ import android.widget.TextView;
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Logs.Logger;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
 
@@ -218,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
         // create new object exp(ID)
         // exp.run()
         changeRunningStateTo(true);
+        // test
         TextView test = (TextView) findViewById(R.id.testPlay);
         test.setText(ID);
     }
@@ -234,10 +238,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected boolean isValid(String text) {
-        // TODO : REGEX for no ":" or no special char
-        boolean isValid = true;
-
-
-        return isValid;
+        Pattern pattern = Pattern.compile("\\w+?");
+        Matcher matcher = pattern.matcher(text);
+        return matcher.matches();
     }
 }
