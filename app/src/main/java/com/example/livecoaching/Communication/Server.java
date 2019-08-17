@@ -2,7 +2,10 @@ package com.example.livecoaching.Communication;
 
 import android.location.Location;
 import android.location.LocationManager;
+import android.view.LayoutInflater;
 
+import com.example.livecoaching.Logs.Logger;
+import com.example.livecoaching.MainActivity;
 import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.RouteCalculator;
 
@@ -13,41 +16,44 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class Server {
+public class Server implements Decoder {
 
     protected final int PORT = ApplicationState.PORT;
     protected Thread serverSocketThread;
     protected ServerSocket serverSocket;
     protected boolean running;
+    private MainActivity mainActivity;
 
     protected Location actualLocation;
-    protected ArrayList<Location> log;
+    protected Logger logger;
 
     protected String messageFromClient;
     protected String replyMsg;
 
     protected RouteCalculator routeCalculator;
 
-    public Server() {
+    public Server(MainActivity activity) {
+        mainActivity = activity;
+        this.logger = activity.getLogger();
         serverSocketThread = new Thread(new SocketServerThread());
         running = true;
         actualLocation = new Location(LocationManager.GPS_PROVIDER);
         serverSocketThread.start();
-        log = new ArrayList<Location>();
         System.out.println("Server launched");
     }
 
-    protected void decodeMessage(String msg) {
+    @Override
+    public void decodeMessage(String msg) {
         // split message
         String[] parts = msg.split(":");
         String senderState = parts[0];
         // interpret results
         if (senderState.equals("Ready")) {
-            replyMsg = "Continue";
+            replyMsg = "continue:" + mainActivity.getInteractionType();
             if (parts.length >= 2) {
-                log.clear();
+                logger.getLogsArray().clear();
                 parseInfos(parts[1]);
-                initRouteCalculator(log.get(0));
+                initRouteCalculator(logger.getLogsArray().get(0));
             }
         } else if (senderState.equals("Running")) {
             System.out.println("detected " + senderState);
@@ -60,13 +66,13 @@ public class Server {
             if (parts.length >= 2) {
                 parseInfos(parts[1]);
             }
+            replyMsg ="";
             stopLogging();
         } else if (senderState.equals("End")) {
             replyMsg = "reset";
-        } else if (senderState.equals("Asking")){
+        } else if (senderState.equals("Asking")) {
             parseInfos(parts[1]);
             replyMsg = "route:" + format(routeCalculator.getActualRoute());
-            // replyMsg = "route:" + log.get(0).getLatitude() +"-" + log.get(0).getLongitude()                                                                                                                                                                                                                                                                                                                                                                                           +";";
         }
     }
 
@@ -74,27 +80,27 @@ public class Server {
         String[] infos = str.split("-");
         actualLocation.setLatitude(Float.parseFloat(infos[0]));
         actualLocation.setLongitude(Float.parseFloat(infos[1]));
-        log.add(actualLocation);
-       // System.out.println("added location to log : " + actualLocation);
+        logger.getLogsArray().add(actualLocation);
+        // System.out.println("added location to log : " + actualLocation);
     }
 
     private void stopLogging() {
         System.out.println("stopping the logging");
-        System.out.println(log.size());
-        this.log.clear();
+        System.out.println(logger.getLogsArray().size());
+        logger.flushLogArray();
+        logger.readLogFile();
     }
 
-    private void initRouteCalculator(Location loc){
+    private void initRouteCalculator(Location loc) {
         routeCalculator = new RouteCalculator(loc);
         routeCalculator.getRouteI();
         System.out.println("route : " + routeCalculator.getActualRoute());
     }
 
-    private String format(ArrayList<Location> locs){
+    private String format(ArrayList<Location> locs) {
         // formats the array of location into a sendable message
-        // replyMsg = "route:" + log.get(0).getLatitude() +"-" + log.get(0).getLongitude()                                                                                                                                                                                                                                                                                                                                                                                           +";";
         String res = "";
-        for (Location loc : locs){
+        for (Location loc : locs) {
             res += loc.getLatitude() + "-" + loc.getLongitude() + ";";
         }
         return res;

@@ -55,7 +55,7 @@ public class StartingActivity extends AppCompatActivity {
 
     }
 
-    protected void initCheckBox(){
+    protected void initCheckBox() {
         checkBox = findViewById(R.id.checkbox);
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +89,7 @@ public class StartingActivity extends AppCompatActivity {
         continueButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 testerName = nameField.getText().toString();
-                if (!testerName.equals("")){ // TODO : REGEX
+                if (!testerName.equals("")) { // TODO : REGEX
                     proceed();
                 } else {
                     buildErrorDialog().show();
@@ -98,16 +98,16 @@ public class StartingActivity extends AppCompatActivity {
         });
     }
 
-    protected void proceed(){
+    protected void proceed() {
         startMainActivity();
     }
 
-    protected void setSpinnersState(boolean bool){
+    protected void setSpinnersState(boolean bool) {
         interaction.setEnabled(bool);
         trajectory.setEnabled(bool);
     }
 
-    protected AlertDialog buildErrorDialog(){
+    protected AlertDialog buildErrorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Please enter a correct name");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -123,6 +123,7 @@ public class StartingActivity extends AppCompatActivity {
 
     protected void startMainActivity() {
         Intent proceed = new Intent(this, MainActivity.class);
+        proceed.putExtra("ID", testerName);
         proceed.putExtra("sequence", sequenceString);
         proceed.putExtra("interactionType", interactionType);
         startActivity(proceed);

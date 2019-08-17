@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.livecoaching.Communication.Server;
+import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.Sequence;
 import com.example.livecoaching.Model.Tactic;
@@ -28,12 +29,28 @@ public class MainActivity extends AppCompatActivity {
     protected ServerSocket serverSocket;
     protected Server server;
 
+    // logs
+    protected Logger logger;
+    private int interactionType;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        server = new Server();
+        interactionType = 1;
+        initLogger();
+        server = new Server(this);
         initBlankScreen();
         previousTacticIndex = 0;
+
+    }
+
+    protected void initLogger() {
+        logger = new Logger(this);
+        String ID = getIntent().getStringExtra("ID");
+        String trajectory = getIntent().getStringExtra("sequence");
+        String interactionType = getIntent().getStringExtra("interactionType");
+        logger.initNewLog(ID, interactionType);
     }
 
     public void initBlankScreen() {
@@ -46,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+
 
     public void startChoosingActivity() {
         Intent intent = new Intent(MainActivity.this, ChoosingTacticActivity.class);
@@ -178,14 +196,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public ServerSocket getServerSocket() {
-        return serverSocket;
-    }
-
-    public void setServerSocket(ServerSocket socket) {
-        this.serverSocket = socket;
-    }
-
     @Override
     protected void onDestroy() {
         Log.d(TAG, "Destroying...");
@@ -217,5 +227,23 @@ public class MainActivity extends AppCompatActivity {
                 initFilledScreen();
             }
         }
+    }
+
+    // getters and setters
+
+    public int getInteractionType(){
+        return interactionType;
+    }
+
+    public ServerSocket getServerSocket() {
+        return serverSocket;
+    }
+
+    public void setServerSocket(ServerSocket socket) {
+        this.serverSocket = socket;
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 }
