@@ -1,9 +1,7 @@
 package com.example.livecoaching;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,18 +11,11 @@ import android.widget.Button;
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.Model.ApplicationState;
-import com.example.livecoaching.Model.Sequence;
-import com.example.livecoaching.Model.Tactic;
-import com.example.livecoaching.RenderEngine.TacticPanel;
 
 import java.net.ServerSocket;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
-    private Tactic tactic;
-    private int previousTacticIndex;
-    private Sequence sequence;
-    private TacticPanel tacticPanel;
 
     protected ServerSocket serverSocket;
     protected Server server;
@@ -40,59 +31,20 @@ public class MainActivity extends AppCompatActivity {
         interactionType = 1;
         initLogger();
         server = new Server(this);
-        initBlankScreen();
-        previousTacticIndex = 0;
-
+        initUI();
     }
 
     protected void initLogger() {
         logger = new Logger(this);
         String ID = getIntent().getStringExtra("ID");
-        String trajectory = getIntent().getStringExtra("sequence");
+        // for now
         String interactionType = getIntent().getStringExtra("interactionType");
         logger.initNewLog(ID, interactionType);
     }
 
-    public void initBlankScreen() {
+    public void initUI() {
         setContentView(R.layout.activity_main);
-        this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
         initToolbar();
-        // display dialog to force choice
-        AlertDialog dialog = setupBlankDialog();
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-    }
-
-
-    public void startChoosingActivity() {
-        Intent intent = new Intent(MainActivity.this, ChoosingTacticActivity.class);
-        startActivityForResult(intent, ApplicationState.PICK_A_TACTIC);
-    }
-
-    public void terminateThreads() {
-        tacticPanel.stop();
-    }
-
-    public void initFilledScreen() {
-        setContentView(R.layout.activity_main);
-        this.tacticPanel = (TacticPanel) findViewById(R.id.tacticPanel);
-        initToolbar();
-        initConnect();
-        System.out.println("Tactic chosen is " + tactic.getName());
-        setupSequence();
-    }
-
-    public void initConnect() {
-        Button connectButton = findViewById(R.id.connectDevicesButton);
-        connectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ConnectActivity.class);
-                terminateThreads();
-                startActivity(intent);
-            }
-        });
     }
 
     public void initToolbar() {
@@ -103,17 +55,16 @@ public class MainActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sequence.start();
+                Log.d(TAG, "startButton pressed");
             }
         });
 
         // stop button
         Button finishButton = findViewById(R.id.button_finish);
-        AlertDialog dialog = setupStopDialog();
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.show();
+                Log.d(TAG, "finishButton pressed");
             }
         });
         // reset Button
@@ -121,79 +72,9 @@ public class MainActivity extends AppCompatActivity {
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetSequence();
+                Log.d(TAG, "resetButton pressed");
             }
         });
-
-        // catalogue button
-        Button catalogButton = findViewById(R.id.catalogue);
-        catalogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                terminateThreads();
-                startChoosingActivity();
-            }
-        });
-
-    }
-
-    public AlertDialog setupStopDialog() {
-        // dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Tactic complete ! what's next ?");
-        builder.setPositiveButton(R.string.returnToMain, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked return button
-                terminateThreads();
-                startChoosingActivity();
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User wants to redo the play
-                terminateThreads();
-                resetSequence();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        return dialog;
-    }
-
-    public AlertDialog setupBlankDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.blank_explanation);
-        builder.setPositiveButton(R.string.blank_buttonText, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked return button
-                terminateThreads();
-                startChoosingActivity();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        return dialog;
-    }
-
-    public void resetSequence() {
-        // cleanup then setup
-        System.out.println("Resetting sequence");
-        this.setupSequence();
-    }
-
-    public void setupSequence() {
-        this.sequence = new Sequence(tactic, ApplicationState.getInstance().getPlayersConnected());
-        // set background
-        setBackground(this.sequence.getTactic());
-        // set players (verify too)
-        this.sequence.drawPLayers();
-    }
-
-    public void setBackground(Tactic t) {
-        if (t.getSport().equals("Football")) {
-            tacticPanel.setBackground(getDrawable(R.drawable.terrain_foot));
-        } else if (t.getSport().equals("Ultimate")) {
-            tacticPanel.setBackground(getDrawable(R.drawable.terrain_ultimate));
-        }
     }
 
     @Override
@@ -210,28 +91,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        terminateThreads();
         finish();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ApplicationState.PICK_A_TACTIC) {
-            if (resultCode == RESULT_OK) {
-                this.tactic = ApplicationState.getInstance().getDisplayedList().get(data.getIntExtra("tacticIndex", 0));
-                this.previousTacticIndex = data.getIntExtra("tacticIndex", 0);
-                initFilledScreen();
-            } else if (resultCode == RESULT_CANCELED) {
-                System.out.println("result = canceled");
-                this.tactic = ApplicationState.getInstance().getDisplayedList().get(previousTacticIndex);
-                initFilledScreen();
-            }
-        }
     }
 
     // getters and setters
 
-    public int getInteractionType(){
+    public int getInteractionType() {
         return interactionType;
     }
 

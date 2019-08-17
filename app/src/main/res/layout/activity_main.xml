@@ -16,15 +16,6 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/catalogue"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:drawableLeft="@drawable/catalogue"
-                android:drawablePadding="10dip"
-                android:text="Catalogue" />
-
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,14 +59,6 @@
 
             </RelativeLayout>
 
-            <Button
-                android:id="@+id/connectDevicesButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:drawableLeft="@drawable/ic_bluetooth_searching_signal_indicator"
-                android:drawablePadding="10dip"
-                android:text="Connect" />
         </RelativeLayout>
 
 
@@ -97,18 +80,13 @@
             android:text="hello titi"
             />
 
-        <com.example.livecoaching.RenderEngine.TacticPanel
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <com.example.livecoaching.RenderEngine.TacticPanel xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res/com.example.livecoaching.RenderEngine.TacticPanel"
+            android:id="@+id/tacticPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tacticPanel"
-            android:text="zeub"
-            />
+            android:text="zeub" />
 
     </RelativeLayout>
-
-
-
-
+    
 </RelativeLayout>
