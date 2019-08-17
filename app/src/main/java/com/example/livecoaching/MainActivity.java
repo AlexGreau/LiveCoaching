@@ -1,18 +1,21 @@
 package com.example.livecoaching;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Logs.Logger;
-import com.example.livecoaching.Model.ApplicationState;
 
 import java.net.ServerSocket;
+
+import static android.view.View.SYSTEM_UI_FLAG_FULLSCREEN;
+import static android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+import static android.view.View.SYSTEM_UI_FLAG_IMMERSIVE;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -23,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     // logs
     protected Logger logger;
     private int interactionType;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     public void initUI() {
         setContentView(R.layout.activity_main);
         initToolbar();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     public void initToolbar() {
