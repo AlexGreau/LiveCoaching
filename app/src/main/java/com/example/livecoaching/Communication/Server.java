@@ -2,11 +2,9 @@ package com.example.livecoaching.Communication;
 
 import android.location.Location;
 import android.location.LocationManager;
-import android.view.LayoutInflater;
 
 import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.MainActivity;
-import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.RouteCalculator;
 
 import java.io.DataInputStream;
@@ -18,7 +16,7 @@ import java.util.ArrayList;
 
 public class Server implements Decoder {
 
-    protected final int PORT = ApplicationState.PORT;
+    protected final int PORT = 8080;
     protected Thread serverSocketThread;
     protected ServerSocket serverSocket;
     protected boolean running;

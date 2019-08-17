@@ -8,22 +8,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
-import com.example.livecoaching.Model.ApplicationState;
-import com.example.livecoaching.Model.Player;
-import com.example.livecoaching.Model.Tactic;
 import com.example.livecoaching.R;
-
-import org.w3c.dom.Attr;
 
 import static android.content.ContentValues.TAG;
 
