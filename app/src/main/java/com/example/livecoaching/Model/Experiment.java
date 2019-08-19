@@ -16,7 +16,7 @@ public class Experiment implements TrialOrganiser {
     private int currentDifficulty;
     private int currentInteractionType;
     private int currentIndex;
-    private final int maxTrialIndexPerCombo = 3;
+    private final int maxTrialIndexPerCombo = 0;
     private final int maxDifficultyIndex = 2;
     private final int maxInteractionIndex = 2;
 
@@ -29,8 +29,8 @@ public class Experiment implements TrialOrganiser {
         this.participantID = participantID;
         this.logger = simpleLogger;
         this.indexInTrials = 0;
-        initTrials();
         initCurrents();
+        initTrials();
     }
 
     public void run() {

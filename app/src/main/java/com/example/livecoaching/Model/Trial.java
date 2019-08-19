@@ -57,7 +57,7 @@ public class Trial implements Decoder {
     }
 
     public void stop() {
-        server.setRunning(false);
+        //server.setRunning(false);
         stopLogging();
         organiser.launchNextTrial();
     }
@@ -70,7 +70,7 @@ public class Trial implements Decoder {
         String senderState = parts[0];
         // interpret results
         if (senderState.equals("Ready")) {
-            replyMsg = "continue:" + 2;
+            replyMsg = "continue:" + interactionType;
             if (parts.length >= 2) {
                 logger.getLogsArray().clear();
                 parseInfos(parts[1]);
@@ -88,7 +88,7 @@ public class Trial implements Decoder {
                 parseInfos(parts[1]);
             }
             replyMsg = "";
-            stopLogging();
+            stop();
         } else if (senderState.equals("End")) {
             replyMsg = "reset";
         } else if (senderState.equals("Asking")) {

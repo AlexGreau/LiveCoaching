@@ -1,5 +1,6 @@
 package com.example.livecoaching.Communication;
 
+import com.example.livecoaching.Interfaces.Decoder;
 import com.example.livecoaching.Model.Trial;
 
 import java.io.DataInputStream;
@@ -14,13 +15,13 @@ public class Server {
     protected Thread serverSocketThread;
     protected ServerSocket serverSocket;
     protected boolean running;
-    private Trial trial;
+    private Decoder decoder;
 
     protected String messageFromClient;
     protected String replyMsg;
 
-    public Server(Trial trial) {
-        this.trial = trial;
+    public Server(Decoder decoder) {
+        this.decoder = decoder;
         serverSocketThread = new Thread(new SocketServerThread());
         running = true;
         serverSocketThread.start();
@@ -55,7 +56,7 @@ public class Server {
                     messageFromClient = dataInputStream.readUTF();
                     System.out.println("received message from client : " + messageFromClient);
 
-                    replyMsg = trial.decodeMessage(messageFromClient);
+                    replyMsg = decoder.decodeMessage(messageFromClient);
                     if (!replyMsg.isEmpty() || replyMsg != null) {
                         System.out.println("Sent : " + replyMsg);
                         dataOutputStream.writeUTF(replyMsg);
