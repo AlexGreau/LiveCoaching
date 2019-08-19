@@ -15,85 +15,18 @@
             android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="70sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/fieldExplanation"
-            android:text="@string/fieldExplanation"
-            android:layout_below="@+id/welcomeText"
-            android:textSize="30sp"/>
-
-        <EditText
-            android:id="@+id/nameField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/welcomeText"
-            android:layout_toRightOf="@id/fieldExplanation"
-            android:hint="@string/blank_explanation"
-            android:singleLine="true"
-            android:inputType="text"/>
-
-        <CheckBox
-            android:id="@+id/checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/nameField"
-            android:text="Go through all tests"
-            android:textSize="20sp"/>
-
-        <RelativeLayout
-            android:layout_width="400sp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/checkbox"
-            android:id="@+id/spinners"
-            android:layout_marginBottom="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/trajectoriesDescription"
-                android:textSize="20sp"
-                android:text="Select wanted routes: "
-                />
-
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/trajectories"
-                android:layout_toRightOf="@+id/trajectoriesDescription"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/interactionTypeDescription"
-                android:textSize="20sp"
-                android:text="Select the interaction type : "
-                android:layout_below="@id/trajectoriesDescription"
-                />
-
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/interactionType"
-                android:layout_toRightOf="@id/interactionTypeDescription"
-                android:layout_below="@id/trajectories"
-                android:layout_marginTop="10dp"
-                />
-
-        </RelativeLayout>
+            android:textSize="100sp" />
 
         <Button
             android:id="@+id/continueButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:text="Start Trainning"
+            android:layout_below="@id/welcomeText"
+            android:text="Start Testing"
             android:textSize="50sp"
-            android:layout_below="@id/spinners"
-           />
+            android:layout_marginTop="40sp"
+            android:layout_marginLeft="30sp"/>
+
     </RelativeLayout>
 
 

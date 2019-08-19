@@ -2,12 +2,11 @@ package com.example.livecoaching.Communication;
 
 import android.location.Location;
 import android.location.LocationManager;
-import android.view.LayoutInflater;
 
+import com.example.livecoaching.Interfaces.Decoder;
 import com.example.livecoaching.Logs.Logger;
-import com.example.livecoaching.MainActivity;
-import com.example.livecoaching.Model.ApplicationState;
 import com.example.livecoaching.Model.RouteCalculator;
+import com.example.livecoaching.Model.Trial;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -18,11 +17,11 @@ import java.util.ArrayList;
 
 public class Server implements Decoder {
 
-    protected final int PORT = ApplicationState.PORT;
+    protected final int PORT = 8080;
     protected Thread serverSocketThread;
     protected ServerSocket serverSocket;
     protected boolean running;
-    private MainActivity mainActivity;
+    private Trial trial;
 
     protected Location actualLocation;
     protected Logger logger;
@@ -32,9 +31,9 @@ public class Server implements Decoder {
 
     protected RouteCalculator routeCalculator;
 
-    public Server(MainActivity activity) {
-        mainActivity = activity;
-        this.logger = activity.getLogger();
+    public Server(Trial trial) {
+        this.trial = trial;
+        this.logger = trial.getLogger();
         serverSocketThread = new Thread(new SocketServerThread());
         running = true;
         actualLocation = new Location(LocationManager.GPS_PROVIDER);
@@ -49,7 +48,7 @@ public class Server implements Decoder {
         String senderState = parts[0];
         // interpret results
         if (senderState.equals("Ready")) {
-            replyMsg = "continue:" + mainActivity.getInteractionType();
+            replyMsg = "continue:" + 2;
             if (parts.length >= 2) {
                 logger.getLogsArray().clear();
                 parseInfos(parts[1]);
@@ -73,6 +72,14 @@ public class Server implements Decoder {
         } else if (senderState.equals("Asking")) {
             parseInfos(parts[1]);
             replyMsg = "route:" + format(routeCalculator.getActualRoute());
+        }
+    }
+
+    public void setRunning(boolean bool){
+        running = bool;
+        if (!bool) {
+            this.serverSocketThread.interrupt();
+            this.serverSocketThread = null;
         }
     }
 
