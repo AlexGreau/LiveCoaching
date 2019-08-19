@@ -5,11 +5,14 @@ import android.location.LocationManager;
 
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Interfaces.Decoder;
+import com.example.livecoaching.Interfaces.TrialOrganiser;
 import com.example.livecoaching.Logs.Logger;
 
 import java.util.ArrayList;
 
 public class Trial implements Decoder {
+
+    private TrialOrganiser organiser;
     private Server server;
     private RouteCalculator routeCalculator;
 
@@ -26,7 +29,8 @@ public class Trial implements Decoder {
     private Double totalDistanceParcourue;
     private Double totalDistanceTheorique;
 
-    public Trial(String ID, int interactionType, int difficulty, Logger logger) {
+    public Trial(String ID, int interactionType, int difficulty, Logger logger, TrialOrganiser organiser) {
+        this.organiser = organiser;
         this.logger = logger;
         this.participantID = ID;
         this.interactionType = interactionType;
@@ -57,12 +61,13 @@ public class Trial implements Decoder {
 
     public void stop() {
         server.setRunning(false);
+        stopLogging();
+        organiser.launchNextTrial();
     }
 
     @Override
     public String decodeMessage(String msg) {
         String replyMsg = "";
-
         // split message
         String[] parts = msg.split(":");
         String senderState = parts[0];
@@ -122,7 +127,7 @@ public class Trial implements Decoder {
     }
 
     private void initRouteCalculator(Location loc) {
-        routeCalculator = new RouteCalculator(loc, 0);
+        routeCalculator = new RouteCalculator(loc, difficulty);
         // routeCalculator.getRouteI();
         System.out.println("route : " + routeCalculator.getActualRoute());
     }
