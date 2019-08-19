@@ -11,6 +11,7 @@ public class Experiment{
     private int indexInTrials;
     private Logger logger;
     private RouteCalculator routeCalculator;
+    private int interactionType;
 
     private ArrayList<Trial> trials;
 
@@ -34,7 +35,8 @@ public class Experiment{
     public void initTrials(){
         trials = new ArrayList<>();
         // test for now
-        Trial trialTest = new Trial(participantID, this.logger);
+        interactionType = 1;
+        Trial trialTest = new Trial(participantID, interactionType,this.logger);
         trials.add(trialTest);
 
 

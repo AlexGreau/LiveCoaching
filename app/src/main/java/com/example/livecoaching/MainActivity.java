@@ -49,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
     // init
     protected void initLogger() {
         logger = new Logger(this);
-        // for now
-        String interactionType = getIntent().getStringExtra("interactionType");
-        logger.initNewLog(ID, interactionType);
     }
 
     public void initUI() {
