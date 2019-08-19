@@ -17,8 +17,6 @@ import android.widget.TextView;
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Logs.Logger;
 
-import org.w3c.dom.Text;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected Button startButton;
     protected Button startTestButton;
     protected Button finishButton;
+    protected AlertDialog startExpDialog;
     // logs
     protected Logger logger;
     private int interactionType;
@@ -125,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "startButton pressed");
-                AlertDialog dialog = buildStartExpDialog();
-                dialog.show();
+                startExpDialog = buildStartExpDialog();
+                startExpDialog.show();
             }
         });
     }
@@ -173,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, textId);
                 if (isValid(textId)) {
                     startExp(textId);
+                    startExpDialog.dismiss();
                 } else {
                     errorText.setTextColor(Color.RED);
                     errorText.setText("Invalid ID, please enter a single word without special characters");
@@ -234,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Logic functions
     protected void startExp(String ID) {
+
         // create new object exp(ID)
         // exp.run()
         changeRunningStateTo(true);
