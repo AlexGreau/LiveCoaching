@@ -1,22 +1,26 @@
 package com.example.livecoaching.Model;
 
+import android.location.Location;
 import android.util.Log;
 
+import com.example.livecoaching.Communication.Server;
+import com.example.livecoaching.Interfaces.Decoder;
 import com.example.livecoaching.Interfaces.TrialOrganiser;
 import com.example.livecoaching.Logs.Logger;
 
 import java.util.ArrayList;
 
-public class Experiment implements TrialOrganiser {
+public class Experiment implements TrialOrganiser, Decoder {
     private final String TAG = "Experiment";
     // values
     private String participantID;
     private Logger logger;
+    private Server server;
 
     private int currentDifficulty;
     private int currentInteractionType;
     private int currentIndex;
-    private final int maxTrialIndexPerCombo = 0;
+    private final int maxTrialIndexPerCombo = 3;
     private final int maxDifficultyIndex = 2;
     private final int maxInteractionIndex = 2;
 
@@ -34,7 +38,7 @@ public class Experiment implements TrialOrganiser {
     }
 
     public void run() {
-        trials.get(0).run();
+        server = new Server(this);
     }
 
     public void stop() {
@@ -80,11 +84,58 @@ public class Experiment implements TrialOrganiser {
         indexInTrials++;
         createNextTrial();
         if (indexInTrials < trials.size()) {
-            trials.get(indexInTrials).run();
+            trials.get(indexInTrials);
         } else {
             // message main activity for end
             // todo : actualize main activity UI on the run
         }
+    }
+
+    @Override
+    public String decodeMessage(String msg) {
+        Trial concernedTrial = trials.get(indexInTrials);
+        String replyMsg = "";
+        // split message
+        String[] parts = msg.split(":");
+        String senderState = parts[0];
+        // interpret results
+        if (senderState.equals("Ready")) {
+            replyMsg = "continue:" + concernedTrial.getInteractionType();
+            if (parts.length >= 2) {
+                logger.getLogsArray().clear();
+                concernedTrial.parseInfos(parts[1]);
+                concernedTrial.initRouteCalculator(logger.getLogsArray().get(0));
+            }
+        } else if (senderState.equals("Running")) {
+            System.out.println("detected " + senderState);
+            replyMsg = "";
+            if (parts.length >= 2) {
+                concernedTrial.parseInfos(parts[1]);
+            }
+        } else if (senderState.equals("Stop")) {
+            System.out.println("detected " + senderState);
+            if (parts.length >= 2) {
+                concernedTrial.parseInfos(parts[1]);
+            }
+            replyMsg = "";
+            stop();
+        } else if (senderState.equals("End")) {
+            replyMsg = "reset";
+        } else if (senderState.equals("Asking")) {
+            concernedTrial.parseInfos(parts[1]);
+            replyMsg = "route:" + format(concernedTrial.getRouteCalculator().getActualRoute());
+        }
+
+        return replyMsg;
+    }
+
+    private String format(ArrayList<Location> locs) {
+        // formats the array of location into a sendable message
+        String res = "";
+        for (Location loc : locs) {
+            res += loc.getLatitude() + "-" + loc.getLongitude() + ";";
+        }
+        return res;
     }
 
     public void initCurrents() {
