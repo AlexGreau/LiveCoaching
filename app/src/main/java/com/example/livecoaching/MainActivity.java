@@ -2,6 +2,7 @@ package com.example.livecoaching;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Logs.Logger;
+
+import org.w3c.dom.Text;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -96,6 +99,15 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            setFullScreen();
+        }
+    }
+
+
     // getters and setters
     public int getInteractionType() {
         return interactionType;
@@ -146,16 +158,26 @@ public class MainActivity extends AppCompatActivity {
     public AlertDialog buildStartExpDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.startexp_dialog_layout, null);
+        View view = inflater.inflate(R.layout.dialog_startexp, null);
+
+        TextView explanation = (TextView) view.findViewById(R.id.dialogExplanation);
+        explanation.setText("Please enter a participant ID below");
+        builder.setTitle("Information needed");
         EditText id = (EditText) view.findViewById(R.id.IDparticipant);
+        TextView errorText = view.findViewById(R.id.dialogErrorText);
+
         Button continueButton = view.findViewById(R.id.dialogOkButton);
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String textId = id.getText().toString();
                 Log.d(TAG, textId);
-                if (isValid(textId)){
+                if (isValid(textId)) {
                     startExp(textId);
+                } else {
+                    errorText.setTextColor(Color.RED);
+                    errorText.setText("Invalid ID, please enter a single word without special characters");
+                    errorText.setVisibility(View.VISIBLE);
                 }
             }
         });
