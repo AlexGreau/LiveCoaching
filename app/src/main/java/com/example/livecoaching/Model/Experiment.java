@@ -3,7 +3,7 @@ package com.example.livecoaching.Model;
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Logs.Logger;
 
-public class Experiment {
+public class Experiment{
     private Server server;
     private Logger logger;
 
@@ -44,7 +44,7 @@ public class Experiment {
 
     // get and set
     public Logger getLogger(){
-        return this.logger;
+        return this.simpleLogger;
     }
 
 }

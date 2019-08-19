@@ -16,14 +16,13 @@ import android.widget.TextView;
 
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Logs.Logger;
+import com.example.livecoaching.Model.Experiment;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
-
-    protected Server server;
 
     // UI components
     protected Button startButton;
@@ -33,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     // logs
     protected Logger logger;
     private int interactionType;
+    // exp
+    protected Experiment experiment;
     // logic variables
     protected boolean isRunning;
 
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         // for now
         interactionType = 1;
         initLogger();
-        server = new Server(this);
         initUI();
     }
 
@@ -234,13 +234,12 @@ public class MainActivity extends AppCompatActivity {
 
     // Logic functions
     protected void startExp(String ID) {
-
-        // create new object exp(ID)
-        // exp.run()
+        experiment = new Experiment(ID, this.logger);
         changeRunningStateTo(true);
         // test
         TextView test = (TextView) findViewById(R.id.testPlay);
         test.setText(ID);
+        experiment.run();
     }
 
     protected void finishExp() {

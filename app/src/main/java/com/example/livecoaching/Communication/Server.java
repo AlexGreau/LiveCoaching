@@ -6,6 +6,7 @@ import android.location.LocationManager;
 import com.example.livecoaching.Interfaces.Decoder;
 import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.MainActivity;
+import com.example.livecoaching.Model.Experiment;
 import com.example.livecoaching.Model.RouteCalculator;
 
 import java.io.DataInputStream;
@@ -21,7 +22,7 @@ public class Server implements Decoder {
     protected Thread serverSocketThread;
     protected ServerSocket serverSocket;
     protected boolean running;
-    private MainActivity mainActivity;
+    private Experiment experiment;
 
     protected Location actualLocation;
     protected Logger logger;
@@ -31,9 +32,9 @@ public class Server implements Decoder {
 
     protected RouteCalculator routeCalculator;
 
-    public Server(MainActivity activity) {
-        mainActivity = activity;
-        this.logger = activity.getLogger();
+    public Server(Experiment exp) {
+        experiment = exp;
+        this.logger = experiment.getLogger();
         serverSocketThread = new Thread(new SocketServerThread());
         running = true;
         actualLocation = new Location(LocationManager.GPS_PROVIDER);
@@ -48,7 +49,7 @@ public class Server implements Decoder {
         String senderState = parts[0];
         // interpret results
         if (senderState.equals("Ready")) {
-            replyMsg = "continue:" + mainActivity.getInteractionType();
+            replyMsg = "continue:" + 2;
             if (parts.length >= 2) {
                 logger.getLogsArray().clear();
                 parseInfos(parts[1]);
