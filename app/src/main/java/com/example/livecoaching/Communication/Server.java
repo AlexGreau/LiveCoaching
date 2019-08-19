@@ -75,6 +75,14 @@ public class Server implements Decoder {
         }
     }
 
+    public void setRunning(boolean bool){
+        running = bool;
+        if (!bool) {
+            this.serverSocketThread.interrupt();
+            this.serverSocketThread = null;
+        }
+    }
+
     private void parseInfos(String str) {
         String[] infos = str.split("-");
         actualLocation.setLatitude(Float.parseFloat(infos[0]));
