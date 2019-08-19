@@ -1,18 +1,15 @@
 package com.example.livecoaching.Model;
 
-import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Logs.Logger;
 
 import java.util.ArrayList;
 
 public class Experiment{
-    private Server server;
-    private Logger logger;
 
     // values
     private String participantID;
     private int indexInTrials;
-    private Logger simpleLogger;
+    private Logger logger;
     private RouteCalculator routeCalculator;
 
     private ArrayList<Trial> trials;
@@ -20,18 +17,13 @@ public class Experiment{
 
     public Experiment(String participantID, Logger simpleLogger) {
         this.participantID = participantID;
-        this.simpleLogger = simpleLogger;
+        this.logger = simpleLogger;
         this.indexInTrials = 0;
         initTrials();
     }
 
     public void run(){
         trials.get(0).run();
-    }
-
-    public void stop(){
-        server.setRunning(false);
-
     }
 
     public void runNextTrial(){
@@ -42,7 +34,7 @@ public class Experiment{
     public void initTrials(){
         trials = new ArrayList<>();
         // test for now
-        Trial trialTest = new Trial(this.simpleLogger);
+        Trial trialTest = new Trial(participantID, this.logger);
         trials.add(trialTest);
 
 
@@ -55,7 +47,7 @@ public class Experiment{
 
     // get and set
     public Logger getLogger(){
-        return this.simpleLogger;
+        return this.logger;
     }
 
 }

@@ -19,8 +19,10 @@ public class Trial {
     private Double totalDistanceParcourue;
     private Double totalDistanceTheorique;
 
-    public Trial(Logger logger) {
+    public Trial(String ID, Logger logger) {
         this.logger = logger;
+        this.participantID = ID;
+
         this.totalTime = 0.0;
         this.totalDistanceParcourue = 0.0;
         this.totalDistanceTheorique = 0.0;

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.Model.Experiment;
 
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private int interactionType;
     // exp
     protected Experiment experiment;
+    protected String ID;
     // logic variables
     protected boolean isRunning;
 
@@ -43,14 +43,12 @@ public class MainActivity extends AppCompatActivity {
         setFullScreen();
         // for now
         interactionType = 1;
-        initLogger();
         initUI();
     }
 
     // init
     protected void initLogger() {
         logger = new Logger(this);
-        String ID = getIntent().getStringExtra("ID");
         // for now
         String interactionType = getIntent().getStringExtra("interactionType");
         logger.initNewLog(ID, interactionType);
@@ -78,6 +76,33 @@ public class MainActivity extends AppCompatActivity {
         this.startTestButton.setEnabled(!isRunning);
         this.startButton.setEnabled(!isRunning);
         this.finishButton.setEnabled(isRunning);
+    }
+
+    protected void startExp(String ID) {
+        initLogger();
+        experiment = new Experiment(ID, this.logger);
+        changeRunningStateTo(true);
+        // test
+        TextView test = (TextView) findViewById(R.id.testPlay);
+        test.setText(ID);
+        experiment.run();
+    }
+
+    protected void finishExp() {
+        // get exp object
+        // exp.stop()
+        changeRunningStateTo(false);
+    }
+
+    protected void startTest() {
+        // create testRun object
+        // testRun.run()
+    }
+
+    protected boolean isValid(String text) {
+        Pattern pattern = Pattern.compile("\\w+?");
+        Matcher matcher = pattern.matcher(text);
+        return matcher.matches();
     }
 
     // Overrides
@@ -171,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
                 String textId = id.getText().toString();
                 Log.d(TAG, textId);
                 if (isValid(textId)) {
+                    ID = textId;
                     startExp(textId);
                     startExpDialog.dismiss();
                 } else {
@@ -230,32 +256,5 @@ public class MainActivity extends AppCompatActivity {
                         // Hide the nav bar and status bar
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
-    }
-
-    // Logic functions
-    protected void startExp(String ID) {
-        experiment = new Experiment(ID, this.logger);
-        changeRunningStateTo(true);
-        // test
-        TextView test = (TextView) findViewById(R.id.testPlay);
-        test.setText(ID);
-        experiment.run();
-    }
-
-    protected void finishExp() {
-        // get exp object
-        // exp.stop()
-        changeRunningStateTo(false);
-    }
-
-    protected void startTest() {
-        // create testRun object
-        // testRun.run()
-    }
-
-    protected boolean isValid(String text) {
-        Pattern pattern = Pattern.compile("\\w+?");
-        Matcher matcher = pattern.matcher(text);
-        return matcher.matches();
     }
 }
