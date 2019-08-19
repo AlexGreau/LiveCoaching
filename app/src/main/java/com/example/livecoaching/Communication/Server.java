@@ -30,6 +30,7 @@ public class Server {
     public void setRunning(boolean bool) {
         running = bool;
         if (!bool) {
+            // TODO : make watch respond to stop / make server send stop message
             this.serverSocketThread.interrupt();
             this.serverSocketThread = null;
         }

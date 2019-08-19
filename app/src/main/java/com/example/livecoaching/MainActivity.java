@@ -86,9 +86,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void finishExp() {
-        // get exp object
-        // exp.stop()
         changeRunningStateTo(false);
+        experiment.stop();
     }
 
     protected void startTest() {

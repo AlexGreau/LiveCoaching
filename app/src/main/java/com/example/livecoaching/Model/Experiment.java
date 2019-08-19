@@ -1,11 +1,13 @@
 package com.example.livecoaching.Model;
 
+import android.util.Log;
+
 import com.example.livecoaching.Logs.Logger;
 
 import java.util.ArrayList;
 
 public class Experiment{
-
+    private final String TAG = "Experiment";
     // values
     private String participantID;
     private int indexInTrials;
@@ -28,6 +30,10 @@ public class Experiment{
         trials.get(0).run();
     }
 
+    public void stop(){
+        trials.get(indexInTrials).stop();
+        Log.d(TAG, "stopping experiment");
+    }
     public void runNextTrial(){
         this.indexInTrials ++;
         initTrials();

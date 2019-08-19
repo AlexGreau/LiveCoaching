@@ -56,7 +56,7 @@ public class Trial implements Decoder {
     }
 
     public void stop() {
-
+        server.setRunning(false);
     }
 
     @Override
