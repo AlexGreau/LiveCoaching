@@ -16,11 +16,17 @@ public class RouteCalculator {
     // for test purposes
     private Location library;
 
-    public RouteCalculator(Location location) {
+    public RouteCalculator(Location location, int difficulty) {
         startingPoint = location;
         route = new ArrayList<Location>();
         route.add(startingPoint);
-        initTestLocations();
+        if (difficulty == 0){
+            getRouteI();
+        } else if (difficulty == 1){
+            getRouteL();
+        } else if (difficulty == 2){
+            getRouteN();
+        }
     }
 
     public void initTestLocations(){
@@ -64,6 +70,20 @@ public class RouteCalculator {
             Location nextLoc = calculateLocation(startingPoint, applyMagic(distWanted), angleWanted);
             route.add(nextLoc);
             Log.d(TAG, "Distance test : " + distanceTest(route.get(0),route.get(1), distWanted) );
+        }
+        return route;
+    }
+
+    public ArrayList<Location> getRouteN(){
+        if (route.size() < 2){
+            double firstDistance = 10;
+            double firstAngle = 135.0;
+            double secondDistance = 20;
+            double secondAngle = 225.0;
+            Location firstLoc = calculateLocation(startingPoint,applyMagic(firstDistance), firstAngle);
+            Location secondLoc = calculateLocation(firstLoc, applyMagic(secondDistance), secondAngle);
+            route.add(firstLoc);
+            route.add(secondLoc);
         }
         return route;
     }
