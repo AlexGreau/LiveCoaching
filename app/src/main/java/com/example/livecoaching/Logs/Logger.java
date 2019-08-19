@@ -59,8 +59,8 @@ public class Logger {
         logs = array;
     }
 
-    public void initNewLog(String ID, String interactionType) {
-        String res = "\r\n" + ID  + separator + interactionType + separator;
+    public void initNewLog(String ID, String interactionType, int difficulty) {
+        String res = "\r\n" + ID  + separator + interactionType + separator + difficulty + separator;
         writeToLogFile(res, true);
     }
 

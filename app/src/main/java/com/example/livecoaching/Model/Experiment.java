@@ -11,11 +11,16 @@ public class Experiment implements TrialOrganiser {
     private final String TAG = "Experiment";
     // values
     private String participantID;
-    private int indexInTrials;
     private Logger logger;
-    private RouteCalculator routeCalculator;
-    private int interactionType;
-    private int difficulty;
+
+    private int currentDifficulty;
+    private int currentInteractionType;
+    private int currentIndex;
+    private final int maxTrialIndexPerCombo = 3;
+    private final int maxDifficultyIndex = 2;
+    private final int maxInteractionIndex = 2;
+
+    private int indexInTrials;
 
     private ArrayList<Trial> trials;
 
@@ -25,50 +30,66 @@ public class Experiment implements TrialOrganiser {
         this.logger = simpleLogger;
         this.indexInTrials = 0;
         initTrials();
+        initCurrents();
     }
 
-    public void run(){
+    public void run() {
         trials.get(0).run();
     }
 
-    public void stop(){
+    public void stop() {
         trials.get(indexInTrials).stop();
         Log.d(TAG, "stopping experiment");
-    }
-    public void runNextTrial(){
-        this.indexInTrials ++;
-        initTrials();
     }
 
     public void initTrials() {
         trials = new ArrayList<>();
         // build all the different trials here
         // 3 difficulties x 3 interaction Types x 4 tries
-        Trial trial;
-        for (int i = 0; i < 3; i ++){// difficulty first
-            for (int j = 1; j < 4; j++){ // interaction type
-                for (int k = 0; k < 4; k++){
-                    trial = new Trial(this.participantID,j,i,this.logger,this);
-                    trials.add(trial);
+        Trial firstTrial = new Trial(participantID, currentInteractionType, currentDifficulty, this.logger, this);
+        trials.add(firstTrial);
+        Log.d(TAG, "trials size : " + trials.size() + "; example : " + trials.get(trials.size() - 1).getParticipantID() + ", " + trials.get(trials.size() - 1).getDifficulty());
+    }
+
+    public void createNextTrial() {
+        Trial nextTrial;
+        currentIndex++;
+        if (currentIndex > maxTrialIndexPerCombo) {
+            currentIndex = 0;
+            // incrementer difficulte
+            currentDifficulty++;
+            if (currentDifficulty > maxDifficultyIndex) {
+                currentDifficulty = 0;
+                currentInteractionType++;
+                if (currentInteractionType > maxInteractionIndex) {
+                    return;
                 }
             }
         }
-
-        Log.d(TAG,"trials size : " + trials.size() + "; example : " + trials.get(trials.size()-1));
+        nextTrial = new Trial(participantID, currentInteractionType, currentDifficulty, this.logger, this);
+        trials.add(nextTrial);
     }
 
     // get and set
-    public Logger getLogger(){
+    public Logger getLogger() {
         return this.logger;
     }
 
     @Override
     public void launchNextTrial() {
-        indexInTrials ++;
-        if (indexInTrials < trials.size()){
+        indexInTrials++;
+        createNextTrial();
+        if (indexInTrials < trials.size()) {
             trials.get(indexInTrials).run();
         } else {
             // message main activity for end
+            // todo : actualize main activity UI on the run
         }
+    }
+
+    public void initCurrents() {
+        currentIndex = 0;
+        currentDifficulty = 0;
+        currentInteractionType = 0;
     }
 }

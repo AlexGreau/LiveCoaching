@@ -29,6 +29,9 @@ public class Trial implements Decoder {
     private Double totalDistanceParcourue;
     private Double totalDistanceTheorique;
 
+    // todo : logSimple()
+    // todo : calculate relevant data : total distance, total time
+
     public Trial(String ID, int interactionType, int difficulty, Logger logger, TrialOrganiser organiser) {
         this.organiser = organiser;
         this.logger = logger;
@@ -44,15 +47,9 @@ public class Trial implements Decoder {
     }
 
     public void init() {
-        logger.initNewLog(participantID, getInteractionString(interactionType));
+        logger.initNewLog(participantID, getInteractionString(interactionType), difficulty);
         actualLocation = new Location(LocationManager.GPS_PROVIDER);
-        initRouteCalculator();
     }
-
-    public void initRouteCalculator() {
-
-    }
-
 
     public void run() {
         server = new Server(this);
@@ -128,7 +125,6 @@ public class Trial implements Decoder {
 
     private void initRouteCalculator(Location loc) {
         routeCalculator = new RouteCalculator(loc, difficulty);
-        // routeCalculator.getRouteI();
         System.out.println("route : " + routeCalculator.getActualRoute());
     }
 
@@ -138,14 +134,46 @@ public class Trial implements Decoder {
 
     public String getInteractionString(int type) {
         String res;
-        if (type == 1) {
+        if (type == 0) {
             res = "haptic";
-        } else if (type == 2) {
+        } else if (type == 1) {
             res = "visual";
         } else {
             res = "haptic and visual";
         }
 
         return res;
+    }
+
+    public int getInteractionType() {
+        return interactionType;
+    }
+
+    public void setInteractionType(int interactionType) {
+        this.interactionType = interactionType;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public Location getActualLocation() {
+        return actualLocation;
+    }
+
+    public void setActualLocation(Location actualLocation) {
+        this.actualLocation = actualLocation;
+    }
+
+    public String getParticipantID() {
+        return participantID;
+    }
+
+    public void setParticipantID(String participantID) {
+        this.participantID = participantID;
     }
 }
