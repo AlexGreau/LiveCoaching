@@ -1,12 +1,12 @@
 package com.example.livecoaching;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -113,9 +113,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "startButton pressed");
+                changeRunningStateTo(true);
                 AlertDialog dialog = buildStartExpDialog();
                 dialog.show();
-                changeRunningStateTo(true);
             }
         });
     }
@@ -144,27 +144,22 @@ public class MainActivity extends AppCompatActivity {
 
     // dialog functions
     public AlertDialog buildStartExpDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Start Experience")
-                .setMessage("Please enter the participant's ID below before continuing")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        EditText ID = findViewById(R.id.IDparticipant);
-                        String IDtext = ID.getText().toString();
-                        if (!isValid(IDtext)) {
-                            startExp(IDtext);
-                        }
-                    }
-                })
-                // A null listener allows the button to dismiss the dialog and take no further action.
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        setFullScreen();
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setView(R.layout.startexp_dialog_layout);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.startexp_dialog_layout, null);
+        EditText id = (EditText) view.findViewById(R.id.IDparticipant);
+        Button continueButton = view.findViewById(R.id.dialogOkButton);
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String textId = id.getText().toString();
+                Log.d(TAG, textId);
+                if (isValid(textId)){
+                    startExp(textId);
+                }
+            }
+        });
+        builder.setView(view);
         return builder.create();
     }
 

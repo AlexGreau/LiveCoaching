@@ -3,6 +3,7 @@ package com.example.livecoaching.Communication;
 import android.location.Location;
 import android.location.LocationManager;
 
+import com.example.livecoaching.Interfaces.Decoder;
 import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.MainActivity;
 import com.example.livecoaching.Model.RouteCalculator;
