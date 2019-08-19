@@ -5,9 +5,8 @@ import android.location.LocationManager;
 
 import com.example.livecoaching.Interfaces.Decoder;
 import com.example.livecoaching.Logs.Logger;
-import com.example.livecoaching.MainActivity;
-import com.example.livecoaching.Model.Experiment;
 import com.example.livecoaching.Model.RouteCalculator;
+import com.example.livecoaching.Model.Trial;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -22,7 +21,7 @@ public class Server implements Decoder {
     protected Thread serverSocketThread;
     protected ServerSocket serverSocket;
     protected boolean running;
-    private Experiment experiment;
+    private Trial trial;
 
     protected Location actualLocation;
     protected Logger logger;
@@ -32,9 +31,9 @@ public class Server implements Decoder {
 
     protected RouteCalculator routeCalculator;
 
-    public Server(Experiment exp) {
-        experiment = exp;
-        this.logger = experiment.getLogger();
+    public Server(Trial trial) {
+        this.trial = trial;
+        this.logger = trial.getLogger();
         serverSocketThread = new Thread(new SocketServerThread());
         running = true;
         actualLocation = new Location(LocationManager.GPS_PROVIDER);
