@@ -42,7 +42,7 @@ public class Server implements Decoder {
     }
 
     @Override
-    public void decodeMessage(String msg) {
+    public String decodeMessage(String msg) {
         // split message
         String[] parts = msg.split(":");
         String senderState = parts[0];
@@ -73,6 +73,8 @@ public class Server implements Decoder {
             parseInfos(parts[1]);
             replyMsg = "route:" + format(routeCalculator.getActualRoute());
         }
+
+        return replyMsg;
     }
 
     public void setRunning(boolean bool){
@@ -99,8 +101,8 @@ public class Server implements Decoder {
     }
 
     private void initRouteCalculator(Location loc) {
-        routeCalculator = new RouteCalculator(loc);
-        routeCalculator.getRouteI();
+        routeCalculator = new RouteCalculator(loc, 0);
+        // routeCalculator.getRouteI();
         System.out.println("route : " + routeCalculator.getActualRoute());
     }
 
@@ -132,7 +134,7 @@ public class Server implements Decoder {
                     messageFromClient = dataInputStream.readUTF();
                     System.out.println("received message from client : " + messageFromClient);
 
-                    decodeMessage(messageFromClient);
+                    replyMsg = decodeMessage(messageFromClient);
                     if (!replyMsg.isEmpty() || replyMsg != null) {
                         System.out.println("Sent : " + replyMsg);
                         dataOutputStream.writeUTF(replyMsg);

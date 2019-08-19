@@ -3,11 +3,12 @@ package com.example.livecoaching.Model;
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Logs.Logger;
 
-public class Trial {
+public class Trial  {
     private Server server;
+    private RouteCalculator routeCalculator;
 
     private int interactionType;
-    private int trajectory;
+    private int difficulty;
 
     // logs
     private Logger logger;
@@ -17,10 +18,11 @@ public class Trial {
     private Double totalDistanceParcourue;
     private Double totalDistanceTheorique;
 
-    public Trial(String ID, int interactionType, Logger logger) {
+    public Trial(String ID, int interactionType,int difficulty, Logger logger) {
         this.logger = logger;
         this.participantID = ID;
         this.interactionType = interactionType;
+        this.difficulty = difficulty;
 
         this.totalTime = 0.0;
         this.totalDistanceParcourue = 0.0;
@@ -31,6 +33,11 @@ public class Trial {
 
     public void init(){
         logger.initNewLog(participantID, getInteractionString(interactionType));
+        initRouteCalculator();
+    }
+
+    public void initRouteCalculator(){
+
     }
 
 
@@ -43,7 +50,8 @@ public class Trial {
 
     }
 
-    public Logger getLogger() {
+
+        public Logger getLogger() {
         return this.logger;
     }
 
