@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "startButton pressed");
-                changeRunningStateTo(true);
                 AlertDialog dialog = buildStartExpDialog();
                 dialog.show();
             }

@@ -17,7 +17,7 @@
         android:layout_below="@id/dialogExplanation"
         android:layout_marginLeft="10sp"
         android:visibility="gone" />
-    
+
     <EditText
         android:id="@+id/IDparticipant"
         android:layout_width="match_parent"
