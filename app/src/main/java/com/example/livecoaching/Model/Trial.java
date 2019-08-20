@@ -5,7 +5,8 @@ import android.location.LocationManager;
 
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Interfaces.TrialOrganiser;
-import com.example.livecoaching.Logs.Logger;
+
+import java.util.ArrayList;
 
 public class Trial {
 
@@ -15,9 +16,6 @@ public class Trial {
 
     private int interactionType;
     private int difficulty;
-
-    // logs
-    private Logger simpleLogger;
 
     // data
     private Location actualLocation;
@@ -29,9 +27,9 @@ public class Trial {
     // todo : logSimple()
     // todo : calculate relevant data : total distance, total time
 
-    public Trial(String ID, int interactionType, int difficulty, Logger simpleLogger, TrialOrganiser organiser) {
+    public Trial(String ID, int interactionType, int difficulty, TrialOrganiser organiser) {
         this.organiser = organiser;
-        this.simpleLogger = simpleLogger;
+
         this.participantID = ID;
         this.interactionType = interactionType;
         this.difficulty = difficulty;
@@ -44,38 +42,29 @@ public class Trial {
     }
 
     public void init() {
-        simpleLogger.initNewLog(participantID, getInteractionString(interactionType), difficulty);
         actualLocation = new Location(LocationManager.GPS_PROVIDER);
     }
 
     public void stop() {
-        //server.setRunning(false);
         stopLogging();
         organiser.launchNextTrial();
     }
 
-    public void parseInfos(String str) {
+    public Location parseInfos(String str) {
         String[] infos = str.split("-");
         actualLocation.setLatitude(Float.parseFloat(infos[0]));
         actualLocation.setLongitude(Float.parseFloat(infos[1]));
-        simpleLogger.getLogsArray().add(actualLocation);
-        // System.out.println("added location to log : " + actualLocation);
+
+        return actualLocation;
     }
 
     public void stopLogging() {
         System.out.println("stopping the logging");
-        System.out.println(simpleLogger.getLogsArray().size());
-        simpleLogger.flushLogArray();
-        simpleLogger.readLogFile();
     }
 
     public void initRouteCalculator(Location loc) {
         routeCalculator = new RouteCalculator(loc, difficulty);
         System.out.println("route : " + routeCalculator.getActualRoute());
-    }
-
-    public Logger getSimpleLogger() {
-        return this.simpleLogger;
     }
 
     public String getInteractionString(int type) {
@@ -90,6 +79,8 @@ public class Trial {
 
         return res;
     }
+
+
 
     public int getInteractionType() {
         return interactionType;

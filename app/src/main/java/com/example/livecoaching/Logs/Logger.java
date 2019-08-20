@@ -59,20 +59,15 @@ public class Logger {
         logs = array;
     }
 
-    public void initNewLog(String ID, String interactionType, int difficulty) {
-        String res = "\r\n" + ID + separator + interactionType + separator + difficulty + separator;
-        writeToLogFile(res, true);
-    }
-
     public void writeCompleteLog(String ID, String interactionType, int difficulty, int trialNumber, int partOfRoute, Location loc, String timestamp) {
-        String log = "\\r\\n" + ID + separator + interactionType + separator + difficulty + separator + trialNumber + separator;
+        String log = "\r\n" + ID + separator + interactionType + separator + difficulty + separator + trialNumber + separator;
         String coordinates = "" + loc.getLatitude() + coordinatesSeparator + loc.getLongitude();
         log = log + coordinates + separator + partOfRoute + separator + timestamp;
         writeToLogFile(log, true);
     }
 
     public void writeSimpleLog(String ID, String interactionType, int difficulty, int trialNumber, double theoricDistance, double totalTime, double totalRealDistance){
-        String log = "\\r\\n" + ID + separator + interactionType + separator + difficulty + separator + trialNumber + separator;
+        String log = "\r\n" + ID + separator + interactionType + separator + difficulty + separator + trialNumber + separator;
         log = log + theoricDistance + separator + totalTime + separator + totalRealDistance;
 
         writeToLogFile(log,true);

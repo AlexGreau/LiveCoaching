@@ -50,7 +50,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         trials = new ArrayList<>();
         // build all the different trials here
         // 3 difficulties x 3 interaction Types x 4 tries
-        Trial firstTrial = new Trial(participantID, currentInteractionType, currentDifficulty, this.logger, this);
+        Trial firstTrial = new Trial(participantID, currentInteractionType, currentDifficulty, this);
         trials.add(firstTrial);
         Log.d(TAG, "trials size : " + trials.size() + "; example : " + trials.get(trials.size() - 1).getParticipantID() + ", " + trials.get(trials.size() - 1).getDifficulty());
     }
@@ -70,7 +70,7 @@ public class Experiment implements TrialOrganiser, Decoder {
                 }
             }
         }
-        nextTrial = new Trial(participantID, currentInteractionType, currentDifficulty, this.logger, this);
+        nextTrial = new Trial(participantID, currentInteractionType, currentDifficulty, this);
         trials.add(nextTrial);
     }
 
@@ -103,19 +103,20 @@ public class Experiment implements TrialOrganiser, Decoder {
             replyMsg = "continue:" + concernedTrial.getInteractionType();
             if (parts.length >= 2) {
                 logger.getLogsArray().clear();
-                concernedTrial.parseInfos(parts[1]);
-                concernedTrial.initRouteCalculator(logger.getLogsArray().get(0));
+                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]));
+                concernedTrial.initRouteCalculator(concernedTrial.getActualLocation());
             }
         } else if (senderState.equals("Running")) {
             System.out.println("detected " + senderState);
             replyMsg = "";
             if (parts.length >= 2) {
-                concernedTrial.parseInfos(parts[1]);
+                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]));
             }
         } else if (senderState.equals("Stop")) {
             System.out.println("detected " + senderState);
             if (parts.length >= 2) {
-                concernedTrial.parseInfos(parts[1]);
+                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]));
+                simpleLogIt(concernedTrial);
             }
             replyMsg = "";
             stop();
@@ -143,4 +144,21 @@ public class Experiment implements TrialOrganiser, Decoder {
         currentDifficulty = 0;
         currentInteractionType = 0;
     }
+
+    public void completeLogIt(Trial trial, Location loc){
+        logger.writeCompleteLog(participantID,
+                trial.getInteractionString(trial.getInteractionType()),
+                trial.getDifficulty(),
+                indexInTrials,
+                0,
+                loc,
+                "0");
+    }
+
+    public void simpleLogIt(Trial trial){
+        // launch calculations of data
+        // log these datas
+
+    }
+
 }
