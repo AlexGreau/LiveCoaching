@@ -16,6 +16,7 @@ public class Trial {
     private int difficulty;
 
     // data
+    private long startingTime;
     private Location actualLocation;
     private String participantID;
     private long totalTime;
@@ -78,16 +79,24 @@ public class Trial {
         return res;
     }
 
+    public void calculateTotalTimeUntil( long time){
+        this.totalTime = (time - this.startingTime)/1000;
+    }
+
+    public void setStartingTime(long t){
+        this.startingTime = t;
+    }
+
+    public long getStartingTime(){
+        return this.startingTime;
+    }
+
     public double getTheoricDistance() {
         return totalDistanceTheorique;
     }
 
     public long getTotalTime() {
         return totalTime;
-    }
-
-    public void setTotalTime(long t) {
-        this.totalTime = t;
     }
 
     public void setTotalDistanceParcourue(double d) {

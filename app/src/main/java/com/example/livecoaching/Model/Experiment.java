@@ -109,6 +109,7 @@ public class Experiment implements TrialOrganiser, Decoder {
                 logger.getLogsArray().clear();
                 completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]),time);
                 concernedTrial.initRouteCalculator(concernedTrial.getActualLocation());
+                concernedTrial.setStartingTime(time);
             }
         } else if (senderState.equals("Running")) {
             System.out.println("detected " + senderState);
@@ -119,6 +120,8 @@ public class Experiment implements TrialOrganiser, Decoder {
         } else if (senderState.equals("Stop")) {
             System.out.println("detected " + senderState);
             if (parts.length >= 2) {
+                concernedTrial.calculateTotalTimeUntil(time)
+                ;
                 completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]),time);
                 simpleLogIt(concernedTrial);
             }
@@ -172,8 +175,8 @@ public class Experiment implements TrialOrganiser, Decoder {
         );
     }
 
-    public void updateTotals(Trial trial){
+    public void updateTimeTotal(Trial trial, long time){
+        long before = trial.getTotalTime();
 
     }
-
 }
