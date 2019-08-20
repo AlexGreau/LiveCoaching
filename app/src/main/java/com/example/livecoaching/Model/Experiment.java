@@ -127,6 +127,7 @@ public class Experiment implements TrialOrganiser, Decoder {
             System.out.println("detected " + senderState);
             if (parts.length >= 2) {
                 concernedTrial.calculateTotalTimeUntil(time);
+                concernedTrial.calculateTheoricDistance();
                 completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
                 simpleLogIt(concernedTrial);
             }
