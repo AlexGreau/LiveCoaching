@@ -107,19 +107,19 @@ public class Experiment implements TrialOrganiser, Decoder {
             replyMsg = "continue:" + concernedTrial.getInteractionType();
             if (parts.length >= 2) {
                 logger.getLogsArray().clear();
-                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]));
+                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]),time);
                 concernedTrial.initRouteCalculator(concernedTrial.getActualLocation());
             }
         } else if (senderState.equals("Running")) {
             System.out.println("detected " + senderState);
             replyMsg = "";
             if (parts.length >= 2) {
-                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]));
+                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]),time);
             }
         } else if (senderState.equals("Stop")) {
             System.out.println("detected " + senderState);
             if (parts.length >= 2) {
-                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]));
+                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]),time);
                 simpleLogIt(concernedTrial);
             }
             replyMsg = "";
@@ -127,7 +127,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         } else if (senderState.equals("End")) {
             replyMsg = "reset";
         } else if (senderState.equals("Asking")) {
-            completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]));
+            completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]),time);
             replyMsg = "route:" + format(concernedTrial.getRouteCalculator().getActualRoute());
         }
 
@@ -149,14 +149,14 @@ public class Experiment implements TrialOrganiser, Decoder {
         currentInteractionType = 0;
     }
 
-    public void completeLogIt(Trial trial, Location loc) {
+    public void completeLogIt(Trial trial, Location loc, long time) {
         logger.writeCompleteLog(participantID,
                 trial.getInteractionString(trial.getInteractionType()),
                 trial.getDifficulty(),
                 indexInTrials,
                 0,
                 loc,
-                "0");
+                time);
     }
 
     public void simpleLogIt(Trial trial) {
@@ -170,6 +170,10 @@ public class Experiment implements TrialOrganiser, Decoder {
                 trial.getTotalTime(),
                 trial.getTotalDistance()
         );
+    }
+
+    public void updateTotals(Trial trial){
+
     }
 
 }

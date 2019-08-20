@@ -18,7 +18,7 @@ public class Trial {
     // data
     private Location actualLocation;
     private String participantID;
-    private Double totalTime;
+    private long totalTime;
     private Double totalDistanceParcourue;
     private Double totalDistanceTheorique;
 
@@ -32,7 +32,7 @@ public class Trial {
         this.interactionType = interactionType;
         this.difficulty = difficulty;
 
-        this.totalTime = 0.0;
+        this.totalTime = 0;
         this.totalDistanceParcourue = 0.0;
         this.totalDistanceTheorique = 0.0;
 
@@ -82,15 +82,25 @@ public class Trial {
         return totalDistanceTheorique;
     }
 
-    public Double getTotalTime() {
+    public long getTotalTime() {
         return totalTime;
     }
 
+    public void setTotalTime(long t) {
+        this.totalTime = t;
+    }
+
+    public void setTotalDistanceParcourue(double d) {
+        this.totalDistanceParcourue = d;
+    }
+
+    public void setTotalDistanceTheorique(double d) {
+        this.totalDistanceTheorique = d;
+    }
 
     public double getTotalDistance() {
         return totalDistanceParcourue;
     }
-
 
     public int getInteractionType() {
         return interactionType;

@@ -73,7 +73,7 @@ public class Logger {
         logs = array;
     }
 
-    public void writeCompleteLog(String ID, String interactionType, int difficulty, int trialNumber, int partOfRoute, Location loc, String timestamp) {
+    public void writeCompleteLog(String ID, String interactionType, int difficulty, int trialNumber, int partOfRoute, Location loc, long timestamp) {
         String log = "\r\n" + ID + separator + interactionType + separator + difficulty + separator + trialNumber + separator;
         String coordinates = "" + loc.getLatitude() + coordinatesSeparator + loc.getLongitude();
         log = log + coordinates + separator + partOfRoute + separator + timestamp;
