@@ -9,7 +9,6 @@ import com.example.livecoaching.Interfaces.TrialOrganiser;
 import com.example.livecoaching.Logs.Logger;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class Experiment implements TrialOrganiser, Decoder {
     private final String TAG = "Experiment";
@@ -28,6 +27,8 @@ public class Experiment implements TrialOrganiser, Decoder {
     private int indexInTrials;
 
     private ArrayList<Trial> trials;
+
+    private boolean isStartingRunningLog = true;
 
 
     public Experiment(String participantID, Logger simpleLogger) {
@@ -82,6 +83,7 @@ public class Experiment implements TrialOrganiser, Decoder {
 
     @Override
     public void launchNextTrial() {
+        isStartingRunningLog = true;
         indexInTrials++;
         createNextTrial();
         if (indexInTrials < trials.size()) {
@@ -109,9 +111,12 @@ public class Experiment implements TrialOrganiser, Decoder {
                 logger.getLogsArray().clear();
                 completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]),time);
                 concernedTrial.initRouteCalculator(concernedTrial.getActualLocation());
-                concernedTrial.setStartingTime(time);
             }
         } else if (senderState.equals("Running")) {
+            if (isStartingRunningLog){
+                concernedTrial.setStartingTime(time);
+                isStartingRunningLog = false;
+            }
             System.out.println("detected " + senderState);
             replyMsg = "";
             if (parts.length >= 2) {
@@ -120,8 +125,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         } else if (senderState.equals("Stop")) {
             System.out.println("detected " + senderState);
             if (parts.length >= 2) {
-                concernedTrial.calculateTotalTimeUntil(time)
-                ;
+                concernedTrial.calculateTotalTimeUntil(time);
                 completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]),time);
                 simpleLogIt(concernedTrial);
             }
