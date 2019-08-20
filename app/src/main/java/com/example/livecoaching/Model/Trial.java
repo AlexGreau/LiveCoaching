@@ -23,8 +23,6 @@ public class Trial {
     private Double totalDistanceParcourue;
     private Double totalDistanceTheorique;
 
-    // todo : logSimple()
-    // todo : calculate relevant data : total distance, total time
 
     public Trial(String ID, int interactionType, int difficulty, TrialOrganiser organiser) {
         this.organiser = organiser;
@@ -50,10 +48,15 @@ public class Trial {
     }
 
     public Location parseInfos(String str) {
-        System.out.println("message tel quel : " + str);
         String[] infos = str.split("-");
-        actualLocation.setLatitude(Float.parseFloat(infos[0]));
-        actualLocation.setLongitude(Float.parseFloat(infos[1]));
+        float lat = Float.parseFloat(infos[0]);
+        float longi = Float.parseFloat(infos[1]);
+        Location newLocation = new Location(LocationManager.GPS_PROVIDER);
+        newLocation.setLatitude(lat);
+        newLocation.setLongitude(longi);
+        totalDistanceParcourue += actualLocation.distanceTo(newLocation);
+        actualLocation.setLatitude(lat);
+        actualLocation.setLongitude(longi);
         return actualLocation;
     }
 
@@ -80,7 +83,7 @@ public class Trial {
     }
 
     public void calculateTotalTimeUntil( long time){
-        this.totalTime = (time - this.startingTime)/1000;
+        this.totalTime = (time - this.startingTime);
     }
 
     public void setStartingTime(long t){

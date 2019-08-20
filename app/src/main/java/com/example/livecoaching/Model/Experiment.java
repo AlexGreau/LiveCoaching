@@ -99,34 +99,35 @@ public class Experiment implements TrialOrganiser, Decoder {
         Trial concernedTrial = trials.get(indexInTrials);
         String replyMsg = "";
         // split message
-        String [] extracts= msg.split("_");
-        long time = Long.parseLong(extracts[extracts.length-1]);
-        System.out.println("message : " + msg + ";  time : " + time);
+        String[] extracts = msg.split("_");
+        long time = Long.parseLong(extracts[extracts.length - 1]);
         String[] parts = extracts[0].split(":");
         String senderState = parts[0];
+        int partOfroute = 0;
         // interpret results
         if (senderState.equals("Ready")) {
             replyMsg = "continue:" + concernedTrial.getInteractionType();
             if (parts.length >= 2) {
                 logger.getLogsArray().clear();
-                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]),time);
+                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
                 concernedTrial.initRouteCalculator(concernedTrial.getActualLocation());
             }
         } else if (senderState.equals("Running")) {
-            if (isStartingRunningLog){
+            if (isStartingRunningLog) {
                 concernedTrial.setStartingTime(time);
                 isStartingRunningLog = false;
             }
             System.out.println("detected " + senderState);
             replyMsg = "";
             if (parts.length >= 2) {
-                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]),time);
+                partOfroute = Integer.parseInt(parts[2]);
+                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
             }
         } else if (senderState.equals("Stop")) {
             System.out.println("detected " + senderState);
             if (parts.length >= 2) {
                 concernedTrial.calculateTotalTimeUntil(time);
-                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]),time);
+                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
                 simpleLogIt(concernedTrial);
             }
             replyMsg = "";
@@ -134,7 +135,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         } else if (senderState.equals("End")) {
             replyMsg = "reset";
         } else if (senderState.equals("Asking")) {
-            completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]),time);
+            completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
             replyMsg = "route:" + format(concernedTrial.getRouteCalculator().getActualRoute());
         }
 
@@ -156,12 +157,12 @@ public class Experiment implements TrialOrganiser, Decoder {
         currentInteractionType = 0;
     }
 
-    public void completeLogIt(Trial trial, Location loc, long time) {
+    public void completeLogIt(Trial trial, Location loc, long time, int partOfroute) {
         logger.writeCompleteLog(participantID,
                 trial.getInteractionString(trial.getInteractionType()),
                 trial.getDifficulty(),
                 indexInTrials,
-                0,
+                partOfroute,
                 loc,
                 time);
     }
@@ -179,7 +180,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         );
     }
 
-    public void updateTimeTotal(Trial trial, long time){
+    public void updateTimeTotal(Trial trial, long time) {
         long before = trial.getTotalTime();
 
     }
