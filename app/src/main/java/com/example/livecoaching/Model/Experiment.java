@@ -9,6 +9,7 @@ import com.example.livecoaching.Interfaces.TrialOrganiser;
 import com.example.livecoaching.Logs.Logger;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Experiment implements TrialOrganiser, Decoder {
     private final String TAG = "Experiment";
@@ -96,7 +97,10 @@ public class Experiment implements TrialOrganiser, Decoder {
         Trial concernedTrial = trials.get(indexInTrials);
         String replyMsg = "";
         // split message
-        String[] parts = msg.split(":");
+        String [] extracts= msg.split("_");
+        long time = Long.parseLong(extracts[extracts.length-1]);
+        System.out.println("message : " + msg + ";  time : " + time);
+        String[] parts = extracts[0].split(":");
         String senderState = parts[0];
         // interpret results
         if (senderState.equals("Ready")) {
@@ -145,7 +149,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         currentInteractionType = 0;
     }
 
-    public void completeLogIt(Trial trial, Location loc){
+    public void completeLogIt(Trial trial, Location loc) {
         logger.writeCompleteLog(participantID,
                 trial.getInteractionString(trial.getInteractionType()),
                 trial.getDifficulty(),
@@ -155,7 +159,7 @@ public class Experiment implements TrialOrganiser, Decoder {
                 "0");
     }
 
-    public void simpleLogIt(Trial trial){
+    public void simpleLogIt(Trial trial) {
         // launch calculations of data
         // log these datas
         logger.writeSimpleLog(participantID,
@@ -165,7 +169,7 @@ public class Experiment implements TrialOrganiser, Decoder {
                 trial.getTheoricDistance(),
                 trial.getTotalTime(),
                 trial.getTotalDistance()
-                );
+        );
     }
 
 }

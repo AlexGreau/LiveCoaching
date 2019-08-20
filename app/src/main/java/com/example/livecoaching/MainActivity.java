@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.Model.Experiment;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

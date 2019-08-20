@@ -49,10 +49,10 @@ public class Trial {
     }
 
     public Location parseInfos(String str) {
+        System.out.println("message tel quel : " + str);
         String[] infos = str.split("-");
         actualLocation.setLatitude(Float.parseFloat(infos[0]));
         actualLocation.setLongitude(Float.parseFloat(infos[1]));
-
         return actualLocation;
     }
 
@@ -78,16 +78,16 @@ public class Trial {
         return res;
     }
 
-    public double getTheoricDistance(){
+    public double getTheoricDistance() {
         return totalDistanceTheorique;
     }
 
-    public Double getTotalTime(){
+    public Double getTotalTime() {
         return totalTime;
     }
 
 
-    public double getTotalDistance(){
+    public double getTotalDistance() {
         return totalDistanceParcourue;
     }
 
