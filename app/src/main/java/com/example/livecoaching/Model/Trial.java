@@ -17,7 +17,7 @@ public class Trial {
     private int difficulty;
 
     // logs
-    private Logger logger;
+    private Logger simpleLogger;
 
     // data
     private Location actualLocation;
@@ -29,9 +29,9 @@ public class Trial {
     // todo : logSimple()
     // todo : calculate relevant data : total distance, total time
 
-    public Trial(String ID, int interactionType, int difficulty, Logger logger, TrialOrganiser organiser) {
+    public Trial(String ID, int interactionType, int difficulty, Logger simpleLogger, TrialOrganiser organiser) {
         this.organiser = organiser;
-        this.logger = logger;
+        this.simpleLogger = simpleLogger;
         this.participantID = ID;
         this.interactionType = interactionType;
         this.difficulty = difficulty;
@@ -44,7 +44,7 @@ public class Trial {
     }
 
     public void init() {
-        logger.initNewLog(participantID, getInteractionString(interactionType), difficulty);
+        simpleLogger.initNewLog(participantID, getInteractionString(interactionType), difficulty);
         actualLocation = new Location(LocationManager.GPS_PROVIDER);
     }
 
@@ -58,15 +58,15 @@ public class Trial {
         String[] infos = str.split("-");
         actualLocation.setLatitude(Float.parseFloat(infos[0]));
         actualLocation.setLongitude(Float.parseFloat(infos[1]));
-        logger.getLogsArray().add(actualLocation);
+        simpleLogger.getLogsArray().add(actualLocation);
         // System.out.println("added location to log : " + actualLocation);
     }
 
     public void stopLogging() {
         System.out.println("stopping the logging");
-        System.out.println(logger.getLogsArray().size());
-        logger.flushLogArray();
-        logger.readLogFile();
+        System.out.println(simpleLogger.getLogsArray().size());
+        simpleLogger.flushLogArray();
+        simpleLogger.readLogFile();
     }
 
     public void initRouteCalculator(Location loc) {
@@ -74,8 +74,8 @@ public class Trial {
         System.out.println("route : " + routeCalculator.getActualRoute());
     }
 
-    public Logger getLogger() {
-        return this.logger;
+    public Logger getSimpleLogger() {
+        return this.simpleLogger;
     }
 
     public String getInteractionString(int type) {

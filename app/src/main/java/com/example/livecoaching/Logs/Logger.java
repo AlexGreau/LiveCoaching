@@ -5,7 +5,6 @@ import android.location.Location;
 import android.os.Environment;
 import android.util.Log;
 
-
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
@@ -22,13 +21,14 @@ public class Logger {
 
     protected ArrayList<Location> logs;
     protected File logsFile;
-    protected final String fileName = "trainingLogs.txt";
+    protected final String fileName;
     protected final String filePath = "LogsDirectory";
     protected final String separator = ";";
     protected final String coordinatesSeparator = ",";
     protected Context context;
 
-    public Logger(Context context) {
+    public Logger(Context context, String fileName) {
+        this.fileName = fileName;
         this.context = context;
         logs = new ArrayList<Location>();
         initFile();
@@ -60,8 +60,22 @@ public class Logger {
     }
 
     public void initNewLog(String ID, String interactionType, int difficulty) {
-        String res = "\r\n" + ID  + separator + interactionType + separator + difficulty + separator;
+        String res = "\r\n" + ID + separator + interactionType + separator + difficulty + separator;
         writeToLogFile(res, true);
+    }
+
+    public void writeCompleteLog(String ID, String interactionType, int difficulty, int trialNumber, int partOfRoute, Location loc, String timestamp) {
+        String log = "\\r\\n" + ID + separator + interactionType + separator + difficulty + separator + trialNumber + separator;
+        String coordinates = "" + loc.getLatitude() + coordinatesSeparator + loc.getLongitude();
+        log = log + coordinates + separator + partOfRoute + separator + timestamp;
+        writeToLogFile(log, true);
+    }
+
+    public void writeSimpleLog(String ID, String interactionType, int difficulty, int trialNumber, double theoricDistance, double totalTime, double totalRealDistance){
+        String log = "\\r\\n" + ID + separator + interactionType + separator + difficulty + separator + trialNumber + separator;
+        log = log + theoricDistance + separator + totalTime + separator + totalRealDistance;
+
+        writeToLogFile(log,true);
     }
 
     public void flushLogArray() {
@@ -88,7 +102,6 @@ public class Logger {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        readLogFile();
     }
 
     public void readLogFile() {
@@ -99,7 +112,7 @@ public class Logger {
             DataInputStream dataInputStream = new DataInputStream(fileInputStream);
             BufferedReader buff = new BufferedReader(new InputStreamReader(dataInputStream));
 
-            while ( (line = buff.readLine())!= null){
+            while ((line = buff.readLine()) != null) {
                 myData = myData + line;
             }
             dataInputStream.close();
