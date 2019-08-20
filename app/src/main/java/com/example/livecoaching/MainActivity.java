@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     // init
     protected void initLoggers() {
-        simpleLogger = new Logger(this, "simpleLogsFile.txt");
+        simpleLogger = new Logger(this);
     }
 
     public void initUI() {

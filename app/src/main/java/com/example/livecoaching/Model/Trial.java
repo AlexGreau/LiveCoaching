@@ -6,8 +6,6 @@ import android.location.LocationManager;
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Interfaces.TrialOrganiser;
 
-import java.util.ArrayList;
-
 public class Trial {
 
     private TrialOrganiser organiser;
@@ -80,6 +78,18 @@ public class Trial {
         return res;
     }
 
+    public double getTheoricDistance(){
+        return totalDistanceTheorique;
+    }
+
+    public Double getTotalTime(){
+        return totalTime;
+    }
+
+
+    public double getTotalDistance(){
+        return totalDistanceParcourue;
+    }
 
 
     public int getInteractionType() {

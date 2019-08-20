@@ -123,7 +123,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         } else if (senderState.equals("End")) {
             replyMsg = "reset";
         } else if (senderState.equals("Asking")) {
-            concernedTrial.parseInfos(parts[1]);
+            completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]));
             replyMsg = "route:" + format(concernedTrial.getRouteCalculator().getActualRoute());
         }
 
@@ -158,7 +158,14 @@ public class Experiment implements TrialOrganiser, Decoder {
     public void simpleLogIt(Trial trial){
         // launch calculations of data
         // log these datas
-
+        logger.writeSimpleLog(participantID,
+                trial.getInteractionString(trial.getInteractionType()),
+                trial.getDifficulty(),
+                indexInTrials,
+                trial.getTheoricDistance(),
+                trial.getTotalTime(),
+                trial.getTotalDistance()
+                );
     }
 
 }

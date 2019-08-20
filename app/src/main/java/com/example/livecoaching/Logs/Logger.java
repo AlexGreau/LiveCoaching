@@ -20,15 +20,16 @@ public class Logger {
     private final String TAG = "Logger";
 
     protected ArrayList<Location> logs;
-    protected File logsFile;
-    protected final String fileName;
+    protected File completeLogsFile;
+    protected File simpleLogsFile;
+    protected final String completeLogsFileName = "completeTrainingLogs.txt";
+    protected final String simpleLogsFileName = "simpleTrainingLogs.txt";
     protected final String filePath = "LogsDirectory";
     protected final String separator = ";";
     protected final String coordinatesSeparator = ",";
     protected Context context;
 
-    public Logger(Context context, String fileName) {
-        this.fileName = fileName;
+    public Logger(Context context) {
         this.context = context;
         logs = new ArrayList<Location>();
         initFile();
@@ -37,14 +38,27 @@ public class Logger {
     protected void initFile() {
         // Log.d(TAG, "external storage is available for read and write : " + isExternalStorageWritable());
         // Log.d(TAG, " external storage is Available : " + isExternalStorageAvailable());
-        logsFile = new File(context.getExternalFilesDir(filePath), fileName);
-        if (logsFile.exists()) {
+        completeLogsFile = new File(context.getExternalFilesDir(filePath), completeLogsFileName);
+        if (completeLogsFile.exists()) {
             Log.d(TAG, "file exists !");
         } else {
             Log.e(TAG, "file does not exist... creating it");
             try {
-                logsFile.createNewFile();
-                writeToLogFile("TrainingLogs", false);
+                completeLogsFile.createNewFile();
+                writeToLogFile("TrainingLogs", false,false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        simpleLogsFile = new File(context.getExternalFilesDir(filePath), simpleLogsFileName);
+        if (simpleLogsFile.exists()) {
+            Log.d(TAG, "file exists !");
+        } else {
+            Log.e(TAG, "file does not exist... creating it");
+            try {
+                simpleLogsFile.createNewFile();
+                writeToLogFile("TrainingLogs", false,true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -63,31 +77,26 @@ public class Logger {
         String log = "\r\n" + ID + separator + interactionType + separator + difficulty + separator + trialNumber + separator;
         String coordinates = "" + loc.getLatitude() + coordinatesSeparator + loc.getLongitude();
         log = log + coordinates + separator + partOfRoute + separator + timestamp;
-        writeToLogFile(log, true);
+        writeToLogFile(log, true, false);
     }
 
     public void writeSimpleLog(String ID, String interactionType, int difficulty, int trialNumber, double theoricDistance, double totalTime, double totalRealDistance){
         String log = "\r\n" + ID + separator + interactionType + separator + difficulty + separator + trialNumber + separator;
         log = log + theoricDistance + separator + totalTime + separator + totalRealDistance;
 
-        writeToLogFile(log,true);
+        writeToLogFile(log,true, true);
     }
 
-    public void flushLogArray() {
-        StringBuilder logString = new StringBuilder();
-        for (Location loc : logs) {
-            logString.append(loc.getLatitude());
-            logString.append(coordinatesSeparator);
-            logString.append(loc.getLongitude());
-            logString.append(separator);
-        }
-        writeToLogFile(logString.toString(), true);
-    }
-
-    public void writeToLogFile(String text, boolean append) {
+    public void writeToLogFile(String text, boolean append, boolean isSimpleLog) {
         FileOutputStream stream = null;
+        File file;
+        if (isSimpleLog){
+            file = simpleLogsFile;
+        } else {
+            file = completeLogsFile;
+        }
         try {
-            stream = new FileOutputStream(logsFile, append);
+            stream = new FileOutputStream(file, append);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -103,7 +112,7 @@ public class Logger {
         String line = "";
         String myData = "";
         try {
-            FileInputStream fileInputStream = new FileInputStream(logsFile);
+            FileInputStream fileInputStream = new FileInputStream(completeLogsFile);
             DataInputStream dataInputStream = new DataInputStream(fileInputStream);
             BufferedReader buff = new BufferedReader(new InputStreamReader(dataInputStream));
 
@@ -115,14 +124,6 @@ public class Logger {
             Log.e(TAG, "Can not read file: " + e.toString());
         }
         Log.d(TAG, "whats on the file :" + myData);
-    }
-
-    public void resetLogsArray() {
-        logs = new ArrayList<Location>();
-    }
-
-    public void clearFile() {
-        writeToLogFile("", false);
     }
 
     public boolean isExternalStorageWritable() {
