@@ -1,11 +1,6 @@
 package com.example.livecoaching.Communication;
 
-import android.location.Location;
-import android.location.LocationManager;
-
 import com.example.livecoaching.Interfaces.Decoder;
-import com.example.livecoaching.Logs.Logger;
-import com.example.livecoaching.Model.RouteCalculator;
 import com.example.livecoaching.Model.Trial;
 
 import java.io.DataInputStream;
@@ -13,104 +8,33 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
-public class Server implements Decoder {
+public class Server {
 
     protected final int PORT = 8080;
     protected Thread serverSocketThread;
     protected ServerSocket serverSocket;
     protected boolean running;
-    private Trial trial;
-
-    protected Location actualLocation;
-    protected Logger logger;
+    private Decoder decoder;
 
     protected String messageFromClient;
     protected String replyMsg;
 
-    protected RouteCalculator routeCalculator;
-
-    public Server(Trial trial) {
-        this.trial = trial;
-        this.logger = trial.getLogger();
+    public Server(Decoder decoder) {
+        this.decoder = decoder;
         serverSocketThread = new Thread(new SocketServerThread());
         running = true;
-        actualLocation = new Location(LocationManager.GPS_PROVIDER);
         serverSocketThread.start();
         System.out.println("Server launched");
     }
 
-    @Override
-    public void decodeMessage(String msg) {
-        // split message
-        String[] parts = msg.split(":");
-        String senderState = parts[0];
-        // interpret results
-        if (senderState.equals("Ready")) {
-            replyMsg = "continue:" + 2;
-            if (parts.length >= 2) {
-                logger.getLogsArray().clear();
-                parseInfos(parts[1]);
-                initRouteCalculator(logger.getLogsArray().get(0));
-            }
-        } else if (senderState.equals("Running")) {
-            System.out.println("detected " + senderState);
-            replyMsg = "";
-            if (parts.length >= 2) {
-                parseInfos(parts[1]);
-            }
-        } else if (senderState.equals("Stop")) {
-            System.out.println("detected " + senderState);
-            if (parts.length >= 2) {
-                parseInfos(parts[1]);
-            }
-            replyMsg ="";
-            stopLogging();
-        } else if (senderState.equals("End")) {
-            replyMsg = "reset";
-        } else if (senderState.equals("Asking")) {
-            parseInfos(parts[1]);
-            replyMsg = "route:" + format(routeCalculator.getActualRoute());
-        }
-    }
-
-    public void setRunning(boolean bool){
+    public void setRunning(boolean bool) {
         running = bool;
         if (!bool) {
+            // TODO : make watch respond to stop / make server send stop message
             this.serverSocketThread.interrupt();
             this.serverSocketThread = null;
         }
-    }
-
-    private void parseInfos(String str) {
-        String[] infos = str.split("-");
-        actualLocation.setLatitude(Float.parseFloat(infos[0]));
-        actualLocation.setLongitude(Float.parseFloat(infos[1]));
-        logger.getLogsArray().add(actualLocation);
-        // System.out.println("added location to log : " + actualLocation);
-    }
-
-    private void stopLogging() {
-        System.out.println("stopping the logging");
-        System.out.println(logger.getLogsArray().size());
-        logger.flushLogArray();
-        logger.readLogFile();
-    }
-
-    private void initRouteCalculator(Location loc) {
-        routeCalculator = new RouteCalculator(loc);
-        routeCalculator.getRouteI();
-        System.out.println("route : " + routeCalculator.getActualRoute());
-    }
-
-    private String format(ArrayList<Location> locs) {
-        // formats the array of location into a sendable message
-        String res = "";
-        for (Location loc : locs) {
-            res += loc.getLatitude() + "-" + loc.getLongitude() + ";";
-        }
-        return res;
     }
 
     private class SocketServerThread extends Thread {
@@ -132,7 +56,7 @@ public class Server implements Decoder {
                     messageFromClient = dataInputStream.readUTF();
                     System.out.println("received message from client : " + messageFromClient);
 
-                    decodeMessage(messageFromClient);
+                    replyMsg = decoder.decodeMessage(messageFromClient);
                     if (!replyMsg.isEmpty() || replyMsg != null) {
                         System.out.println("Sent : " + replyMsg);
                         dataOutputStream.writeUTF(replyMsg);

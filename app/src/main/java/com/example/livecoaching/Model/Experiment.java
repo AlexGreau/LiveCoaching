@@ -1,17 +1,30 @@
 package com.example.livecoaching.Model;
 
+import android.location.Location;
+import android.util.Log;
+
+import com.example.livecoaching.Communication.Server;
+import com.example.livecoaching.Interfaces.Decoder;
+import com.example.livecoaching.Interfaces.TrialOrganiser;
 import com.example.livecoaching.Logs.Logger;
 
 import java.util.ArrayList;
 
-public class Experiment{
-
+public class Experiment implements TrialOrganiser, Decoder {
+    private final String TAG = "Experiment";
     // values
     private String participantID;
-    private int indexInTrials;
     private Logger logger;
-    private RouteCalculator routeCalculator;
-    private int interactionType;
+    private Server server;
+
+    private int currentDifficulty;
+    private int currentInteractionType;
+    private int currentIndex;
+    private final int maxTrialIndexPerCombo = 3;
+    private final int maxDifficultyIndex = 2;
+    private final int maxInteractionIndex = 2;
+
+    private int indexInTrials;
 
     private ArrayList<Trial> trials;
 
@@ -20,36 +33,139 @@ public class Experiment{
         this.participantID = participantID;
         this.logger = simpleLogger;
         this.indexInTrials = 0;
+        initCurrents();
         initTrials();
     }
 
-    public void run(){
-        trials.get(0).run();
+    public void run() {
+        server = new Server(this);
     }
 
-    public void runNextTrial(){
-        this.indexInTrials ++;
-        initTrials();
+    public void stop() {
+        trials.get(indexInTrials).stop();
+        Log.d(TAG, "stopping experiment");
     }
 
-    public void initTrials(){
+    public void initTrials() {
         trials = new ArrayList<>();
-        // test for now
-        interactionType = 1;
-        Trial trialTest = new Trial(participantID, interactionType,this.logger);
-        trials.add(trialTest);
-
-
         // build all the different trials here
         // 3 difficulties x 3 interaction Types x 4 tries
-        if (indexInTrials == 1){
+        Trial firstTrial = new Trial(participantID, currentInteractionType, currentDifficulty, this);
+        trials.add(firstTrial);
+        Log.d(TAG, "trials size : " + trials.size() + "; example : " + trials.get(trials.size() - 1).getParticipantID() + ", " + trials.get(trials.size() - 1).getDifficulty());
+    }
 
+    public void createNextTrial() {
+        Trial nextTrial;
+        currentIndex++;
+        if (currentIndex > maxTrialIndexPerCombo) {
+            currentIndex = 0;
+            // incrementer difficulte
+            currentDifficulty++;
+            if (currentDifficulty > maxDifficultyIndex) {
+                currentDifficulty = 0;
+                currentInteractionType++;
+                if (currentInteractionType > maxInteractionIndex) {
+                    return;
+                }
+            }
         }
+        nextTrial = new Trial(participantID, currentInteractionType, currentDifficulty, this);
+        trials.add(nextTrial);
     }
 
     // get and set
-    public Logger getLogger(){
+    public Logger getLogger() {
         return this.logger;
+    }
+
+    @Override
+    public void launchNextTrial() {
+        indexInTrials++;
+        createNextTrial();
+        if (indexInTrials < trials.size()) {
+            trials.get(indexInTrials);
+        } else {
+            // message main activity for end
+            // todo : actualize main activity UI on the run
+        }
+    }
+
+    @Override
+    public String decodeMessage(String msg) {
+        Trial concernedTrial = trials.get(indexInTrials);
+        String replyMsg = "";
+        // split message
+        String[] parts = msg.split(":");
+        String senderState = parts[0];
+        // interpret results
+        if (senderState.equals("Ready")) {
+            replyMsg = "continue:" + concernedTrial.getInteractionType();
+            if (parts.length >= 2) {
+                logger.getLogsArray().clear();
+                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]));
+                concernedTrial.initRouteCalculator(concernedTrial.getActualLocation());
+            }
+        } else if (senderState.equals("Running")) {
+            System.out.println("detected " + senderState);
+            replyMsg = "";
+            if (parts.length >= 2) {
+                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]));
+            }
+        } else if (senderState.equals("Stop")) {
+            System.out.println("detected " + senderState);
+            if (parts.length >= 2) {
+                completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]));
+                simpleLogIt(concernedTrial);
+            }
+            replyMsg = "";
+            stop();
+        } else if (senderState.equals("End")) {
+            replyMsg = "reset";
+        } else if (senderState.equals("Asking")) {
+            completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]));
+            replyMsg = "route:" + format(concernedTrial.getRouteCalculator().getActualRoute());
+        }
+
+        return replyMsg;
+    }
+
+    private String format(ArrayList<Location> locs) {
+        // formats the array of location into a sendable message
+        String res = "";
+        for (Location loc : locs) {
+            res += loc.getLatitude() + "-" + loc.getLongitude() + ";";
+        }
+        return res;
+    }
+
+    public void initCurrents() {
+        currentIndex = 0;
+        currentDifficulty = 0;
+        currentInteractionType = 0;
+    }
+
+    public void completeLogIt(Trial trial, Location loc){
+        logger.writeCompleteLog(participantID,
+                trial.getInteractionString(trial.getInteractionType()),
+                trial.getDifficulty(),
+                indexInTrials,
+                0,
+                loc,
+                "0");
+    }
+
+    public void simpleLogIt(Trial trial){
+        // launch calculations of data
+        // log these datas
+        logger.writeSimpleLog(participantID,
+                trial.getInteractionString(trial.getInteractionType()),
+                trial.getDifficulty(),
+                indexInTrials,
+                trial.getTheoricDistance(),
+                trial.getTotalTime(),
+                trial.getTotalDistance()
+                );
     }
 
 }

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected Button finishButton;
     protected AlertDialog startExpDialog;
     // logs
-    protected Logger logger;
+    protected Logger simpleLogger;
     private int interactionType;
     // exp
     protected Experiment experiment;
@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // init
-    protected void initLogger() {
-        logger = new Logger(this);
+    protected void initLoggers() {
+        simpleLogger = new Logger(this);
     }
 
     public void initUI() {
@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void startExp(String ID) {
-        initLogger();
-        experiment = new Experiment(ID, this.logger);
+        initLoggers();
+        experiment = new Experiment(ID, this.simpleLogger);
         changeRunningStateTo(true);
         // test
         TextView test = (TextView) findViewById(R.id.testPlay);
@@ -86,9 +86,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void finishExp() {
-        // get exp object
-        // exp.stop()
         changeRunningStateTo(false);
+        experiment.stop();
     }
 
     protected void startTest() {
@@ -134,8 +133,8 @@ public class MainActivity extends AppCompatActivity {
         return interactionType;
     }
 
-    public Logger getLogger() {
-        return logger;
+    public Logger getSimpleLogger() {
+        return simpleLogger;
     }
 
 
