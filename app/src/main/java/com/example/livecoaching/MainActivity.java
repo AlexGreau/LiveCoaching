@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
                 testText.setText("END of EXPERIMENT");
             }
         });
-
+        changeRunningStateTo(false);
     }
 
 
