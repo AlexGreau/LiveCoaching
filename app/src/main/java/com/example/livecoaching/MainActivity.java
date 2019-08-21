@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
 
     protected void startExp(String ID) {
         initLoggers();
-        experiment = new Experiment(ID, this.simpleLogger,this);
+        experiment = new Experiment(ID, this.simpleLogger, this);
         changeRunningStateTo(true);
         // test
         testText.setText(ID);
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
 
     protected void startTest() {
         initLoggers();
-        experiment = new TestExperiment(this.simpleLogger,this);
+        experiment = new TestExperiment(this.simpleLogger, this);
         changeRunningStateTo(true);
         // test
         TextView test = (TextView) findViewById(R.id.testPlay);
@@ -112,6 +112,22 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         Pattern pattern = Pattern.compile("\\w+?");
         Matcher matcher = pattern.matcher(text);
         return matcher.matches();
+    }
+
+    public String buildResumeTrial(Trial trial) {
+        StringBuilder builder = new StringBuilder();
+        String separator = "; ";
+        builder.append(trial.getInteractionString(trial.getInteractionType()));
+        builder.append(separator);
+        builder.append(trial.getDifficulty());
+        builder.append(separator);
+        builder.append(trial.getTheoricDistance());
+        builder.append(separator);
+        builder.append(trial.getTotalTime());
+        builder.append(separator);
+        builder.append(trial.getTotalDistance());
+
+        return builder.toString();
     }
 
     // Overrides
@@ -141,23 +157,24 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
     }
 
     @Override
-    public void handleEndOfExperiment(){
+    public void handleEndOfExperiment() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                testText.setText("END of EXPERIMENT");
+                testText.setText(testText.getText() + " \nEND of EXPERIMENT");
                 changeRunningStateTo(false);
             }
         });
     }
 
     @Override
-    public void handleEndOfTrial(int index, Trial trial){
+    public void handleEndOfTrial(int index, Trial trial) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                testText.setText("END of TRIAL number " + index);
                 // todo : complete with infos you want to see on screen
+                String text = buildResumeTrial(trial);
+                testText.setText(testText.getText() +"\nTRIAL number " + index + ": "+ text);
             }
         });
     }
