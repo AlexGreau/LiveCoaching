@@ -48,7 +48,11 @@ public class Experiment implements TrialOrganiser, Decoder {
     }
 
     public void stop() {
+        this.visualizer.handleEndOfTrial(indexInTrials,trials.get(indexInTrials));
         trials.get(indexInTrials).stop();
+    }
+
+    public void endExp(){
         this.visualizer.handleEndOfExperiment();
         Log.d(TAG, "stopping experiment");
     }
@@ -73,6 +77,7 @@ public class Experiment implements TrialOrganiser, Decoder {
                 currentDifficulty = 0;
                 currentInteractionType++;
                 if (currentInteractionType > maxInteractionIndex) {
+                    endExp();
                     return;
                 }
             }
@@ -94,7 +99,6 @@ public class Experiment implements TrialOrganiser, Decoder {
         if (indexInTrials < trials.size()) {
             trials.get(indexInTrials);
         } else {
-            // message main activity for end
             // todo : actualize main activity UI on the run
         }
     }
@@ -138,10 +142,7 @@ public class Experiment implements TrialOrganiser, Decoder {
             }
             replyMsg = "";
             stop();
-        } else if (senderState.equals("End")) {
-            replyMsg = "reset";
-            stop();
-        } else if (senderState.equals("Asking")) {
+        }  else if (senderState.equals("Asking")) {
             completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
             replyMsg = "route:" + format(concernedTrial.getRouteCalculator().getActualRoute());
         }

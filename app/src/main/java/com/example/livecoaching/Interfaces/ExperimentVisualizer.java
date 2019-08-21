@@ -1,6 +1,9 @@
 package com.example.livecoaching.Interfaces;
 
+
+import com.example.livecoaching.Model.Trial;
+
 public interface ExperimentVisualizer {
     void handleEndOfExperiment();
-    void handleEndOfTrial();
+    void handleEndOfTrial(int index, Trial trial);
 }

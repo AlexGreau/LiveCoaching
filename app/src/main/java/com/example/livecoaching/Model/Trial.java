@@ -8,7 +8,6 @@ import com.example.livecoaching.Interfaces.TrialOrganiser;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 public class Trial {
 
@@ -47,7 +46,6 @@ public class Trial {
     }
 
     public void stop() {
-        stopLogging();
         organiser.launchNextTrial();
     }
 
@@ -60,11 +58,6 @@ public class Trial {
         actualLocation.setLongitude(longi);
         return actualLocation;
     }
-
-    public void stopLogging() {
-        System.out.println("stopping the logging");
-    }
-
     public void initRouteCalculator(Location loc) {
         routeCalculator = new RouteCalculator(loc, difficulty);
         System.out.println("route : " + routeCalculator.getActualRoute());

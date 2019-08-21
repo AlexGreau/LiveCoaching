@@ -18,6 +18,7 @@ import com.example.livecoaching.Interfaces.ExperimentVisualizer;
 import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.Model.Experiment;
 import com.example.livecoaching.Model.TestExperiment;
+import com.example.livecoaching.Model.Trial;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
 
     protected void finishExp() {
         changeRunningStateTo(false);
-        experiment.stop();
+        experiment.endExp();
     }
 
     protected void startTest() {
@@ -151,8 +152,14 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
     }
 
     @Override
-    public void handleEndOfTrial(){
-
+    public void handleEndOfTrial(int index, Trial trial){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                testText.setText("END of TRIAL number " + index);
+                // todo : complete with infos you want to see on screen
+            }
+        });
     }
 
 
