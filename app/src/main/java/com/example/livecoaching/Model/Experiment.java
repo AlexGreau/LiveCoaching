@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Interfaces.Decoder;
+import com.example.livecoaching.Interfaces.ExperimentVisualizer;
 import com.example.livecoaching.Interfaces.TrialOrganiser;
 import com.example.livecoaching.Logs.Logger;
 
@@ -30,9 +31,14 @@ public class Experiment implements TrialOrganiser, Decoder {
 
     private boolean isStartingRunningLog = true;
 
+    private ExperimentVisualizer visualizer;
 
-    public Experiment(String participantID, Logger simpleLogger) {
+    private boolean isRunning;
+
+
+    public Experiment(String participantID, Logger simpleLogger, ExperimentVisualizer visu) {
         this.participantID = participantID;
+        this.visualizer = visu;
         this.logger = simpleLogger;
         this.indexInTrials = 0;
         initCurrents();
@@ -40,11 +46,18 @@ public class Experiment implements TrialOrganiser, Decoder {
     }
 
     public void run() {
+        isRunning = true;
         server = new Server(this);
     }
 
     public void stop() {
+        this.visualizer.handleEndOfTrial(indexInTrials,trials.get(indexInTrials));
         trials.get(indexInTrials).stop();
+    }
+
+    public void endExp(){
+        isRunning = false;
+        this.visualizer.handleEndOfExperiment();
         Log.d(TAG, "stopping experiment");
     }
 
@@ -62,12 +75,12 @@ public class Experiment implements TrialOrganiser, Decoder {
         currentIndex++;
         if (currentIndex > maxTrialIndexPerCombo) {
             currentIndex = 0;
-            // incrementer difficulte
             currentDifficulty++;
             if (currentDifficulty > maxDifficultyIndex) {
                 currentDifficulty = 0;
                 currentInteractionType++;
                 if (currentInteractionType > maxInteractionIndex) {
+                    endExp();
                     return;
                 }
             }
@@ -89,7 +102,6 @@ public class Experiment implements TrialOrganiser, Decoder {
         if (indexInTrials < trials.size()) {
             trials.get(indexInTrials);
         } else {
-            // message main activity for end
             // todo : actualize main activity UI on the run
         }
     }
@@ -98,6 +110,10 @@ public class Experiment implements TrialOrganiser, Decoder {
     public String decodeMessage(String msg) {
         Trial concernedTrial = trials.get(indexInTrials);
         String replyMsg = "";
+        if (!isRunning){
+            replyMsg = "stop";
+            return replyMsg;
+        }
         // split message
         String[] extracts = msg.split("_");
         long time = Long.parseLong(extracts[extracts.length - 1]);
@@ -133,9 +149,7 @@ public class Experiment implements TrialOrganiser, Decoder {
             }
             replyMsg = "";
             stop();
-        } else if (senderState.equals("End")) {
-            replyMsg = "reset";
-        } else if (senderState.equals("Asking")) {
+        }  else if (senderState.equals("Asking")) {
             completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
             replyMsg = "route:" + format(concernedTrial.getRouteCalculator().getActualRoute());
         }

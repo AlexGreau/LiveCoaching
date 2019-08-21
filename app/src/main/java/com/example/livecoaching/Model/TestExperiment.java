@@ -2,12 +2,13 @@ package com.example.livecoaching.Model;
 
 import android.location.Location;
 
+import com.example.livecoaching.Interfaces.ExperimentVisualizer;
 import com.example.livecoaching.Logs.Logger;
 
 public class TestExperiment extends Experiment {
 
-    public TestExperiment(String participantID, Logger simpleLogger) {
-        super("testRun", simpleLogger);
+    public TestExperiment(Logger simpleLogger, ExperimentVisualizer visu) {
+        super("testRun", simpleLogger,visu);
     }
 
     @Override

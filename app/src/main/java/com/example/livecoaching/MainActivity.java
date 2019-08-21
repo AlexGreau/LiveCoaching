@@ -14,16 +14,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.livecoaching.Interfaces.ExperimentVisualizer;
 import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.Model.Experiment;
 import com.example.livecoaching.Model.TestExperiment;
+import com.example.livecoaching.Model.Trial;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ExperimentVisualizer {
     private final String TAG = MainActivity.class.getSimpleName();
 
     // UI components
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected Button startTestButton;
     protected Button finishButton;
     protected AlertDialog startExpDialog;
+    protected TextView testText;
     // logs
     protected Logger simpleLogger;
     private int interactionType;
@@ -59,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        testText = (TextView) findViewById(R.id.testPlay);
+
     }
 
     public void initToolbar() {
@@ -80,26 +86,25 @@ public class MainActivity extends AppCompatActivity {
 
     protected void startExp(String ID) {
         initLoggers();
-        experiment = new Experiment(ID, this.simpleLogger);
+        experiment = new Experiment(ID, this.simpleLogger, this);
         changeRunningStateTo(true);
         // test
-        TextView test = (TextView) findViewById(R.id.testPlay);
-        test.setText(ID);
+        testText.setText(ID);
         experiment.run();
     }
 
     protected void finishExp() {
         changeRunningStateTo(false);
-        experiment.stop();
+        experiment.endExp();
     }
 
     protected void startTest() {
         initLoggers();
-        experiment = new TestExperiment(ID, this.simpleLogger);
+        experiment = new TestExperiment(this.simpleLogger, this);
         changeRunningStateTo(true);
         // test
         TextView test = (TextView) findViewById(R.id.testPlay);
-        test.setText(ID);
+        test.setText("TestRun");
         experiment.run();
     }
 
@@ -107,6 +112,22 @@ public class MainActivity extends AppCompatActivity {
         Pattern pattern = Pattern.compile("\\w+?");
         Matcher matcher = pattern.matcher(text);
         return matcher.matches();
+    }
+
+    public String buildResumeTrial(Trial trial) {
+        StringBuilder builder = new StringBuilder();
+        String separator = "; ";
+        builder.append(trial.getInteractionString(trial.getInteractionType()));
+        builder.append(separator);
+        builder.append(trial.getDifficulty());
+        builder.append(separator);
+        builder.append(trial.getTheoricDistance());
+        builder.append(separator);
+        builder.append(trial.getTotalTime());
+        builder.append(separator);
+        builder.append(trial.getTotalDistance());
+
+        return builder.toString();
     }
 
     // Overrides
@@ -133,6 +154,29 @@ public class MainActivity extends AppCompatActivity {
         if (hasFocus) {
             setFullScreen();
         }
+    }
+
+    @Override
+    public void handleEndOfExperiment() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                testText.setText(testText.getText() + " \nEND of EXPERIMENT");
+                changeRunningStateTo(false);
+            }
+        });
+    }
+
+    @Override
+    public void handleEndOfTrial(int index, Trial trial) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // todo : complete with infos you want to see on screen
+                String text = buildResumeTrial(trial);
+                testText.setText(testText.getText() +"\nTRIAL number " + index + ": "+ text);
+            }
+        });
     }
 
 
