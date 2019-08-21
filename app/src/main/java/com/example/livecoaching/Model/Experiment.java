@@ -140,6 +140,7 @@ public class Experiment implements TrialOrganiser, Decoder {
             stop();
         } else if (senderState.equals("End")) {
             replyMsg = "reset";
+            stop();
         } else if (senderState.equals("Asking")) {
             completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
             replyMsg = "route:" + format(concernedTrial.getRouteCalculator().getActualRoute());

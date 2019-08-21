@@ -145,9 +145,14 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
             @Override
             public void run() {
                 testText.setText("END of EXPERIMENT");
+                changeRunningStateTo(false);
             }
         });
-        changeRunningStateTo(false);
+    }
+
+    @Override
+    public void handleEndOfTrial(){
+
     }
 
 

@@ -45,7 +45,7 @@ public class Logger {
             Log.e(TAG, "file does not exist... creating it");
             try {
                 completeLogsFile.createNewFile();
-                writeToLogFile("TrainingLogs", false,false);
+                writeToLogFile("Structure : \nID;interaction;difficulty;trial;lat,long;partOfRoute;timestamp ", false,false);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -58,7 +58,7 @@ public class Logger {
             Log.e(TAG, "file does not exist... creating it");
             try {
                 simpleLogsFile.createNewFile();
-                writeToLogFile("TrainingLogs", false,true);
+                writeToLogFile("Structure : \nID;interaction;difficulty;trial;theoricDist(m);totalTime(ms);totalRealDist(m)", false,true);
             } catch (IOException e) {
                 e.printStackTrace();
             }

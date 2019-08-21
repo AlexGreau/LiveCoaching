@@ -101,9 +101,9 @@ public class Trial {
         Location newLocation = new Location(LocationManager.GPS_PROVIDER);
         newLocation.setLatitude(lat);
         newLocation.setLongitude(longi);
-        totalDistanceParcourue += actualLocation.distanceTo(newLocation);
+        totalDistanceParcourue += round (actualLocation.distanceTo(newLocation),4);
 
-        totalDistanceParcourue = round(totalDistanceParcourue,4);
+        this.totalDistanceParcourue = round(this.totalDistanceParcourue,4);
     }
 
     public static double round(double value, int precision) {
