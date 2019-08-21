@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.livecoaching.Interfaces.ExperimentVisualizer;
 import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.Model.Experiment;
 import com.example.livecoaching.Model.TestExperiment;
@@ -23,7 +24,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ExperimentVisualizer {
     private final String TAG = MainActivity.class.getSimpleName();
 
     // UI components
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected Button startTestButton;
     protected Button finishButton;
     protected AlertDialog startExpDialog;
+    protected TextView testText;
     // logs
     protected Logger simpleLogger;
     private int interactionType;
@@ -59,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        testText = (TextView) findViewById(R.id.testPlay);
+
     }
 
     public void initToolbar() {
@@ -80,11 +85,10 @@ public class MainActivity extends AppCompatActivity {
 
     protected void startExp(String ID) {
         initLoggers();
-        experiment = new Experiment(ID, this.simpleLogger);
+        experiment = new Experiment(ID, this.simpleLogger,this);
         changeRunningStateTo(true);
         // test
-        TextView test = (TextView) findViewById(R.id.testPlay);
-        test.setText(ID);
+        testText.setText(ID);
         experiment.run();
     }
 
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void startTest() {
         initLoggers();
-        experiment = new TestExperiment(ID, this.simpleLogger);
+        experiment = new TestExperiment(this.simpleLogger,this);
         changeRunningStateTo(true);
         // test
         TextView test = (TextView) findViewById(R.id.testPlay);
@@ -133,6 +137,17 @@ public class MainActivity extends AppCompatActivity {
         if (hasFocus) {
             setFullScreen();
         }
+    }
+
+    @Override
+    public void handleEndOfExperiment(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                testText.setText("END of EXPERIMENT");
+            }
+        });
+
     }
 
 

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Interfaces.Decoder;
+import com.example.livecoaching.Interfaces.ExperimentVisualizer;
 import com.example.livecoaching.Interfaces.TrialOrganiser;
 import com.example.livecoaching.Logs.Logger;
 
@@ -30,9 +31,12 @@ public class Experiment implements TrialOrganiser, Decoder {
 
     private boolean isStartingRunningLog = true;
 
+    private ExperimentVisualizer visualizer;
 
-    public Experiment(String participantID, Logger simpleLogger) {
+
+    public Experiment(String participantID, Logger simpleLogger, ExperimentVisualizer visu) {
         this.participantID = participantID;
+        this.visualizer = visu;
         this.logger = simpleLogger;
         this.indexInTrials = 0;
         initCurrents();
@@ -45,6 +49,7 @@ public class Experiment implements TrialOrganiser, Decoder {
 
     public void stop() {
         trials.get(indexInTrials).stop();
+        this.visualizer.handleEndOfExperiment();
         Log.d(TAG, "stopping experiment");
     }
 
