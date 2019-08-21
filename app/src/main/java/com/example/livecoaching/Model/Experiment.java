@@ -3,7 +3,6 @@ package com.example.livecoaching.Model;
 import android.location.Location;
 import android.util.Log;
 
-import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Interfaces.Decoder;
 import com.example.livecoaching.Interfaces.ExperimentVisualizer;
 import com.example.livecoaching.Interfaces.TrialOrganiser;
@@ -16,7 +15,6 @@ public class Experiment implements TrialOrganiser, Decoder {
     // values
     private String participantID;
     private Logger logger;
-    private Server server;
 
     private int currentDifficulty;
     private int currentInteractionType;
@@ -47,7 +45,6 @@ public class Experiment implements TrialOrganiser, Decoder {
 
     public void run() {
         isRunning = true;
-        server = new Server(this);
     }
 
     public void stop() {
@@ -97,6 +94,7 @@ public class Experiment implements TrialOrganiser, Decoder {
     @Override
     public void launchNextTrial() {
         isStartingRunningLog = true;
+        isRunning = true;
         indexInTrials++;
         createNextTrial();
         if (indexInTrials < trials.size()) {
@@ -110,7 +108,7 @@ public class Experiment implements TrialOrganiser, Decoder {
     public String decodeMessage(String msg) {
         Trial concernedTrial = trials.get(indexInTrials);
         String replyMsg = "";
-        if (!isRunning){
+        if (!this.isRunning){
             replyMsg = "stop";
             return replyMsg;
         }
