@@ -185,4 +185,28 @@ public class Experiment implements TrialOrganiser, Decoder {
         long before = trial.getTotalTime();
 
     }
+
+    public int getCurrentDifficulty() {
+        return currentDifficulty;
+    }
+
+    public void setCurrentDifficulty(int currentDifficulty) {
+        this.currentDifficulty = currentDifficulty;
+    }
+
+    public int getCurrentInteractionType() {
+        return currentInteractionType;
+    }
+
+    public void setCurrentInteractionType(int currentInteractionType) {
+        this.currentInteractionType = currentInteractionType;
+    }
+
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
+    }
 }

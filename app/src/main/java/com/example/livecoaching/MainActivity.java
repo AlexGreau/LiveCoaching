@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.Model.Experiment;
+import com.example.livecoaching.Model.TestExperiment;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -93,8 +94,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void startTest() {
-        // create testRun object
-        // testRun.run()
+        initLoggers();
+        experiment = new TestExperiment(ID, this.simpleLogger);
+        changeRunningStateTo(true);
+        // test
+        TextView test = (TextView) findViewById(R.id.testPlay);
+        test.setText(ID);
+        experiment.run();
     }
 
     protected boolean isValid(String text) {
@@ -159,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "startTestButton pressed");
+                startTest();
             }
         });
     }
