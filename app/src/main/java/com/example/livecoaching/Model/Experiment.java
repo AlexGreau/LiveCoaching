@@ -33,6 +33,8 @@ public class Experiment implements TrialOrganiser, Decoder {
 
     private ExperimentVisualizer visualizer;
 
+    private boolean isRunning;
+
 
     public Experiment(String participantID, Logger simpleLogger, ExperimentVisualizer visu) {
         this.participantID = participantID;
@@ -44,6 +46,7 @@ public class Experiment implements TrialOrganiser, Decoder {
     }
 
     public void run() {
+        isRunning = true;
         server = new Server(this);
     }
 
@@ -53,6 +56,7 @@ public class Experiment implements TrialOrganiser, Decoder {
     }
 
     public void endExp(){
+        isRunning = false;
         this.visualizer.handleEndOfExperiment();
         Log.d(TAG, "stopping experiment");
     }
@@ -71,7 +75,6 @@ public class Experiment implements TrialOrganiser, Decoder {
         currentIndex++;
         if (currentIndex > maxTrialIndexPerCombo) {
             currentIndex = 0;
-            // incrementer difficulte
             currentDifficulty++;
             if (currentDifficulty > maxDifficultyIndex) {
                 currentDifficulty = 0;
@@ -107,6 +110,10 @@ public class Experiment implements TrialOrganiser, Decoder {
     public String decodeMessage(String msg) {
         Trial concernedTrial = trials.get(indexInTrials);
         String replyMsg = "";
+        if (!isRunning){
+            replyMsg = "stop";
+            return replyMsg;
+        }
         // split message
         String[] extracts = msg.split("_");
         long time = Long.parseLong(extracts[extracts.length - 1]);

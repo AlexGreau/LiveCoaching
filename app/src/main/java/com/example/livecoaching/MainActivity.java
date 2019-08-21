@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         changeRunningStateTo(true);
         // test
         TextView test = (TextView) findViewById(R.id.testPlay);
-        test.setText(ID);
+        test.setText("TestRun");
         experiment.run();
     }
 
