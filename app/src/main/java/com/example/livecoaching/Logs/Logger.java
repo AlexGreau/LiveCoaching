@@ -80,7 +80,7 @@ public class Logger {
         writeToLogFile(log, true, false);
     }
 
-    public void writeSimpleLog(String ID, String interactionType, int difficulty, int trialNumber, double theoricDistance, double totalTime, double totalRealDistance){
+    public void writeSimpleLog(String ID, String interactionType, int difficulty, int trialNumber, double theoricDistance, long totalTime, double totalRealDistance){
         String log = "\r\n" + ID + separator + interactionType + separator + difficulty + separator + trialNumber + separator;
         log = log + theoricDistance + separator + totalTime + separator + totalRealDistance;
 
