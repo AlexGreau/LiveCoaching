@@ -22,6 +22,7 @@ public class Experiment implements TrialOrganiser, Decoder {
     private final int maxTrialIndexPerCombo = 3;
     private final int maxDifficultyIndex = 2;
     private final int maxInteractionIndex = 2;
+    private final int maxIndex = maxTrialIndexPerCombo * maxDifficultyIndex * maxInteractionIndex;
 
     private int indexInTrials;
     private ArrayList<Trial> trials;
@@ -45,8 +46,9 @@ public class Experiment implements TrialOrganiser, Decoder {
         isRunning = true;
     }
 
-    public void stop() {
-        this.visualizer.handleEndOfTrial(indexInTrials,trials.get(indexInTrials));
+    public void stopCurrentTrial() {
+        this.visualizer.handleTrialPrinting(indexInTrials,trials.get(indexInTrials));
+        visualizer.handleEndOfTrial(indexInTrials, trials.get(indexInTrials));
         trials.get(indexInTrials).stop();
     }
 
@@ -95,7 +97,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         isStartingRunningLog = true;
         isRunning = true;
         indexInTrials++;
-        if (indexInTrials < trials.size()) {
+        if (indexInTrials <= maxIndex) {
             createNextTrial();
             trials.get(indexInTrials);
         } else {
@@ -110,7 +112,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         Trial concernedTrial = trials.get(indexInTrials);
         replyMsg = "";
         if (!this.isRunning){
-            replyMsg = "stop";
+            replyMsg = "stopCurrentTrial";
             return replyMsg;
         }
         // split message
@@ -137,8 +139,9 @@ public class Experiment implements TrialOrganiser, Decoder {
             replyMsg = "";
             if (parts.length >= 2) {
                 partOfroute = Integer.parseInt(parts[2]);
+                concernedTrial.actualizeNextCP(partOfroute);
                 completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
-                showOnScreen();
+                showProgressOnScreen(concernedTrial);
             }
         } else if (senderState.equals("Stop")) {
             System.out.println("detected " + senderState);
@@ -149,7 +152,7 @@ public class Experiment implements TrialOrganiser, Decoder {
                 simpleLogIt(concernedTrial);
             }
             replyMsg = "";
-            stop();
+            stopCurrentTrial();
         }  else if (senderState.equals("Asking")) {
             completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
             replyMsg = "route:" + format(concernedTrial.getRouteCalculator().getActualRoute());
@@ -158,8 +161,8 @@ public class Experiment implements TrialOrganiser, Decoder {
         return replyMsg;
     }
 
-    public void showOnScreen(){
-
+    public void showProgressOnScreen(Trial trial){
+        visualizer.handleTrialPrinting(indexInTrials, trial);
     }
 
     private String format(ArrayList<Location> locs) {

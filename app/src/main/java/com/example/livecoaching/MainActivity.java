@@ -22,10 +22,11 @@ import com.example.livecoaching.Model.Experiment;
 import com.example.livecoaching.Model.TestExperiment;
 import com.example.livecoaching.Model.Trial;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity implements ExperimentVisualizer, Decoder {
     private final String TAG = MainActivity.class.getSimpleName();
@@ -35,8 +36,14 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
     protected Button startButton;
     protected Button startTestButton;
     protected Button finishButton;
+    protected Button nextButton;
     protected AlertDialog startExpDialog;
-    protected TextView testText;
+    protected TextView directionText;
+    protected TextView distanceText;
+    protected TextView trialNumberText;
+    protected TextView generalInfoText;
+    protected TextView infoText;
+
     // logs
     protected Logger simpleLogger;
     private int interactionType;
@@ -67,8 +74,11 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        testText = (TextView) findViewById(R.id.testPlay);
-
+        directionText = findViewById(R.id.direction_text);
+        distanceText = findViewById(R.id.distanceTo);
+        trialNumberText = findViewById(R.id.trialNumber);
+        generalInfoText = findViewById(R.id.generalTrialInfo);
+        infoText = findViewById(R.id.infoText);
     }
 
     public void initToolbar() {
@@ -77,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         initStartTestButton();
         initStartButton();
         initFinishButton();
+        initNextButton();
         changeRunningStateTo(false);
     }
 
@@ -86,15 +97,16 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         this.startTestButton.setEnabled(!isRunning);
         this.startButton.setEnabled(!isRunning);
         this.finishButton.setEnabled(isRunning);
+        this.nextButton.setEnabled(isRunning);
     }
 
     protected void startExp(String ID) {
         initLoggers();
+        resetPlayContent();
+        setupExperimentUI();
         experiment = new Experiment(ID, this.simpleLogger, this);
         server.setDecoder(experiment);
         changeRunningStateTo(true);
-        // test
-        testText.setText(ID);
         experiment.run();
     }
 
@@ -105,12 +117,12 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
 
     protected void startTest() {
         initLoggers();
+        setupExperimentUI();
+        resetPlayContent();
         experiment = new TestExperiment(this.simpleLogger, this);
         server.setDecoder(experiment);
         changeRunningStateTo(true);
-        // test
-        TextView test = (TextView) findViewById(R.id.testPlay);
-        test.setText("TestRun");
+        generalInfoText.setText("TestRun");
         experiment.run();
     }
 
@@ -122,20 +134,28 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
 
     public String buildResumeTrial(Trial trial) {
         StringBuilder builder = new StringBuilder();
-        String separator = "; ";
-        builder.append(trial.getInteractionString(trial.getInteractionType()));
-        builder.append(separator);
-        builder.append(trial.getDifficulty());
-        builder.append(separator);
+        String separator = "\n ";
+        builder.append("Total Theoric distance (m): ");
         builder.append(trial.getTheoricDistance());
         builder.append(separator);
+        builder.append("Real Distance walked (m):");
         builder.append(trial.getTotalDistance());
         builder.append(separator);
+        builder.append("Total time spent (ms): ");
         builder.append(trial.getTotalTime());
         builder.append(separator);
+        builder.append("success : ");
         builder.append(trial.getSuccess());
 
         return builder.toString();
+    }
+
+    public String buildGeneralInfos(Trial trial) {
+        String res = "";
+        String difficulty = trial.getDifficultyString(trial.getDifficulty());
+        String interaction = trial.getInteractionString(trial.getInteractionType());
+        res = difficulty + ", " + interaction;
+        return res;
     }
 
     // Overrides
@@ -165,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
     }
 
     @Override
-    public String decodeMessage(String rep){
+    public String decodeMessage(String rep) {
         return "";
     }
 
@@ -174,22 +194,60 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                testText.setText(testText.getText() + " \nEND of EXPERIMENT");
+                directionText.setText(" \nEND of EXPERIMENT");
+                distanceText.setVisibility(GONE);
                 changeRunningStateTo(false);
             }
         });
     }
 
     @Override
-    public void handleEndOfTrial(int index, Trial trial) {
+    public void handleTrialPrinting(int index, Trial trial) {
+        DecimalFormat df = new DecimalFormat("#.#");
+        String distTo = df.format(trial.calculateDistanceToNextCP()) + " m";
+        String bearTo = df.format(trial.calculateBearingToNextCP()) + "degrees";
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // todo : complete with infos you want to see on screen
-                String text = buildResumeTrial(trial);
-                testText.setText(testText.getText() +"\nTRIAL number " + index + ": "+ text);
+                generalInfoText.setText(buildGeneralInfos(trial));
+                distanceText.setText(distTo);
+                directionText.setText(bearTo);
+                trialNumberText.setText("#" + index);
             }
         });
+    }
+
+    @Override
+    public void handleEndOfTrial(int index, Trial trial) {
+        String message = buildResumeTrial(trial);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                distanceText.setVisibility(GONE);
+                directionText.setVisibility(GONE);
+                infoText.setText(message);
+                infoText.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void resetPlayContent() {
+        generalInfoText.setText("");
+        distanceText.setText("");
+        directionText.setText("");
+        trialNumberText.setText("");
+    }
+
+    public void setupBlankUI() {
+        findViewById(R.id.play_content).setVisibility(GONE);
+        this.infoText.setVisibility(View.VISIBLE);
+    }
+
+    public void setupExperimentUI() {
+        this.infoText.setVisibility(GONE);
+        findViewById(R.id.play_content).setVisibility(View.VISIBLE);
+        distanceText.setVisibility(View.VISIBLE);
+        trialNumberText.setVisibility(View.VISIBLE);
     }
 
 
@@ -235,6 +293,17 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
                 Log.d(TAG, "finishButton pressed");
                 AlertDialog dialog = buildFinnishDialog();
                 dialog.show();
+            }
+        });
+    }
+
+    public void initNextButton() {
+        this.nextButton = findViewById(R.id.button_nextTrial);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "next button pressed");
+                // TODO : function to build dialog an action
             }
         });
     }
