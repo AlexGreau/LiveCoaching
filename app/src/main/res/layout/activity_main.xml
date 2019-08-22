@@ -8,7 +8,8 @@
         android:id="@+id/play_content"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:padding="20sp">
+        android:padding="20sp"
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/titleBar"
@@ -51,7 +52,7 @@
             android:textSize="150sp" />
 
         <TextView
-            android:id="@+id/testPlay"
+            android:id="@+id/direction_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/distanceTo"
@@ -62,6 +63,15 @@
 
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/infoText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Start an experiment or a test by pressing on the buttons below"
+        android:textSize="30sp"
+        android:gravity="center"
+        />
 
     <android.support.design.bottomappbar.BottomAppBar
         android:id="@+id/toolbar_play"
@@ -109,8 +119,7 @@
                     android:layout_toRightOf="@id/button_start"
                     android:drawableLeft="@drawable/ic_next"
                     android:drawablePadding="10dip"
-                    android:text="Next Trial"
-                    />
+                    android:text="Next Trial" />
 
                 <Button
                     android:id="@+id/button_test"

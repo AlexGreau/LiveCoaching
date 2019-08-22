@@ -46,7 +46,7 @@ public class Experiment implements TrialOrganiser, Decoder {
     }
 
     public void stop() {
-        this.visualizer.handleEndOfTrial(indexInTrials,trials.get(indexInTrials));
+        this.visualizer.handleTrialPrinting(indexInTrials,trials.get(indexInTrials));
         trials.get(indexInTrials).stop();
     }
 
@@ -166,6 +166,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         String distTilNow = "\nwalked : " + trial.getTotalDistance();
         res = res + distTo + bearTo + distTilNow;
         System.out.println(res);
+        visualizer.handleTrialPrinting(indexInTrials, trial);
     }
 
     private String format(ArrayList<Location> locs) {

@@ -22,8 +22,11 @@ import com.example.livecoaching.Model.Experiment;
 import com.example.livecoaching.Model.TestExperiment;
 import com.example.livecoaching.Model.Trial;
 
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity implements ExperimentVisualizer, Decoder {
     private final String TAG = MainActivity.class.getSimpleName();
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
     protected TextView distanceText;
     protected TextView trialNumberText;
     protected TextView generalInfoText;
+    protected TextView infoText;
 
     // logs
     protected Logger simpleLogger;
@@ -70,10 +74,11 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        directionText = findViewById(R.id.testPlay);
+        directionText = findViewById(R.id.direction_text);
         distanceText = findViewById(R.id.distanceTo);
         trialNumberText = findViewById(R.id.trialNumber);
         generalInfoText = findViewById(R.id.generalTrialInfo);
+        infoText = findViewById(R.id.infoText);
     }
 
     public void initToolbar() {
@@ -97,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
 
     protected void startExp(String ID) {
         initLoggers();
+        setupExperimentUI();
+        resetPlayContent();
         experiment = new Experiment(ID, this.simpleLogger, this);
         server.setDecoder(experiment);
         changeRunningStateTo(true);
@@ -112,13 +119,15 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
 
     protected void startTest() {
         initLoggers();
+        setupExperimentUI();
+        resetPlayContent();
         experiment = new TestExperiment(this.simpleLogger, this);
         server.setDecoder(experiment);
         changeRunningStateTo(true);
         // test
-        TextView test = (TextView) findViewById(R.id.testPlay);
-        test.setText("TestRun");
+        generalInfoText.setText("TestRun");
         experiment.run();
+        distanceText.setVisibility(View.VISIBLE);
     }
 
     protected boolean isValid(String text) {
@@ -145,10 +154,11 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         return builder.toString();
     }
 
-    public String buildGeneralInfos(Trial trial){
+    public String buildGeneralInfos(Trial trial) {
         String res = "";
-
-        // TODO
+        String difficulty = trial.getDifficultyString(trial.getDifficulty());
+        String interaction = trial.getInteractionString(trial.getInteractionType());
+        res = difficulty + ", " + interaction;
         return res;
     }
 
@@ -179,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
     }
 
     @Override
-    public String decodeMessage(String rep){
+    public String decodeMessage(String rep) {
         return "";
     }
 
@@ -188,27 +198,44 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                directionText.setText(directionText.getText() + " \nEND of EXPERIMENT");
+                directionText.setText(" \nEND of EXPERIMENT");
+                distanceText.setVisibility(GONE);
                 changeRunningStateTo(false);
             }
         });
     }
 
     @Override
-    public void handleEndOfTrial(int index, Trial trial) {
+    public void handleTrialPrinting(int index, Trial trial) {
+        DecimalFormat df = new DecimalFormat("#.#");
+        String distTo = df.format(trial.calculateDistanceToNextCP()) + " m";
+        String bearTo = df.format(trial.calculateBearingToNextCP()) + "degrees";
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // todo : complete with infos you want to see on screen
-                String generalInfos = buildGeneralInfos(trial);
-                
-                directionText.setText(directionText.getText() +"\nTRIAL number " + index + ": "+ text);
+                generalInfoText.setText(buildGeneralInfos(trial));
+                distanceText.setText(distTo);
+                directionText.setText(bearTo);
             }
         });
     }
 
-    public void resetUI(){
-        // TODO
+    public void resetPlayContent() {
+        generalInfoText.setText("");
+        distanceText.setText("");
+        directionText.setText("");
+        trialNumberText.setText("");
+    }
+
+    public void setupBlankUI() {
+        findViewById(R.id.play_content).setVisibility(GONE);
+        this.infoText.setVisibility(View.VISIBLE);
+    }
+
+    public void setupExperimentUI() {
+        this.infoText.setVisibility(GONE);
+        findViewById(R.id.play_content).setVisibility(View.VISIBLE);
     }
 
 
@@ -258,9 +285,15 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         });
     }
 
-    public void initNextButton(){
+    public void initNextButton() {
         this.nextButton = findViewById(R.id.button_nextTrial);
-        // TODO
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "next button pressed");
+                // TODO : function to build dialog an action
+            }
+        });
     }
 
     // dialog functions

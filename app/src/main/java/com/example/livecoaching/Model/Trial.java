@@ -66,13 +66,25 @@ public class Trial {
     }
 
     public String getInteractionString(int type) {
-        String res;
+        String res = "";
         if (type == 0) {
             res = "haptic";
         } else if (type == 1) {
             res = "visual";
         } else {
             res = "haptic and visual";
+        }
+        return res;
+    }
+
+    public String getDifficultyString(int i ){
+        String res = "";
+        if (i == 0){
+            res = "Easy (I)";
+        } else if (i ==1){
+            res = "Medium (L)";
+        } else {
+            res = "Difficult(Z)";
         }
         return res;
     }
