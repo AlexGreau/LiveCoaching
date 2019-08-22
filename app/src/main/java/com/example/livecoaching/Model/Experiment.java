@@ -24,14 +24,12 @@ public class Experiment implements TrialOrganiser, Decoder {
     private final int maxInteractionIndex = 2;
 
     private int indexInTrials;
-
     private ArrayList<Trial> trials;
-
     private boolean isStartingRunningLog = true;
-
     private ExperimentVisualizer visualizer;
-
     private boolean isRunning;
+
+    private String replyMsg = "";
 
 
     public Experiment(String participantID, Logger simpleLogger, ExperimentVisualizer visu) {
@@ -54,6 +52,7 @@ public class Experiment implements TrialOrganiser, Decoder {
 
     public void endExp(){
         isRunning = false;
+        replyMsg = "stop";
         this.visualizer.handleEndOfExperiment();
         Log.d(TAG, "stopping experiment");
     }
@@ -96,18 +95,20 @@ public class Experiment implements TrialOrganiser, Decoder {
         isStartingRunningLog = true;
         isRunning = true;
         indexInTrials++;
-        createNextTrial();
         if (indexInTrials < trials.size()) {
+            createNextTrial();
             trials.get(indexInTrials);
         } else {
-            // todo : actualize main activity UI on the run
+            indexInTrials --;
+            this.isRunning = false;
+            endExp();
         }
     }
 
     @Override
     public String decodeMessage(String msg) {
         Trial concernedTrial = trials.get(indexInTrials);
-        String replyMsg = "";
+        replyMsg = "";
         if (!this.isRunning){
             replyMsg = "stop";
             return replyMsg;
