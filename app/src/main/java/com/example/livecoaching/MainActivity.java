@@ -129,9 +129,11 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         builder.append(separator);
         builder.append(trial.getTheoricDistance());
         builder.append(separator);
+        builder.append(trial.getTotalDistance());
+        builder.append(separator);
         builder.append(trial.getTotalTime());
         builder.append(separator);
-        builder.append(trial.getTotalDistance());
+        builder.append(trial.getSuccess());
 
         return builder.toString();
     }

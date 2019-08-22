@@ -129,6 +129,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         } else if (senderState.equals("Running")) {
             if (isStartingRunningLog) {
                 concernedTrial.setStartingTime(time);
+                concernedTrial.calculateTheoricDistance();
                 isStartingRunningLog = false;
             }
             System.out.println("detected " + senderState);
@@ -136,12 +137,13 @@ public class Experiment implements TrialOrganiser, Decoder {
             if (parts.length >= 2) {
                 partOfroute = Integer.parseInt(parts[2]);
                 completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
+                showOnScreen();
             }
         } else if (senderState.equals("Stop")) {
             System.out.println("detected " + senderState);
             if (parts.length >= 2) {
+                concernedTrial.setSuccess(Boolean.parseBoolean(parts[2]));
                 concernedTrial.calculateTotalTimeUntil(time);
-                concernedTrial.calculateTheoricDistance();
                 completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
                 simpleLogIt(concernedTrial);
             }
@@ -153,6 +155,10 @@ public class Experiment implements TrialOrganiser, Decoder {
         }
 
         return replyMsg;
+    }
+
+    public void showOnScreen(){
+
     }
 
     private String format(ArrayList<Location> locs) {
@@ -181,15 +187,14 @@ public class Experiment implements TrialOrganiser, Decoder {
     }
 
     public void simpleLogIt(Trial trial) {
-        // launch calculations of data
-        // log these datas
         logger.writeSimpleLog(participantID,
                 trial.getInteractionString(trial.getInteractionType()),
                 trial.getDifficulty(),
                 indexInTrials,
                 trial.getTheoricDistance(),
+                trial.getTotalDistance(),
                 trial.getTotalTime(),
-                trial.getTotalDistance()
+                trial.getSuccess()
         );
     }
 
