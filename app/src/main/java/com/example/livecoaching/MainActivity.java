@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         this.startTestButton.setEnabled(!isRunning);
         this.startButton.setEnabled(!isRunning);
         this.finishButton.setEnabled(isRunning);
-        this.nextButton.setEnabled(isRunning);
     }
 
     protected void startExp(String ID) {
