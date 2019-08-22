@@ -320,7 +320,8 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "next button pressed");
-                // TODO : function to build dialog an action
+                AlertDialog dialog = buildNextTrialDialog();
+                dialog.show();
             }
         });
     }
@@ -371,6 +372,19 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(android.R.drawable.ic_dialog_alert);
 
+        return builder.create();
+    }
+
+    public AlertDialog buildNextTrialDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("Skip to next trial")
+                .setMessage("Are you sure ?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        experiment.skipToNextTrial();
+                    }
+                }).setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert);
         return builder.create();
     }
 
