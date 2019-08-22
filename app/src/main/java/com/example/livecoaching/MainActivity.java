@@ -134,17 +134,17 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
 
     public String buildResumeTrial(Trial trial) {
         StringBuilder builder = new StringBuilder();
-        String separator = "; ";
-        builder.append(trial.getInteractionString(trial.getInteractionType()));
-        builder.append(separator);
-        builder.append(trial.getDifficulty());
-        builder.append(separator);
+        String separator = "\n ";
+        builder.append("Total Theoric distance (m): ");
         builder.append(trial.getTheoricDistance());
         builder.append(separator);
+        builder.append("Real Distance walked (m):");
         builder.append(trial.getTotalDistance());
         builder.append(separator);
+        builder.append("Total time spent (ms): ");
         builder.append(trial.getTotalTime());
         builder.append(separator);
+        builder.append("success : ");
         builder.append(trial.getSuccess());
 
         return builder.toString();
@@ -213,6 +213,20 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
                 distanceText.setText(distTo);
                 directionText.setText(bearTo);
                 trialNumberText.setText("#" + index);
+            }
+        });
+    }
+
+    @Override
+    public void handleEndOfTrial(int index, Trial trial) {
+        String message = buildResumeTrial(trial);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                distanceText.setVisibility(GONE);
+                directionText.setVisibility(GONE);
+                infoText.setText(message);
+                infoText.setVisibility(View.VISIBLE);
             }
         });
     }

@@ -48,6 +48,7 @@ public class Experiment implements TrialOrganiser, Decoder {
 
     public void stopCurrentTrial() {
         this.visualizer.handleTrialPrinting(indexInTrials,trials.get(indexInTrials));
+        visualizer.handleEndOfTrial(indexInTrials, trials.get(indexInTrials));
         trials.get(indexInTrials).stop();
     }
 
@@ -161,12 +162,6 @@ public class Experiment implements TrialOrganiser, Decoder {
     }
 
     public void showProgressOnScreen(Trial trial){
-        String res = "";
-        String distTo = "\ndist to next CP : " + trial.calculateDistanceToNextCP();
-        String bearTo = "\nbearing to next CP : " + trial.calculateBearingToNextCP();
-        String distTilNow = "\nwalked : " + trial.getTotalDistance();
-        res = res + distTo + bearTo + distTilNow;
-        System.out.println(res);
         visualizer.handleTrialPrinting(indexInTrials, trial);
     }
 
