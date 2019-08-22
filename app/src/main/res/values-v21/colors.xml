@@ -11,7 +11,8 @@
     <color name="team1Color">#2196F3</color>
     <color name="team2Color">#d13a58</color>
 
-    <color name="correctColor">#0FB120</color>
+    <color name="button_start_color">#0FB120</color>
+    <color name="button_end_color">#c91818</color>
     <color name="screenTxtColor">#fff</color>
 
 </resources>
