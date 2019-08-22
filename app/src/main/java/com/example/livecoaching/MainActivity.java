@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.livecoaching.Communication.Server;
+import com.example.livecoaching.Interfaces.Decoder;
 import com.example.livecoaching.Interfaces.ExperimentVisualizer;
 import com.example.livecoaching.Logs.Logger;
 import com.example.livecoaching.Model.Experiment;
@@ -25,8 +27,9 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity implements ExperimentVisualizer {
+public class MainActivity extends AppCompatActivity implements ExperimentVisualizer, Decoder {
     private final String TAG = MainActivity.class.getSimpleName();
+    private Server server;
 
     // UI components
     protected Button startButton;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         // for now
         interactionType = 1;
         initUI();
+        server = new Server(this);
     }
 
     // init
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
     protected void startExp(String ID) {
         initLoggers();
         experiment = new Experiment(ID, this.simpleLogger, this);
+        server.setDecoder(experiment);
         changeRunningStateTo(true);
         // test
         testText.setText(ID);
@@ -101,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
     protected void startTest() {
         initLoggers();
         experiment = new TestExperiment(this.simpleLogger, this);
+        server.setDecoder(experiment);
         changeRunningStateTo(true);
         // test
         TextView test = (TextView) findViewById(R.id.testPlay);
@@ -123,9 +129,11 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         builder.append(separator);
         builder.append(trial.getTheoricDistance());
         builder.append(separator);
+        builder.append(trial.getTotalDistance());
+        builder.append(separator);
         builder.append(trial.getTotalTime());
         builder.append(separator);
-        builder.append(trial.getTotalDistance());
+        builder.append(trial.getSuccess());
 
         return builder.toString();
     }
@@ -154,6 +162,11 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         if (hasFocus) {
             setFullScreen();
         }
+    }
+
+    @Override
+    public String decodeMessage(String rep){
+        return "";
     }
 
     @Override

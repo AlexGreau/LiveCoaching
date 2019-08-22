@@ -3,7 +3,6 @@ package com.example.livecoaching.Model;
 import android.location.Location;
 import android.util.Log;
 
-import com.example.livecoaching.Communication.Server;
 import com.example.livecoaching.Interfaces.Decoder;
 import com.example.livecoaching.Interfaces.ExperimentVisualizer;
 import com.example.livecoaching.Interfaces.TrialOrganiser;
@@ -16,7 +15,6 @@ public class Experiment implements TrialOrganiser, Decoder {
     // values
     private String participantID;
     private Logger logger;
-    private Server server;
 
     private int currentDifficulty;
     private int currentInteractionType;
@@ -47,7 +45,6 @@ public class Experiment implements TrialOrganiser, Decoder {
 
     public void run() {
         isRunning = true;
-        server = new Server(this);
     }
 
     public void stop() {
@@ -97,6 +94,7 @@ public class Experiment implements TrialOrganiser, Decoder {
     @Override
     public void launchNextTrial() {
         isStartingRunningLog = true;
+        isRunning = true;
         indexInTrials++;
         createNextTrial();
         if (indexInTrials < trials.size()) {
@@ -110,7 +108,7 @@ public class Experiment implements TrialOrganiser, Decoder {
     public String decodeMessage(String msg) {
         Trial concernedTrial = trials.get(indexInTrials);
         String replyMsg = "";
-        if (!isRunning){
+        if (!this.isRunning){
             replyMsg = "stop";
             return replyMsg;
         }
@@ -131,6 +129,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         } else if (senderState.equals("Running")) {
             if (isStartingRunningLog) {
                 concernedTrial.setStartingTime(time);
+                concernedTrial.calculateTheoricDistance();
                 isStartingRunningLog = false;
             }
             System.out.println("detected " + senderState);
@@ -138,12 +137,13 @@ public class Experiment implements TrialOrganiser, Decoder {
             if (parts.length >= 2) {
                 partOfroute = Integer.parseInt(parts[2]);
                 completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
+                showOnScreen();
             }
         } else if (senderState.equals("Stop")) {
             System.out.println("detected " + senderState);
             if (parts.length >= 2) {
+                concernedTrial.setSuccess(Boolean.parseBoolean(parts[2]));
                 concernedTrial.calculateTotalTimeUntil(time);
-                concernedTrial.calculateTheoricDistance();
                 completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
                 simpleLogIt(concernedTrial);
             }
@@ -155,6 +155,10 @@ public class Experiment implements TrialOrganiser, Decoder {
         }
 
         return replyMsg;
+    }
+
+    public void showOnScreen(){
+
     }
 
     private String format(ArrayList<Location> locs) {
@@ -183,15 +187,14 @@ public class Experiment implements TrialOrganiser, Decoder {
     }
 
     public void simpleLogIt(Trial trial) {
-        // launch calculations of data
-        // log these datas
         logger.writeSimpleLog(participantID,
                 trial.getInteractionString(trial.getInteractionType()),
                 trial.getDifficulty(),
                 indexInTrials,
                 trial.getTheoricDistance(),
+                trial.getTotalDistance(),
                 trial.getTotalTime(),
-                trial.getTotalDistance()
+                trial.getSuccess()
         );
     }
 

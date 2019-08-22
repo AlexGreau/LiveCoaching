@@ -25,6 +25,7 @@ public class Trial {
     private long totalTime;
     private Double totalDistanceParcourue;
     private Double totalDistanceTheorique;
+    private boolean success;
 
 
     public Trial(String ID, int interactionType, int difficulty, TrialOrganiser organiser) {
@@ -117,6 +118,14 @@ public class Trial {
 
     public long getStartingTime(){
         return this.startingTime;
+    }
+
+    public void setSuccess(boolean isSuccessful){
+        success = isSuccessful;
+    }
+
+    public boolean getSuccess(){
+        return success;
     }
 
     public double getTheoricDistance() {

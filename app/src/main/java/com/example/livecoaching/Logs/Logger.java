@@ -45,7 +45,7 @@ public class Logger {
             Log.e(TAG, "file does not exist... creating it");
             try {
                 completeLogsFile.createNewFile();
-                writeToLogFile("Structure : \nID;interaction;difficulty;trial;lat,long;partOfRoute;timestamp ", false,false);
+                writeToLogFile("Structure : \nID;interaction;difficulty;trial;lat,long;partOfRoute;timestamp ", false, false);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -58,7 +58,7 @@ public class Logger {
             Log.e(TAG, "file does not exist... creating it");
             try {
                 simpleLogsFile.createNewFile();
-                writeToLogFile("Structure : \nID;interaction;difficulty;trial;theoricDist(m);totalTime(ms);totalRealDist(m)", false,true);
+                writeToLogFile("Structure : \nID;interaction;difficulty;trial;theoricDist(m);totalRealDist(m);totalTime(ms);success", false, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -80,17 +80,17 @@ public class Logger {
         writeToLogFile(log, true, false);
     }
 
-    public void writeSimpleLog(String ID, String interactionType, int difficulty, int trialNumber, double theoricDistance, long totalTime, double totalRealDistance){
+    public void writeSimpleLog(String ID, String interactionType, int difficulty, int trialNumber, double theoricDistance, double totalRealDistance, long totalTime, boolean success) {
         String log = "\r\n" + ID + separator + interactionType + separator + difficulty + separator + trialNumber + separator;
-        log = log + theoricDistance + separator + totalTime + separator + totalRealDistance;
+        log = log + theoricDistance + separator + totalRealDistance + separator + totalTime + separator + success;
 
-        writeToLogFile(log,true, true);
+        writeToLogFile(log, true, true);
     }
 
     public void writeToLogFile(String text, boolean append, boolean isSimpleLog) {
         FileOutputStream stream = null;
         File file;
-        if (isSimpleLog){
+        if (isSimpleLog) {
             file = simpleLogsFile;
         } else {
             file = completeLogsFile;
