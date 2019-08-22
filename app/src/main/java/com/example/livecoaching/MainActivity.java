@@ -205,13 +205,13 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
     public void handleTrialPrinting(int index, Trial trial) {
         DecimalFormat df = new DecimalFormat("#.#");
         String distTo = df.format(trial.calculateDistanceToNextCP()) + " m";
-        String bearTo = df.format(trial.calculateBearingToNextCP()) + "degrees";
+        String direction = trial.getDirectionString(trial.getDirection());
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 generalInfoText.setText(buildGeneralInfos(trial));
                 distanceText.setText(distTo);
-                directionText.setText(bearTo);
+                directionText.setText(direction);
                 trialNumberText.setText("#" + index);
             }
         });
