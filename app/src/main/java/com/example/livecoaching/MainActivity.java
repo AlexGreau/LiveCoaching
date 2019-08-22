@@ -22,8 +22,6 @@ import com.example.livecoaching.Model.Experiment;
 import com.example.livecoaching.Model.TestExperiment;
 import com.example.livecoaching.Model.Trial;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,8 +33,13 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
     protected Button startButton;
     protected Button startTestButton;
     protected Button finishButton;
+    protected Button nextButton;
     protected AlertDialog startExpDialog;
-    protected TextView testText;
+    protected TextView directionText;
+    protected TextView distanceText;
+    protected TextView trialNumberText;
+    protected TextView generalInfoText;
+
     // logs
     protected Logger simpleLogger;
     private int interactionType;
@@ -67,8 +70,10 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        testText = (TextView) findViewById(R.id.testPlay);
-
+        directionText = findViewById(R.id.testPlay);
+        distanceText = findViewById(R.id.distanceTo);
+        trialNumberText = findViewById(R.id.trialNumber);
+        generalInfoText = findViewById(R.id.generalTrialInfo);
     }
 
     public void initToolbar() {
@@ -77,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         initStartTestButton();
         initStartButton();
         initFinishButton();
+        initNextButton();
         changeRunningStateTo(false);
     }
 
@@ -86,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         this.startTestButton.setEnabled(!isRunning);
         this.startButton.setEnabled(!isRunning);
         this.finishButton.setEnabled(isRunning);
+        this.nextButton.setEnabled(isRunning);
     }
 
     protected void startExp(String ID) {
@@ -94,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         server.setDecoder(experiment);
         changeRunningStateTo(true);
         // test
-        testText.setText(ID);
+        directionText.setText(ID);
         experiment.run();
     }
 
@@ -138,6 +145,13 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         return builder.toString();
     }
 
+    public String buildGeneralInfos(Trial trial){
+        String res = "";
+
+        // TODO
+        return res;
+    }
+
     // Overrides
     @Override
     protected void onDestroy() {
@@ -174,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                testText.setText(testText.getText() + " \nEND of EXPERIMENT");
+                directionText.setText(directionText.getText() + " \nEND of EXPERIMENT");
                 changeRunningStateTo(false);
             }
         });
@@ -186,10 +200,15 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
             @Override
             public void run() {
                 // todo : complete with infos you want to see on screen
-                String text = buildResumeTrial(trial);
-                testText.setText(testText.getText() +"\nTRIAL number " + index + ": "+ text);
+                String generalInfos = buildGeneralInfos(trial);
+                
+                directionText.setText(directionText.getText() +"\nTRIAL number " + index + ": "+ text);
             }
         });
+    }
+
+    public void resetUI(){
+        // TODO
     }
 
 
@@ -237,6 +256,11 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
                 dialog.show();
             }
         });
+    }
+
+    public void initNextButton(){
+        this.nextButton = findViewById(R.id.button_nextTrial);
+        // TODO
     }
 
     // dialog functions
