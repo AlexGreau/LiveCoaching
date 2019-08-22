@@ -137,8 +137,9 @@ public class Experiment implements TrialOrganiser, Decoder {
             replyMsg = "";
             if (parts.length >= 2) {
                 partOfroute = Integer.parseInt(parts[2]);
+                concernedTrial.actualizeNextCP(partOfroute);
                 completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
-                showOnScreen();
+                showProgressOnScreen(concernedTrial);
             }
         } else if (senderState.equals("Stop")) {
             System.out.println("detected " + senderState);
@@ -158,8 +159,13 @@ public class Experiment implements TrialOrganiser, Decoder {
         return replyMsg;
     }
 
-    public void showOnScreen(){
-
+    public void showProgressOnScreen(Trial trial){
+        String res = "";
+        String distTo = "\ndist to next CP : " + trial.calculateDistanceToNextCP();
+        String bearTo = "\nbearing to next CP : " + trial.calculateBearingToNextCP();
+        String distTilNow = "\nwalked : " + trial.getTotalDistance();
+        res = res + distTo + bearTo + distTilNow;
+        System.out.println(res);
     }
 
     private String format(ArrayList<Location> locs) {

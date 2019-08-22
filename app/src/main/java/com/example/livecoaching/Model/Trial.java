@@ -21,6 +21,7 @@ public class Trial {
     // data
     private long startingTime;
     private Location actualLocation;
+    private Location currentNextCP;
     private String participantID;
     private long totalTime;
     private Double totalDistanceParcourue;
@@ -97,6 +98,18 @@ public class Trial {
         totalDistanceParcourue += round (actualLocation.distanceTo(newLocation),4);
 
         this.totalDistanceParcourue = round(this.totalDistanceParcourue,4);
+    }
+
+    public float calculateDistanceToNextCP(){
+        return actualLocation.distanceTo(getCurrentNextCP());
+    }
+
+    public float calculateBearingToNextCP(){
+        return actualLocation.bearingTo(getCurrentNextCP());
+    }
+
+    public void actualizeNextCP(int index){
+        this.currentNextCP = routeCalculator.getActualRoute().get(index);
     }
 
     public static double round(double value, int precision) {
@@ -181,5 +194,13 @@ public class Trial {
 
     public RouteCalculator getRouteCalculator() {
         return this.routeCalculator;
+    }
+
+    public Location getCurrentNextCP() {
+        return currentNextCP;
+    }
+
+    public void setCurrentNextCP(Location currentNextCP) {
+        this.currentNextCP = currentNextCP;
     }
 }
