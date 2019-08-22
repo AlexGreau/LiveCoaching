@@ -102,13 +102,11 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
 
     protected void startExp(String ID) {
         initLoggers();
-        setupExperimentUI();
         resetPlayContent();
+        setupExperimentUI();
         experiment = new Experiment(ID, this.simpleLogger, this);
         server.setDecoder(experiment);
         changeRunningStateTo(true);
-        // test
-        directionText.setText(ID);
         experiment.run();
     }
 
@@ -124,10 +122,8 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         experiment = new TestExperiment(this.simpleLogger, this);
         server.setDecoder(experiment);
         changeRunningStateTo(true);
-        // test
         generalInfoText.setText("TestRun");
         experiment.run();
-        distanceText.setVisibility(View.VISIBLE);
     }
 
     protected boolean isValid(String text) {
@@ -210,13 +206,13 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         DecimalFormat df = new DecimalFormat("#.#");
         String distTo = df.format(trial.calculateDistanceToNextCP()) + " m";
         String bearTo = df.format(trial.calculateBearingToNextCP()) + "degrees";
-
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 generalInfoText.setText(buildGeneralInfos(trial));
                 distanceText.setText(distTo);
                 directionText.setText(bearTo);
+                trialNumberText.setText("#" + index);
             }
         });
     }
@@ -236,6 +232,8 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
     public void setupExperimentUI() {
         this.infoText.setVisibility(GONE);
         findViewById(R.id.play_content).setVisibility(View.VISIBLE);
+        distanceText.setVisibility(View.VISIBLE);
+        trialNumberText.setVisibility(View.VISIBLE);
     }
 
 
