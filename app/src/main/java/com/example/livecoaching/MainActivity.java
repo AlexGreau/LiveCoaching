@@ -227,6 +227,23 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
                 directionText.setVisibility(GONE);
                 infoText.setText(message);
                 infoText.setVisibility(View.VISIBLE);
+                nextButton.setEnabled(false);
+            }
+        });
+    }
+
+    @Override
+    public void handleStartOfTrial() {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                distanceText.setVisibility(View.VISIBLE);
+                directionText.setVisibility(View.VISIBLE);
+                distanceText.setText("");
+                directionText.setText("");
+                infoText.setVisibility(GONE);
+                nextButton.setEnabled(true);
             }
         });
     }
@@ -299,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
 
     public void initNextButton() {
         this.nextButton = findViewById(R.id.button_nextTrial);
+        nextButton.setEnabled(false);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

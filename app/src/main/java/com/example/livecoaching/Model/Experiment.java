@@ -99,7 +99,6 @@ public class Experiment implements TrialOrganiser, Decoder {
         indexInTrials++;
         if (indexInTrials <= maxIndex) {
             createNextTrial();
-            trials.get(indexInTrials);
         } else {
             indexInTrials--;
             this.isRunning = false;
@@ -127,6 +126,7 @@ public class Experiment implements TrialOrganiser, Decoder {
             replyMsg = "continue:" + concernedTrial.getInteractionType();
             if (parts.length >= 2) {
                 logger.getLogsArray().clear();
+                visualizer.handleStartOfTrial();
                 completeLogIt(concernedTrial, concernedTrial.parseInfos(parts[1]), time, partOfroute);
                 concernedTrial.initRouteCalculator(concernedTrial.getActualLocation());
             }
