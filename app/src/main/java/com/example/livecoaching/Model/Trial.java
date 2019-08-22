@@ -50,7 +50,7 @@ public class Trial {
     }
 
     public void stop() {
-        organiser.launchNextTrial();
+        // organiser.launchNextTrial();
     }
 
     public Location parseInfos(String str) {

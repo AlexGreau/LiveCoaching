@@ -119,7 +119,7 @@
                     android:layout_toRightOf="@id/button_start"
                     android:drawableLeft="@drawable/ic_next"
                     android:drawablePadding="10dip"
-                    android:text="Next Trial" />
+                    android:text="Skip Trial" />
 
                 <Button
                     android:id="@+id/button_test"
