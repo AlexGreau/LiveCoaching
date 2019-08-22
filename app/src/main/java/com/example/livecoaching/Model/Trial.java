@@ -73,7 +73,6 @@ public class Trial {
         } else {
             res = "haptic and visual";
         }
-
         return res;
     }
 
