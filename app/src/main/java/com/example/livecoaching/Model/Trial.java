@@ -27,6 +27,7 @@ public class Trial {
     private Double totalDistanceParcourue;
     private Double totalDistanceTheorique;
     private boolean success;
+    private int direction;
 
 
     public Trial(String ID, int interactionType, int difficulty, TrialOrganiser organiser) {
@@ -35,6 +36,7 @@ public class Trial {
         this.participantID = ID;
         this.interactionType = interactionType;
         this.difficulty = difficulty;
+        this.direction = 0;
 
         this.totalTime = 0;
         this.totalDistanceParcourue = 0.0;
@@ -85,6 +87,18 @@ public class Trial {
             res = "Medium (L)";
         } else {
             res = "Difficult(Z)";
+        }
+        return res;
+    }
+
+    public String getDirectionString(int i) {
+        String res = "";
+        if (i == 3) {
+            res = "straight";
+        } else if (i == -1) {
+            res = "left";
+        } else if (i == 1) {
+            res = "right";
         }
         return res;
     }
@@ -214,5 +228,13 @@ public class Trial {
 
     public void setCurrentNextCP(Location currentNextCP) {
         this.currentNextCP = currentNextCP;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 }
