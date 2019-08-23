@@ -50,7 +50,7 @@ public class RouteCalculator {
     public ArrayList <Location> getRouteL(){
         // 3 criticals points, L shaped with a turn of random angle
         if (route.size() == 1){
-            double firstDistance = 30.0;
+            double firstDistance = 10.0;
             double secondDistance = 10.0;
             double turnAngle = 45.0;
             double startAngle = 10.0;
@@ -65,7 +65,7 @@ public class RouteCalculator {
     public ArrayList<Location> getRouteI(){
         // 2 critical points, distance of x meters
         if(route.size() < 2 ){
-            double distWanted = 20.0;
+            double distWanted = 10.0;
             double angleWanted = 90.0;
             Location nextLoc = calculateLocation(startingPoint, applyMagic(distWanted), angleWanted);
             route.add(nextLoc);
@@ -77,13 +77,17 @@ public class RouteCalculator {
     public ArrayList<Location> getRouteN(){
         if (route.size() < 2){
             double firstDistance = 10;
-            double firstAngle = 135.0;
+            double firstAngle = 90.0;
             double secondDistance = 20;
-            double secondAngle = 225.0;
+            double secondAngle = 135;
+            double thirdDistance = 10;
+            double thirdAngle = 225;
             Location firstLoc = calculateLocation(startingPoint,applyMagic(firstDistance), firstAngle);
             Location secondLoc = calculateLocation(firstLoc, applyMagic(secondDistance), secondAngle);
+            Location thirdLoc = calculateLocation(secondLoc,applyMagic(thirdDistance), thirdAngle);
             route.add(firstLoc);
             route.add(secondLoc);
+            route.add(thirdLoc);
         }
         return route;
     }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.livecoaching.Communication.Server;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
     protected TextView trialNumberText;
     protected TextView generalInfoText;
     protected TextView infoText;
+    protected ProgressBar progressBar;
 
     // logs
     protected Logger simpleLogger;
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         trialNumberText = findViewById(R.id.trialNumber);
         generalInfoText = findViewById(R.id.generalTrialInfo);
         infoText = findViewById(R.id.infoText);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     public void initToolbar() {
@@ -195,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
             public void run() {
                 directionText.setText(" \nEND of EXPERIMENT");
                 distanceText.setVisibility(GONE);
+                progressBar.setVisibility(GONE);
                 changeRunningStateTo(false);
             }
         });
@@ -205,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         DecimalFormat df = new DecimalFormat("#.#");
         String distTo = df.format(trial.calculateDistanceToNextCP()) + " m";
         String direction = trial.getDirectionString(trial.getDirection());
+        int progress = (int) ((((double) trial.getIndexNextCp()) / ((double) trial.getRouteCalculator().getActualRoute().size()-1)) *100 );
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -212,6 +217,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
                 distanceText.setText(distTo);
                 directionText.setText(direction);
                 trialNumberText.setText("#" + index);
+                progressBar.setProgress(progress);
             }
         });
     }
@@ -224,6 +230,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
             public void run() {
                 distanceText.setVisibility(GONE);
                 directionText.setVisibility(GONE);
+                progressBar.setVisibility(GONE);
                 infoText.setText(message);
                 infoText.setVisibility(View.VISIBLE);
                 nextButton.setEnabled(false);
@@ -239,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
             public void run() {
                 distanceText.setVisibility(View.VISIBLE);
                 directionText.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 distanceText.setText("");
                 directionText.setText("");
                 infoText.setVisibility(GONE);
@@ -264,6 +272,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         findViewById(R.id.play_content).setVisibility(View.VISIBLE);
         distanceText.setVisibility(View.VISIBLE);
         trialNumberText.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
 

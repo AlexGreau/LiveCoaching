@@ -1,7 +1,6 @@
 package com.example.livecoaching.Communication;
 
 import com.example.livecoaching.Interfaces.Decoder;
-import com.example.livecoaching.Model.Trial;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
