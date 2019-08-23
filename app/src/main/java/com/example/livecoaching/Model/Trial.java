@@ -28,6 +28,7 @@ public class Trial {
     private Double totalDistanceTheorique;
     private boolean success;
     private int direction;
+    private int indexNextCp;
 
 
     public Trial(String ID, int interactionType, int difficulty, TrialOrganiser organiser) {
@@ -41,7 +42,7 @@ public class Trial {
         this.totalTime = 0;
         this.totalDistanceParcourue = 0.0;
         this.totalDistanceTheorique = 0.0;
-
+        this.indexNextCp = 1;
         init();
     }
 
@@ -130,11 +131,8 @@ public class Trial {
         return actualLocation.distanceTo(getCurrentNextCP());
     }
 
-    public float calculateBearingToNextCP(){
-        return actualLocation.bearingTo(getCurrentNextCP());
-    }
-
     public void actualizeNextCP(int index){
+        this.indexNextCp = index;
         this.currentNextCP = routeCalculator.getActualRoute().get(index);
     }
 
@@ -236,5 +234,13 @@ public class Trial {
 
     public void setDirection(int direction) {
         this.direction = direction;
+    }
+
+    public int getIndexNextCp() {
+        return indexNextCp;
+    }
+
+    public void setIndexNextCp(int indexNextCp) {
+        this.indexNextCp = indexNextCp;
     }
 }

@@ -19,7 +19,7 @@ public class Experiment implements TrialOrganiser, Decoder {
     private int currentDifficulty;
     private int currentInteractionType;
     private int currentIndex;
-    private final int maxTrialIndexPerCombo = 3;
+    private final int maxTrialIndexPerCombo = 2;
     private final int maxDifficultyIndex = 2;
     private final int maxInteractionIndex = 2;
     private final int maxIndex = maxTrialIndexPerCombo * maxDifficultyIndex * maxInteractionIndex;

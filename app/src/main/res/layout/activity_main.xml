@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:padding="20sp"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
 
         <RelativeLayout
             android:id="@+id/titleBar"
@@ -43,23 +44,40 @@
                 android:textSize="60sp" />
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/distanceTo"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="X m"
-            android:textSize="150sp" />
-
-        <TextView
-            android:id="@+id/direction_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/distanceTo"
-            android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:text="hello you"
-            android:textSize="80sp" />
+            android:orientation="vertical"
+            android:layout_below="@id/titleBar"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:id="@+id/distanceTo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="X m"
+                android:textSize="150sp" />
+
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:id="@+id/progressBar"
+                android:progress="0"/>
+
+            <TextView
+                android:id="@+id/direction_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/distanceTo"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="hello you"
+                android:textSize="80sp" />
+
+        </LinearLayout>
 
 
     </RelativeLayout>
