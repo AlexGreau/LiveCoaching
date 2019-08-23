@@ -54,8 +54,7 @@ public class Experiment implements TrialOrganiser, Decoder {
     }
 
     public void skipToNextTrial() {
-        stopCurrentTrial();
-        launchNextTrial();
+        trialIsRunning = false;
     }
 
     public void endExp() {
@@ -76,7 +75,6 @@ public class Experiment implements TrialOrganiser, Decoder {
 
     public void createNextTrial() {
         Trial nextTrial;
-        currentIndex++;
         if (currentIndex > maxTrialIndexPerCombo) {
             currentIndex = 0;
             currentDifficulty++;
@@ -138,10 +136,6 @@ public class Experiment implements TrialOrganiser, Decoder {
                 concernedTrial.initRouteCalculator(concernedTrial.getActualLocation());
             }
         } else if (senderState.equals("Running")) {
-            if (!trialIsRunning){
-                replyMsg = "stop";
-                return replyMsg;
-            }
             System.out.println("detected " + senderState);
             replyMsg = "";
             if (isStartingRunningLog) {
@@ -157,7 +151,10 @@ public class Experiment implements TrialOrganiser, Decoder {
                 concernedTrial.setDirection(direction);
                 showProgressOnScreen(concernedTrial);
             }
-        } else if (trialIsRunning && senderState.equals("Stop")) {
+            if (!trialIsRunning){
+                replyMsg = "stop";
+            }
+        } else if (senderState.equals("Stop")) {
             trialIsRunning = false;
             System.out.println("detected " + senderState);
             if (parts.length >= 2) {
