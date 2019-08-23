@@ -210,8 +210,7 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         DecimalFormat df = new DecimalFormat("#.#");
         String distTo = df.format(trial.calculateDistanceToNextCP()) + " m";
         String direction = trial.getDirectionString(trial.getDirection());
-        int progress = (trial.getIndexNextCp() + 1) / (trial.getRouteCalculator().getActualRoute().size() + 1) * 100;
-        System.out.println("progress :" + progress);
+        int progress = (int) ((((double) trial.getIndexNextCp()) / ((double) trial.getRouteCalculator().getActualRoute().size()-1)) *100 );
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
