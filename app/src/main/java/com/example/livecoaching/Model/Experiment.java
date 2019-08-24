@@ -126,7 +126,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         int partOfroute = 0;
         int direction = 0;
         // interpret results
-        if (senderState.equals("Ready")) {
+        if (!trialIsRunning && senderState.equals("Ready")) {
             replyMsg = "continue:" + concernedTrial.getInteractionType();
             trialIsRunning = true;
             if (parts.length >= 2) {
