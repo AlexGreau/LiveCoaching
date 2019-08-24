@@ -196,9 +196,9 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                directionText.setText(" \nEND of EXPERIMENT");
                 distanceText.setVisibility(GONE);
                 progressBar.setVisibility(GONE);
+                infoText.setText(" \nEND of EXPERIMENT");
                 changeRunningStateTo(false);
             }
         });

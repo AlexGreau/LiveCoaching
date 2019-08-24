@@ -19,10 +19,10 @@ public class Experiment implements TrialOrganiser, Decoder {
     private int currentDifficulty;
     private int currentInteractionType;
     private int currentIndex;
-    private final int maxTrialIndexPerCombo = 2;
+    private final int maxTrialIndexPerCombo = 1; // + 1 to have the number
     private final int maxDifficultyIndex = 2;
     private final int maxInteractionIndex = 2;
-    private final int maxIndex = maxTrialIndexPerCombo * maxDifficultyIndex * maxInteractionIndex;
+    private final int maxIndex = (maxTrialIndexPerCombo + 1) * (maxDifficultyIndex + 1) * (maxInteractionIndex + 1);
 
     private int indexInTrials;
     private ArrayList<Trial> trials;
@@ -126,7 +126,7 @@ public class Experiment implements TrialOrganiser, Decoder {
         int partOfroute = 0;
         int direction = 0;
         // interpret results
-        if ( senderState.equals("Ready")) {
+        if (senderState.equals("Ready")) {
             replyMsg = "continue:" + concernedTrial.getInteractionType();
             trialIsRunning = true;
             if (parts.length >= 2) {

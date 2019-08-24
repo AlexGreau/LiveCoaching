@@ -30,6 +30,9 @@ public class Trial {
     private int direction;
     private int indexNextCp;
 
+    // flags
+    private boolean isFirstLocation = true;
+
 
     public Trial(String ID, int interactionType, int difficulty, TrialOrganiser organiser) {
         this.organiser = organiser;
@@ -58,9 +61,12 @@ public class Trial {
         String[] infos = str.split("-");
         float lat = Float.parseFloat(infos[0]);
         float longi = Float.parseFloat(infos[1]);
-        calculateRealTotalDistance(lat,longi);
+        if (!isFirstLocation){
+            calculateRealTotalDistance(lat,longi,actualLocation);
+        }
         actualLocation.setLatitude(lat);
         actualLocation.setLongitude(longi);
+        isFirstLocation = false;
         return actualLocation;
     }
     public void initRouteCalculator(Location loc) {
@@ -118,13 +124,13 @@ public class Trial {
         this.totalDistanceTheorique = round(this.totalDistanceTheorique,4);
     }
 
-    public void calculateRealTotalDistance(float lat, float longi){
+    public void calculateRealTotalDistance(float lat, float longi, Location loc){
         Location newLocation = new Location(LocationManager.GPS_PROVIDER);
         newLocation.setLatitude(lat);
         newLocation.setLongitude(longi);
-        totalDistanceParcourue += round (actualLocation.distanceTo(newLocation),4);
+        totalDistanceParcourue += loc.distanceTo(newLocation);
 
-        this.totalDistanceParcourue = round(this.totalDistanceParcourue,4);
+        totalDistanceParcourue = round(totalDistanceParcourue, 3);
     }
 
     public float calculateDistanceToNextCP(){
