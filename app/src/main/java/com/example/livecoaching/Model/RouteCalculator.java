@@ -29,13 +29,6 @@ public class RouteCalculator {
         }
     }
 
-    public void initTestLocations(){
-        // library : 1.340482, 103.962946
-        library = new Location(LocationManager.GPS_PROVIDER);
-        library.setLatitude(1.340482);
-        library.setLongitude(103.962946);
-    }
-
     public Location getStartingPoint(){
         return startingPoint;
     }
@@ -69,7 +62,6 @@ public class RouteCalculator {
             double angleWanted = 90.0;
             Location nextLoc = calculateLocation(startingPoint, applyMagic(distWanted), angleWanted);
             route.add(nextLoc);
-            Log.d(TAG, "Distance test : " + distanceTest(route.get(0),route.get(1), distWanted) );
         }
         return route;
     }

@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         this.startTestButton.setEnabled(!isRunning);
         this.startButton.setEnabled(!isRunning);
         this.finishButton.setEnabled(isRunning);
-        this.nextButton.setEnabled(isRunning);
     }
 
     protected void startExp(String ID) {
@@ -197,9 +196,9 @@ public class MainActivity extends AppCompatActivity implements ExperimentVisuali
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                directionText.setText(" \nEND of EXPERIMENT");
                 distanceText.setVisibility(GONE);
                 progressBar.setVisibility(GONE);
+                infoText.setText(" \nEND of EXPERIMENT");
                 changeRunningStateTo(false);
             }
         });
