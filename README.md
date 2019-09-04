@@ -11,7 +11,16 @@ Cette application est à utiliser avec l'application [LiveCoached](https://githu
 
 ## Architecture
 
+Lorsque l'utilisateur appuie sur le bouton startExp, un dialogue apparait pour lui demander un pseudonyme, si celui ci est considéré valide par la fonction `protected boolean isValid(String text)`, alors il est sauvegadré par la MainActivity et est utilisé lors de la sauvegarde de données.
+Ensuite, la MainActivity change son interface et crée un objet "Experiment".
 
+L'objet Experiment, à l'image d'une experience, comporte un tableau de "Trials" et s'occupe de leur création avec les paramètres appropriés. L'Experiment gère aussi la transition d'un "Trial" à l'autre. C'est pour cela qu'il implémente l'interface "TrialOrganiser".
+
+Un "Trial" a pour paramètre `public Trial(String ID, int interactionType, int difficulty, TrialOrganiser organiser)`. Cet objet s'occupe de garder les données brutes et calculer les données telles que le temps total mis pour réaliser cet essai, la distance totale parcourue et la distance totale théorique.
+
+Ayant toutes les données, c'est le trial en cours qui se chargera de decoder les ordres et de suavegarder les données détaillée dans le fichier dédié.
+
+L'afichage de ces données a l'écra se fait par un `public interface ExperimentVisualizer` implémenté par la mainActivity.
 
 ## Communication
 Voici le schéma des communications du système :
